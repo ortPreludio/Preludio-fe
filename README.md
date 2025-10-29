@@ -1,14 +1,7 @@
 # Plataforma de Eventos con Ticketing — MVP (React + Node)
 
-Este proyecto es un **MVP 100% funcional** de una plataforma de gestión de eventos con ticketing (QR), con:
+Este proyecto es el front de un **MVP 100% funcional** de una plataforma de gestión de eventos con ticketing (QR), con:
 - **Front** en React + Vite (listado/filtrado, detalle, carrito, checkout, tickets con QR, panel admin).
-- **Server** en Node/Express como **proxy** para consumir una API externa de música (setlist.fm).
-- Persistencia **LocalStorage/SessionStorage** para MVP.
-- Estado global con **Zustand**.
-- Ruteo con **React Router**.
-- **QR** con `qrcode.react`.
-- Página **Mapa/Radio musical** (simple) con Leaflet.
-
 
 ## Requisitos
 - Node.js 18+
@@ -16,11 +9,7 @@ Este proyecto es un **MVP 100% funcional** de una plataforma de gestión de even
 
 ## Instalación
 ```bash
-# 1) Instalar dependencias del server
-cd server
-npm install
-
-# 2) Instalar dependencias del front
+# 1) Instalar dependencias del front
 cd ../web
 npm install
 ```
@@ -28,10 +17,6 @@ npm install
 ## Desarrollo (2 terminales)
 ```bash
 # Terminal A
-cd server
-npm run dev  # http://localhost:4000
-
-# Terminal B
 cd web
 npm run dev  # http://localhost:5173
 ```
@@ -51,11 +36,6 @@ PORT=4000
   cd web
   npm run build
   npm run preview
-  ```
-- Server:
-  ```bash
-  cd server
-  npm start
   ```
 
 ## Usuarios de prueba (mock)
