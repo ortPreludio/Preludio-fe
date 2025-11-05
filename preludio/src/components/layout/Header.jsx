@@ -1,6 +1,6 @@
-import { useAuth } from '../../state/auth.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
-export function Header() {
+export function Header(){
   const { user, logout } = useAuth()
   return (
     <header className="site-header">

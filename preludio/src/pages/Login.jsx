@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { apiLogin } from '../api/auth.js'
-import { useAuth } from '../state/auth.jsx'
 import { Header } from '../components/layout/Header.jsx'
+import { authService } from '../services/authService.js'
+import { useAuth } from '../context/AuthContext.jsx'
 
-export function Login() {
+export function Login(){
   const { setToken, setUser } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,13 +13,13 @@ export function Login() {
   const onSubmit = async (e) => {
     e.preventDefault()
     setLoading(true); setError(null)
-    try {
-      const data = await apiLogin({ email, password })
+    try{
+      const data = await authService.login(email, password)
       setToken(data.token); setUser(data.user)
       window.location.hash = '/'
-    } catch (err) {
+    }catch(err){
       setError(err.message || 'Error al iniciar sesión')
-    } finally {
+    }finally{
       setLoading(false)
     }
   }

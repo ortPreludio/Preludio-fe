@@ -1,24 +1,23 @@
-
+import { useEffect, useState } from 'react'
 import { Header } from '../components/layout/Header.jsx'
 import { Hero } from '../components/layout/Hero.jsx'
 import { Section } from '../components/layout/Section.jsx'
 import { EventGrid } from '../components/organisms/EventGrid.jsx'
-import { useEffect, useState } from 'react'
-import { fetchPublicEvents } from '../api/events.js'
+import { eventService } from '../services/eventService.js'
 
-export function Home() {
+export function Home(){
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [order, setOrder] = useState('asc')
   const [categoria, setCategoria] = useState('')
 
-  useEffect(() => {
+  useEffect(()=>{
     setLoading(true); setError(null)
-    fetchPublicEvents({ sort: 'fecha', order, categoria: categoria || undefined, limit: 12 })
-      .then(js => setItems(Array.isArray(js) ? js : js.items || []))
-      .catch(e => setError(e.message || 'Error'))
-      .finally(() => setLoading(false))
+    eventService.listPublic({ sort:'fecha', order, categoria: categoria || undefined, limit: 12 })
+      .then(data => setItems(Array.isArray(data) ? data : (data.items || [])))
+      .catch(err => setError(err.message || 'Error'))
+      .finally(()=> setLoading(false))
   }, [order, categoria])
 
   return (
