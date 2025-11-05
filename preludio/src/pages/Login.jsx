@@ -20,7 +20,7 @@ export function Login() {
   const [error, setError] = useState(null);
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const isValidPassword = password.length >= 8;
+  const isValidPassword = password.length >= 7;
   const isValid = isValidEmail && isValidPassword;
 
   const onSubmit = async (e) => {
@@ -32,7 +32,7 @@ export function Login() {
       const data = await apiLogin({ email: email.trim().toLowerCase(), password });
       setToken(data.token);
       setUser(data.user);
-      navigate(returnTo, { replace: true });   // 👈 redirige a returnTo o '/'
+      navigate(returnTo, { replace: true });   // redirige a returnTo o '/'
     } catch (err) {
       setError(err?.message || 'Error al iniciar sesión');
     } finally {
@@ -65,7 +65,7 @@ export function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={8}
+                minLength={7}
                 autoComplete="current-password"
                 style={{ paddingRight: 90 }}
                 aria-invalid={password ? String(!isValidPassword) : undefined}
@@ -80,7 +80,7 @@ export function Login() {
                 {showPwd ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-            <small className="text-muted">Mínimo 8 caracteres.</small>
+            <small className="text-muted">Mínimo 77 caracteres.</small>
           </label>
 
           {error && <div className="error" aria-live="polite">{error}</div>}

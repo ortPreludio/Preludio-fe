@@ -4,7 +4,7 @@ import { EventGrid } from '../components/organisms/EventGrid.jsx'
 import { useEffect, useState } from 'react'
 import { fetchPublicEvents } from '../api/events.js'
 
-export function Home() {
+export function Administration() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -19,11 +19,24 @@ export function Home() {
       .finally(() => setLoading(false))
   }, [order, categoria])
 
+
+  const handleFilter = (e) => {
+    e.preventDefault();
+    logout();
+    navigate("/");
+  };
+
   return (
     <div className="page">
-      <Hero />
-      <Hero />
       <Section title="Nuevos shows">
+        <div className="toolbar">
+          <button className="btn btn-ghost" onClick={handleFilter}>
+            Users
+          </button>
+          <button className="btn btn-ghost" onClick={handleFilter}>
+            Events
+          </button>
+        </div>
         {loading && <div className="loader">Cargando eventos…</div>}
         {error && <div className="error">Error: {error}</div>}
         {!loading && !error && <EventGrid items={items} />}
