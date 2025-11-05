@@ -55,3 +55,68 @@ select{background:var(--card);color:var(--text);border:1px solid rgba(255,255,25
 .text-muted{color:var(--muted)}
 
 .loader,.error,.empty{padding:20px;border:1px dashed rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.03)}
+/* --- Form layout base --- */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+.auth-form {
+  max-width: 520px;
+  margin: 36px auto;
+  background: #ffffff08;
+  border: 1px solid #ffffff14;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* Cada campo en columna: etiqueta arriba y input abajo */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.form-field > span {
+  font-weight: 600;
+}
+
+/* Inputs ocupan todo el ancho */
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="tel"],
+.auth-form input[type="date"] {
+  width: 100%;
+  background: #0f2636;
+  color: #e6f0f6;
+  border: 1px solid #ffffff26;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: none;
+}
+
+/* Grid de dos columnas solo para nombre/apellido */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .grid2 { grid-template-columns: 1fr; }
+}
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 14px; border-radius: 999px; text-decoration: none;
+  border: 1px solid transparent; font-weight: 600;
+}
+.btn-primary { background: #12a4ff; color: #001018; }
+.btn-primary:hover { background: #0d85ce; }
+
+/* Mensajes */
+.text-muted { color: #9ab3c1; }
+.error { padding: 12px; border: 1px dashed #ff6b6b66; border-radius: 8px; background: #ff6b6b14; margin: 8px 0; }
+
+.auth-form h2 { margin-top: 0; }
+.auth-form small.text-muted { display:block; margin-top:4px; }
+.btn-ghost { background: transparent; color: #e6f0f6; border: 1px solid #ffffff33; }
+.btn-ghost:hover { background: #ffffff14; }
