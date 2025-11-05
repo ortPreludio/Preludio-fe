@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { apiLogin } from '../api/auth.js'
 import { useAuth } from '../state/auth.jsx'
-import { Header } from '../components/layout/Header.jsx'
 
 export function Login() {
   const { setToken, setUser } = useAuth()
@@ -26,7 +25,6 @@ export function Login() {
 
   return (
     <div className="page">
-      <Header />
       <div className="container auth-form">
         <h2>Iniciar sesión</h2>
         <form onSubmit={onSubmit}>
