@@ -5,6 +5,7 @@ import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Header } from "./components/layout/Header.jsx";
 import { Administration } from "./pages/Administration.jsx";
+import { Shows } from "./pages/Shows.jsx";
 
 function RequireAuth({ children }) {
   const { token } = useAuth();
@@ -24,7 +25,7 @@ export default function App() {
         <main style={{ minHeight: "80vh", padding: "2rem" }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            
+            <Route path="/shows" element={<Shows />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/administration" element={<Administration />} />
