@@ -1,4 +1,3 @@
-import { Hero } from '../components/layout/Hero.jsx'
 import { Section } from '../components/layout/Section.jsx'
 import { EventGrid } from '../components/organisms/EventGrid.jsx'
 import { useEffect, useState } from 'react'
@@ -21,7 +20,6 @@ export function Shows() {
 
   return (
     <div className="page">
-      <Hero />
       <Section title="Todos los eventos">
         <div className="toolbar">
           <label>Orden:
