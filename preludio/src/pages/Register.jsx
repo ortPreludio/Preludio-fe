@@ -1,29 +1,30 @@
-import { useState } from 'react'
-import { Header } from '../components/layout/Header.jsx'
-import { authService } from '../services/authService.js'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useState } from 'react';
+import { Header } from '../components/layout/Header.jsx';
+import { authService } from '../services/authService.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import { Link, navigate } from '../router/index.jsx';
 
-export function Register(){
-  const { setToken, setUser } = useAuth()
-  const [form, setForm] = useState({ nombre:'', apellido:'', dni:'', email:'', password:'', telefono:'', fechaNacimiento:'' })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+export function Register() {
+  const { setToken, setUser } = useAuth();
+  const [form, setForm] = useState({ nombre:'', apellido:'', dni:'', email:'', password:'', telefono:'', fechaNacimiento:'' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const set = (k,v)=> setForm(prev => ({...prev, [k]: v}))
+  const set = (k,v)=> setForm(prev => ({...prev, [k]: v}));
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true); setError(null)
+    e.preventDefault();
+    setLoading(true); setError(null);
     try {
-      const data = await authService.register(form)
-      setToken(data.token); setUser(data.user)
-      window.location.hash = '/'
+      const data = await authService.register(form); // rol por defecto en el back = USUARIO
+      setToken(data.token); setUser(data.user);
+      navigate('/');
     } catch (err) {
-      setError(err.message || 'Error al crear la cuenta')
+      setError(err.message || 'Error al crear la cuenta');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="page">
@@ -43,8 +44,8 @@ export function Register(){
           {error && <div className="error">{error}</div>}
           <button className="btn btn-primary" type="submit" disabled={loading}>{loading ? 'Creando...' : 'Crear cuenta'}</button>
         </form>
-        <p className="text-muted">¿Ya tenés cuenta? <a href="#/login">Iniciar sesión</a></p>
+        <p className="text-muted">¿Ya tenés cuenta? <Link to="/login">Iniciar sesión</Link></p>
       </div>
     </div>
-  )
+  );
 }

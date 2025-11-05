@@ -1,21 +1,40 @@
-import { useEffect, useState } from 'react'
-import { Home } from '../pages/Home.jsx'
-import { Login } from '../pages/Login.jsx'
-import { Register } from '../pages/Register.jsx'
+import { useEffect, useState } from 'react';
 
-function useHashPath(){
-  const [path, setPath] = useState(window.location.hash.slice(1) || '/')
-  useEffect(()=>{
-    const onHash = () => setPath(window.location.hash.slice(1) || '/')
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
-  const navigate = (to) => { window.location.hash = to }
-  return { path, navigate }
+export function navigate(to, { replace = false } = {}) {
+  if (replace) window.history.replaceState({}, '', to);
+  else window.history.pushState({}, '', to);
+  window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-export function AppRouter(){
-  const { path } = useHashPath()
-  const View = path === '/login' ? Login : path === '/register' ? Register : Home
-  return <View />
+export function Link({ to, replace, onClick, children, ...rest }) {
+  return (
+    <a
+      href={to}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick?.(e);
+        navigate(to, { replace });
+      }}
+      {...rest}
+    >
+      {children}
+    </a>
+  );
+}
+
+/** routes: [{ path: '/login', component: Login }, ...]
+ *  fallback: { component: Home }
+ */
+export function Router({ routes = [], fallback }) {
+  const [path, setPath] = useState(window.location.pathname || '/');
+
+  useEffect(() => {
+    const onPop = () => setPath(window.location.pathname || '/');
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const match = routes.find((r) => r.path === path) || fallback;
+  const View = match?.component ?? (() => null);
+  return <View />;
 }
