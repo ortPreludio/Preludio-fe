@@ -1,5 +1,3 @@
-
-import { Header } from '../components/layout/Header.jsx'
 import { Hero } from '../components/layout/Hero.jsx'
 import { Section } from '../components/layout/Section.jsx'
 import { EventGrid } from '../components/organisms/EventGrid.jsx'
@@ -23,7 +21,6 @@ export function Home() {
 
   return (
     <div className="page">
-      <Header />
       <Hero />
       <Section title="Nuevos shows">
         <div className="toolbar">
