@@ -1,14 +1,15 @@
 import React from 'react';
 import '../styles/page.css';
-import '../styles/index.css';
-
+// import '../styles/index.css';
 
 export function Faq() {
   return (
     <main className="page-content container">
       <section className="faq-section">
         <h1>❓ Preguntas Frecuentes (FAQ)</h1>
-        <p>Encuentra respuestas rápidas a las dudas más comunes sobre tickets, eventos y cuentas de usuario.</p>
+        <p className="subtitle-page">
+            Encuentra respuestas rápidas a las dudas más comunes sobre tickets, eventos y cuentas de usuario.
+        </p>
 
         <div className="faq-list">
           <details className="faq-item">
