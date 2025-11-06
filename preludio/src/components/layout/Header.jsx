@@ -16,12 +16,28 @@ export function Header() {
     <header className="site-header">
       <div className="container">
         <div className="brand">
-          <Link to="/">Preludio</Link>
+          {/* MODIFICACIÓN: 
+            Se reemplaza el texto "Preludio" con una etiqueta <img>.
+            La ruta se establece a '/assets/logo-preludio.png',
+            asumiendo que está dentro de tu carpeta 'public/'.
+          */}
+          <Link to="/">
+            <img src="./../public/assets/logo-preludio.png" alt="Logo de Preludio" className="header-logo" />
+          </Link>
         </div>
 
         <nav className="nav">
           <NavLink to="/shows" end className="nav-link">
             Shows
+          </NavLink>
+          <NavLink to="/comollegar" className="nav-link">
+            Cómo Llegar
+          </NavLink>
+          <NavLink to="/premium" className="nav-link">
+            Premium
+          </NavLink>
+          <NavLink to="/faq" className="nav-link">
+            Ayuda/FAQ
           </NavLink>
         </nav>
 

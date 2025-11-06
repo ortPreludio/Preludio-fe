@@ -22,7 +22,6 @@ export function Home() {
   return (
     <div className="page">
       <Hero />
-      <Hero />
       <Section title="Nuevos shows">
         {loading && <div className="loader">Cargando eventos…</div>}
         {error && <div className="error">Error: {error}</div>}

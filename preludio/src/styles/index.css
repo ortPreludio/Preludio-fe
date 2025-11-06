@@ -120,3 +120,60 @@ select{background:var(--card);color:var(--text);border:1px solid rgba(255,255,25
 .auth-form small.text-muted { display:block; margin-top:4px; }
 .btn-ghost { background: transparent; color: #e6f0f6; border: 1px solid #ffffff33; }
 .btn-ghost:hover { background: #ffffff14; }
+
+
+/*INICIO ESTILO LOGO NAV*/
+.header-logo {
+    
+    height: 50px; 
+    width: auto; 
+    display: block; 
+}
+.site-header .brand {
+    display: flex;
+    align-items: center;
+}
+/*FIN ESTILO LOGO NAV*/
+
+/* src/styles/index.css (o donde esté el estilo de tu Header) */
+
+/* ... otros estilos ... */
+
+.site-header .brand a {
+    /* Esto ayuda a centrar el logo si es necesario */
+    display: flex; 
+    align-items: center;
+    height: 100%; /* Si el header tiene altura fija */
+}
+
+.header-logo {
+    /* Define el alto de tu logo. Ajusta el valor según tu diseño */
+    height: 40px; 
+    width: auto; 
+    display: block; 
+}
+
+/* Estilo base para el contenedor (asumido de tu código) */
+.container {
+    max-width: 1200px; /* Ajusta tu ancho máximo */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Estilos de botones (ejemplo, ajusta a tus clases) */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Color principal (ejemplo) */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
