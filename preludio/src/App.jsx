@@ -9,6 +9,11 @@ import { Premium } from './pages/Premium.jsx';
 import { Faq } from './pages/Faq.jsx';
 import { Administration } from "./pages/Administration.jsx";
 import { Shows } from "./pages/Shows.jsx";
+import { Footer } from "./components/layout/Footer.jsx";
+import { Privacidad } from './pages/footer/Privacidad.jsx';
+import { Terminos } from './pages/footer/Terminos.jsx';
+import { DefensaConsumidor } from './pages/footer/DefensaConsumidor.jsx';
+import { Refund } from './pages/footer/Refund.jsx';
 
 
 function RequireAuth({ children }) {
@@ -45,10 +50,16 @@ export default function App() {
               element={<RequireAuth><Administration /></RequireAuth>} 
             />
 
+            <Route path="/legal/privacidad" element={<Privacidad />} />
+            <Route path="/legal/terminos" element={<Terminos />} />
+            <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
+            <Route path="/refund" element={<Refund />} />
+
             {/* 4. RUTA COMODÍN (DEBE IR ÚLTIMA) */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );
