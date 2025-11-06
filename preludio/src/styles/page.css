@@ -1,0 +1,85 @@
+
+.faq-section {
+    max-width: 900px; /* Limita el ancho para mejor legibilidad */
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.faq-section h1 {
+    text-align: center;
+    color: var(--color-light, #f0f0f0); /* Color claro para el título en tema oscuro */
+    margin-bottom: 20px;
+    border-bottom: none; /* Quitamos el borde si no se ve bien en oscuro */
+    padding-bottom: 0;
+}
+
+.faq-section p {
+    text-align: center;
+    color: var(--color-text-muted, #ccc); /* Color más suave para el subtítulo */
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+.faq-list {
+    margin-top: 30px;
+}
+
+.faq-item {
+    background-color: var(--color-background-card, #2c3e50); /* Un fondo más oscuro para cada item */
+    border: 1px solid var(--color-border, #3a506b); /* Borde sutil */
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden; /* Asegura que los bordes redondeados se apliquen bien */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave para darle profundidad */
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px); /* Pequeño efecto de elevación al pasar el mouse */
+}
+
+.faq-item summary {
+    display: flex; /* Para alinear el texto y el ícono */
+    justify-content: space-between; /* Espacio entre el texto y el ícono */
+    align-items: center;
+    padding: 18px 25px;
+    background: var(--color-summary-bg, #34495e); /* Un fondo ligeramente diferente para el summary */
+    color: var(--color-text-strong, #e0e0e0); /* Texto claro y visible */
+    font-weight: 600; /* Un poco más de peso a la fuente */
+    font-size: 1.15rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.faq-item summary:hover {
+    background-color: var(--color-summary-hover, #415a77); /* Cambio de color al pasar el mouse */
+}
+
+/* Estilo para el indicador de abierto/cerrado (flecha) */
+.faq-item summary::-webkit-details-marker,
+.faq-item summary::marker {
+    display: none; /* Oculta el marcador predeterminado */
+}
+
+.faq-item summary::after {
+    content: '▶'; /* Usamos un triángulo como ícono */
+    font-size: 1rem;
+    color: var(--color-accent, #90CAF9); /* Un color de acento para el ícono */
+    transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after {
+    content: '▼'; /* Cambia a flecha hacia abajo cuando está abierto */
+    transform: rotate(0deg);
+}
+
+.faq-item p {
+    padding: 15px 25px 20px; /* Más padding para el contenido */
+    background: var(--color-background-content, #2c3e50); /* Mismo fondo que el item o ligeramente más claro */
+    color: var(--color-text-light, #a0a0a0); /* Color de texto legible */
+    border-top: 1px solid var(--color-border, #3a506b); /* Borde superior para separar */
+    line-height: 1.7;
+    font-size: 1rem;
+}

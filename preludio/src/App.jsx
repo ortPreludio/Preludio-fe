@@ -4,6 +4,9 @@ import { Home } from "./pages/Home.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Header } from "./components/layout/Header.jsx";
+import { ComoLlegar } from './pages/ComoLlegar.jsx';
+import { Premium } from './pages/Premium.jsx';
+import { Faq } from './pages/Faq.jsx';
 
 function RequireAuth({ children }) {
   const { token } = useAuth();
@@ -26,6 +29,9 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/comollegar" element={<ComoLlegar />} />
+            <Route path="/premium" element={<Premium />} />
+            <Route path="/faq" element={<Faq />} />
           </Routes>
         </main>
       </BrowserRouter>
