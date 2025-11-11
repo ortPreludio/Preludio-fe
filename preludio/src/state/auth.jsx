@@ -5,12 +5,12 @@ const AuthCtx = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("user") || "null"); } catch { return null; }
+    try { return JSON.parse(sessionStorage.getItem("user") || "null"); } catch { return null; }
   });
 
   useEffect(() => {
-    if (user) localStorage.setItem("user", JSON.stringify(user));
-    else localStorage.removeItem("user");
+    if (user) sessionStorage.setItem("user", JSON.stringify(user));
+    else sessionStorage.removeItem("user");
   }, [user]);
 
   const login = async ({ email, password }) => {

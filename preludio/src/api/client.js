@@ -35,6 +35,11 @@ export async function request(
   try { data = text ? JSON.parse(text) : null; } catch { data = text; }
 
   if (!res.ok) {
+    if (res.status === 401 && typeof window !== "undefined") {
+      const here = window.location.pathname + window.location.search;
+      window.location.assign(`/login?returnTo=${encodeURIComponent(here)}`);
+      return; // stop
+    }
     const msg = data?.message || data?.error || data?.errorMsg || res.statusText || "Error";
     const err = new Error(msg);
     err.status = res.status;

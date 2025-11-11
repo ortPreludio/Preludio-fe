@@ -7,15 +7,11 @@ import { Header } from "./components/layout/Header.jsx";
 import { Administration } from "./pages/Administration.jsx";
 import { Shows } from "./pages/Shows.jsx";
 
-function RequireAuth({ children }) {
-  const { token } = useAuth();
-  const loc = useLocation();
-  if (!token) {
-    const backTo = encodeURIComponent(loc.pathname + loc.search);
-    return <Navigate to={`/login?returnTo=${backTo}`} replace />;
-  }
-  return children;
-}
+import Forbidden from "./pages/Forbidden.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import RequireAuth from "./routes/RequireAuth.jsx";
+import RequireRole from "./routes/RequireRole.jsx";
+import RedirectIfAuthenticated from "./routes/RedirectIfAuthenticated.jsx";
 
 export default function App() {
   return (
@@ -24,13 +20,28 @@ export default function App() {
         <Header />
         <main style={{ minHeight: "80vh", padding: "2rem" }}>
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* guest-only */}
+            <Route element={<RedirectIfAuthenticated />}>
+              <Route path="/login" element={<Login/>} />
+              <Route path="/register" element={<Register/>} />
+            </Route>
+
+            {/* admin-only */}
+            <Route element={<RequireRole roles={["ADMIN"]} />}>
+              <Route path="/administration" element={<Administration/>} />
+            </Route>
+
+            {/* any authed-only (example) */}
+            <Route element={<RequireAuth />}>
+              <Route path="/profile" element={<div>Mi perfil</div>} />
+            </Route>
+
+            {/* public */}
+            <Route path="/forbidden" element={<Forbidden/>} />
+            <Route path="/" element={<Home/>} />
+            <Route path="*" element={<NotFound/>} />
             <Route path="/shows" element={<Shows />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/administration" element={<Administration />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+        </Routes>
         </main>
       </BrowserRouter>
     </AuthProvider>
