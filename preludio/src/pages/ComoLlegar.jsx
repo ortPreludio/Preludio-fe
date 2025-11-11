@@ -21,14 +21,14 @@ export function ComoLlegar() {
                 
                 <h2>Ubicación Principal</h2>
                 <p>
-                  Nuestra sede principal está ubicada en: **Calle Ficticia 1234, CABA, Argentina.**
+                  Nuestra sede principal está ubicada en: Calle Ficticia 1234, CABA, Argentina.
                 </p>
 
                 <h2>Transporte Público</h2>
                 <ul>
-                  <li>**Subte:** Línea D (Estación Palermo), Línea B (Estación Dorrego).</li>
-                  <li>**Colectivos:** Líneas 15, 34, 55, 60, 166.</li>
-                  <li>**Tren:** Ferrocarril San Martín (Estación Palermo).</li>
+                  <li>Subte: Línea D (Estación Palermo), Línea B (Estación Dorrego).</li>
+                  <li>Colectivos: Líneas 15, 34, 55, 60, 166.</li>
+                  <li>Tren: Ferrocarril San Martín (Estación Palermo).</li>
                 </ul>
 
                 <h2>Recomendaciones Adicionales</h2>
@@ -37,9 +37,8 @@ export function ComoLlegar() {
                 </p>
             </div>
             
-            {/* Columna 2: Mapa */}
+            
             <div className="map-placeholder">
-                {/* IFRAME DEL MAPA EMBEBIDO */}
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.3816618494698!2d-58.44800119999999!3d-34.594509300000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb5eb6fb40a93%3A0x1fcab11b62b55896!2sMovistar%20Arena!5e0!3m2!1ses!2sar!4v1762388911425!5m2!1ses!2sar" 
                     width="100%" 
