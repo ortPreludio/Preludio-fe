@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../state/auth.jsx";
+import { useAuth } from "../../state/auth.jsx"; 
 import "../../styles/index.css";
 
 export function Header() {
@@ -16,12 +16,28 @@ export function Header() {
     <header className="site-header">
       <div className="container">
         <div className="brand">
-          <Link to="/">Preludio</Link>
+          <Link to="/">
+            <img src="./../public/assets/logo-preludio.png" alt="Logo de Preludio" className="header-logo" />
+          </Link>
         </div>
 
         <nav className="nav">
+          {/* Botón de Inicio añadido */}
+          <NavLink to="/" end className="nav-link">
+            Inicio
+          </NavLink>
+          
           <NavLink to="/shows" end className="nav-link">
             Shows
+          </NavLink>
+          <NavLink to="/comollegar" className="nav-link">
+            Cómo Llegar
+          </NavLink>
+          <NavLink to="/premium" className="nav-link">
+            Premium
+          </NavLink>
+          <NavLink to="/faq" className="nav-link">
+            Ayuda/FAQ
           </NavLink>
         </nav>
 
