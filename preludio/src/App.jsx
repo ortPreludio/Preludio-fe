@@ -49,9 +49,9 @@ export default function App() {
             <Route path="*" element={<NotFound/>} />
             <Route path="/shows" element={<Shows />} />
             {/* 2. RUTAS DE INFORMACIÓN (QUE ESTABAN BLOQUEADAS) */}
-            <Route path="/comollegar" element={<ComoLlegar />} />
-            <Route path="/premium" element={<Premium />} />
-            <Route path="/faq" element={<Faq />} />
+            <Route path="/comollegar" element={<ComoLlegar />} />
+            <Route path="/premium" element={<Premium />} />
+            <Route path="/faq" element={<Faq />} />
             <Route path="/legal/privacidad" element={<Privacidad />} />
             <Route path="/legal/terminos" element={<Terminos />} />
             <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
@@ -59,6 +59,7 @@ export default function App() {
 
         </Routes>
         </main>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );
