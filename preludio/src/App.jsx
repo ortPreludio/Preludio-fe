@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "./state/auth.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
+import { Edit } from "./pages/Edit.jsx";
 import { Header } from "./components/layout/Header.jsx";
 import { ComoLlegar } from './pages/ComoLlegar.jsx';
 import { Premium } from './pages/Premium.jsx';
@@ -56,6 +57,7 @@ export default function App() {
             <Route path="/legal/terminos" element={<Terminos />} />
             <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
             <Route path="/refund" element={<Refund />} />
+            <Route path="/edit" element={<Edit />} />
 
         </Routes>
         </main>

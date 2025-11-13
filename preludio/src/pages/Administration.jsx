@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Section } from "../components/layout/Section.jsx";
 import { fetchUsers } from "../api/users.js";
 import { fetchAdminEvents } from "../api/events.js";
+import { useNavigate } from 'react-router-dom'
 
 export function Administration() {
+  const navigate = useNavigate()
   const [view, setView] = useState("users"); // "users" | "events"
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -74,6 +76,10 @@ export function Administration() {
       ];
 
   const maxPage = Math.max(1, Math.ceil((total || 0) / (perPage || 1)));
+  
+  const handleEditUser = (userId) => {
+    navigate(`/edit?userId=${userId}`) // Pasamos el ID como query param
+  }
 
   return (
     <div className="page">
@@ -146,7 +152,13 @@ export function Administration() {
                         </td>
                       ))}
                       <td className="flex gap-2">
-                        <a className="btn btn-warning btn-xs" href={`/administration/${view}/${id}/edit`}>Editar</a>
+                        {/*<a className="btn btn-warning btn-xs" href={`/administration/${view}/${id}/edit`}>Editar</a>*/}
+                        <button 
+                          className="btn btn-primary btn-sm"
+                          onClick={() => handleEditUser(id)}
+                        >
+                          Editar
+                        </button>
                         <a className="btn btn-info btn-xs" href={`/administration/${view}/${id}`}>Detalles</a>
                       </td>
                     </tr>
