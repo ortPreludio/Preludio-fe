@@ -3,7 +3,6 @@ import { AuthProvider, useAuth } from "./state/auth.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
-import { Edit } from "./pages/Edit.jsx";
 import { Header } from "./components/layout/Header.jsx";
 import { ComoLlegar } from './pages/ComoLlegar.jsx';
 import { Premium } from './pages/Premium.jsx';
@@ -20,6 +19,7 @@ import NotFound from "./pages/NotFound.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
 import RequireRole from "./routes/RequireRole.jsx";
 import RedirectIfAuthenticated from "./routes/RedirectIfAuthenticated.jsx";
+import { MisTickets } from "./pages/MisTickets.jsx";
 
 export default function App() {
   return (
@@ -42,6 +42,7 @@ export default function App() {
             {/* any authed-only (example) */}
             <Route element={<RequireAuth />}>
               <Route path="/profile" element={<div>Mi perfil</div>} />
+              <Route path="/mistickets" element={<MisTickets />} />
             </Route>
 
             {/* public */}
@@ -57,7 +58,6 @@ export default function App() {
             <Route path="/legal/terminos" element={<Terminos />} />
             <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
             <Route path="/refund" element={<Refund />} />
-            <Route path="/edit" element={<Edit />} />
 
         </Routes>
         </main>

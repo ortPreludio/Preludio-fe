@@ -44,10 +44,13 @@ export function Header() {
         <div className="actions">
           {user ? (
             <>
+              <NavLink to="/mistickets" className="btn btn-ghost">
+                    Mis Tickets
+                </NavLink>
               <span className="welcome">Hola, {user.nombre} ({user.rol}) </span>
-              <button className="btn btn-ghost" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
+               <button className="btn btn-ghost" onClick={handleLogout}>
+               Cerrar sesión
+               </button>
             </>
           ) : (
             <>
