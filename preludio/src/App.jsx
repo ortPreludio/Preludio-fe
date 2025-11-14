@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "./state/auth.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
+import { Edit } from "./pages/Edit.jsx";
 import { Header } from "./components/layout/Header.jsx";
 import { ComoLlegar } from './pages/ComoLlegar.jsx';
 import { Premium } from './pages/Premium.jsx';
@@ -14,12 +15,12 @@ import { Privacidad } from './pages/footer/Privacidad.jsx';
 import { Terminos } from './pages/footer/Terminos.jsx';
 import { DefensaConsumidor } from './pages/footer/DefensaConsumidor.jsx';
 import { Refund } from './pages/footer/Refund.jsx';
+import { MisTickets } from "./pages/MisTickets.jsx";
 import Forbidden from "./pages/Forbidden.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
 import RequireRole from "./routes/RequireRole.jsx";
 import RedirectIfAuthenticated from "./routes/RedirectIfAuthenticated.jsx";
-import { MisTickets } from "./pages/MisTickets.jsx";
 
 export default function App() {
   return (
@@ -30,25 +31,25 @@ export default function App() {
           <Routes>
             {/* guest-only */}
             <Route element={<RedirectIfAuthenticated />}>
-              <Route path="/login" element={<Login/>} />
-              <Route path="/register" element={<Register/>} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Route>
 
             {/* admin-only */}
             <Route element={<RequireRole roles={["ADMIN"]} />}>
-              <Route path="/administration" element={<Administration/>} />
+              <Route path="/administration" element={<Administration />} />
             </Route>
 
             {/* any authed-only (example) */}
             <Route element={<RequireAuth />}>
               <Route path="/profile" element={<div>Mi perfil</div>} />
-              <Route path="/mistickets" element={<MisTickets />} />
+              <Route path="/mistickets" element={<MisTickets />} /> 
             </Route>
 
             {/* public */}
-            <Route path="/forbidden" element={<Forbidden/>} />
-            <Route path="/" element={<Home/>} />
-            <Route path="*" element={<NotFound/>} />
+            <Route path="/forbidden" element={<Forbidden />} />
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
             <Route path="/shows" element={<Shows />} />
             {/* 2. RUTAS DE INFORMACIÓN (QUE ESTABAN BLOQUEADAS) */}
             <Route path="/comollegar" element={<ComoLlegar />} />
@@ -58,11 +59,13 @@ export default function App() {
             <Route path="/legal/terminos" element={<Terminos />} />
             <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
             <Route path="/refund" element={<Refund />} />
+            <Route path="/edit" element={<Edit />} />
 
-        </Routes>
+          </Routes>
         </main>
         <Footer />
       </BrowserRouter>
     </AuthProvider>
   );
 }
+

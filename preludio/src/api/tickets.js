@@ -6,8 +6,11 @@ import { request } from "./client.js";
  * @param {string} order - 'asc' o 'desc' para el orden de la fecha de compra.
  * @returns {Promise<Array>} 
  */
+
+const API_URL = 'http://localhost:3001/api';
+
 export async function fetchMyTickets(order = 'desc') {
-  const url = `/api/tickets/mytickets?order=${order}`;
+  const url = `${API_URL}/tickets/mytickets?order=${order}`;
 
   try {
     const response = await request(url);
