@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guardar' }) {
+export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guardar', showCancel = false, onCancel }) {
   const [form, setForm] = useState({
     titulo: '',
     descripcion: '',
@@ -85,7 +85,7 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
         </label>
       </div>
 
-      <fieldset style={{ border: '1px solid #eee', padding: '0.6rem' }}>
+      <fieldset className="form-fieldset">
         <legend>Ubicación</legend>
         <label className="form-field"><span>Lugar</span>
           <input value={form.ubicacion?.lugar || ''} onChange={e=>setUbic('lugar', e.target.value)} required />
@@ -120,8 +120,13 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
         </select>
       </label>
 
-      <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+      <div className="form-actions">
         <button className="btn btn-primary" type="submit">{submitLabel}</button>
+        {showCancel && (
+          <button type="button" className="btn btn-ghost" onClick={() => onCancel && onCancel()}>
+            Cancelar
+          </button>
+        )}
       </div>
     </form>
   );

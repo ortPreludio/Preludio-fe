@@ -1,14 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from 'react-router-dom';
 import { Section } from "../components/layout/Section.jsx";
 import { fetchUsers } from "../api/users.js";
 import { fetchAdminEvents } from "../api/events.js";
+import EventForm from "../components/organisms/EventForm.jsx";
+import { request } from "../api/client.js";
 import { useNavigate } from 'react-router-dom'
 
 export function Administration() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams();
   const [view, setView] = useState("users"); // "users" | "events"
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -46,7 +52,13 @@ export function Administration() {
       }
     })();
     return () => { cancel = true; };
-  }, [view, page, perPage, q, sortDefaults]);
+  }, [view, page, perPage, q, sortDefaults, refreshKey]);
+
+  // Cuando se pasa view como queryparam hacer el filtrado por esa vista
+  useEffect(() => {
+    const v = searchParams.get('view');
+    if (v === 'events' || v === 'users') setView(v);
+  }, [searchParams]);
 
   // columnas por vista
   const columns = view === "users"
@@ -81,7 +93,7 @@ export function Administration() {
     navigate(`/edit?userId=${userId}`) // Pasamos el ID como query param
   }
   const handleEditEvent = (eventId) => {
-    navigate(`/events/${eventId}/edit`);
+    navigate(`/edit?eventId=${eventId}`);
   }
 
   return (
@@ -102,7 +114,9 @@ export function Administration() {
             Events
           </button>
           {view === 'events' && (
-            <button className="btn btn-success" onClick={() => navigate('/events/create')}>Crear evento</button>
+            <>
+              <button className="btn btn-success" onClick={() => setShowCreateModal(true)}>Crear evento</button>
+            </>
           )}
         </div>
 
@@ -133,6 +147,32 @@ export function Administration() {
         {/* Estado */}
         {loading && <div className="loader">Cargando…</div>}
         {error && <div className="alert alert-error">Error: {error}</div>}
+
+        {/* Create-event modal (simple overlay). Visible only when showCreateModal === true */}
+        {showCreateModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h3 style={{ margin: 0 }}>Crear Evento</h3>
+                <button className="btn btn-ghost modal-close" onClick={() => setShowCreateModal(false)}>Cerrar</button>
+              </div>
+              <EventForm
+                onSubmit={async (payload) => {
+                  try {
+                    await request('/events', { method: 'POST', body: payload });
+                    setShowCreateModal(false);
+                    // trigger reload
+                    setRefreshKey(k => k + 1);
+                  } catch (err) {
+                    // show small inline error — reuse alert area above by temporarily setting error
+                    setError(err?.message || 'Error creando evento');
+                  }
+                }}
+                submitLabel={'Crear Evento'}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Tabla */}
         {!loading && !error && (

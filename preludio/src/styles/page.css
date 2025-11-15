@@ -367,6 +367,61 @@
 }
 
 /* ============================================== */
+/* Form styles used by UserForm and EventForm        */
+/* ============================================== */
+.form-field {
+  display: block;
+  margin-bottom: 12px;
+}
+.form-field > span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-text-strong, #e0e0e0);
+  font-weight: 600;
+}
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border, #3a506b);
+  background: var(--bg-2);
+  color: var(--text);
+  box-sizing: border-box;
+}
+.form-field textarea { min-height: 120px; resize: vertical; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.event-form { max-width: 900px; }
+.form-fieldset { border: 1px solid var(--color-border, #3a506b); padding: 0.6rem; border-radius: 8px; margin-bottom: 12px; }
+.form-actions { display: flex; gap: 12px; margin-top: 12px; }
+
+/* ============================================== */
+/* Modal for create event in Administration       */
+/* ============================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+.modal-content {
+  width: min(900px, 95%);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--bg-2);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.modal-close { background: transparent; border: none; cursor: pointer; color: var(--text); }
+
+
+/* ============================================== */
 /* RESPONSIVE - Reviews                          */
 /* ============================================== */
 
