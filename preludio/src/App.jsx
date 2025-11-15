@@ -10,6 +10,7 @@ import { Premium } from './pages/Premium.jsx';
 import { Faq } from './pages/Faq.jsx';
 import { Administration } from "./pages/Administration.jsx";
 import { Shows } from "./pages/Shows.jsx";
+import { Reviews } from './pages/Reviews.jsx'
 import { Footer } from "./components/layout/Footer.jsx";
 import { Privacidad } from './pages/footer/Privacidad.jsx';
 import { Terminos } from './pages/footer/Terminos.jsx';
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/shows" element={<Shows />} />
+            <Route path="/reviews" element={<Reviews />} />
             {/* 2. RUTAS DE INFORMACIÓN (QUE ESTABAN BLOQUEADAS) */}
             <Route path="/comollegar" element={<ComoLlegar />} />
             <Route path="/premium" element={<Premium />} />
