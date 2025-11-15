@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guardar', showCancel = false, onCancel }) {
+export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guardar', showCancel = false, onCancel, onChange }) {
   const [form, setForm] = useState({
     titulo: '',
     descripcion: '',
@@ -16,9 +16,24 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
   });
 
   useEffect(() => setForm(prev => ({ ...prev, ...initial })), [initial]);
+  // notify parent when initial changes
+  useEffect(() => {
+    const merged = { ...{
+      titulo: '', descripcion: '', categoria: 'Concierto', fecha: '', hora: '20:00', ubicacion: { lugar: '', direccion: '', ciudad: '', provincia: '' }, precioBase: 0, capacidadTotal: 0, imagen: '', estadoPublicacion: 'PENDING'
+    }, ...initial };
+    onChange && onChange(merged);
+  }, [initial]);
 
-  const setField = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
-  const setUbic = (k, v) => setForm(prev => ({ ...prev, ubicacion: { ...(prev.ubicacion||{}), [k]: v } }));
+  const setField = (k, v) => setForm(prev => {
+    const next = { ...prev, [k]: v };
+    onChange && onChange(next);
+    return next;
+  });
+  const setUbic = (k, v) => setForm(prev => {
+    const next = { ...prev, ubicacion: { ...(prev.ubicacion||{}), [k]: v } };
+    onChange && onChange(next);
+    return next;
+  });
 
   const isValid = () => {
     if (!form.titulo.trim()) return false;

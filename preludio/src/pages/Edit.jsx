@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../state/auth.jsx';
 import { apiUpdateProfile } from '../api/auth.js';
 import { request } from '../api/client.js';
+import { EventCard } from '../components/molecules/EventCard.jsx';
 import EventForm from '../components/organisms/EventForm.jsx';
 import UserForm from '../components/organisms/UserForm.jsx';
 
@@ -20,6 +21,7 @@ export function Edit() {
   const [eventInitial, setEventInitial] = useState(null);
   const [eventLoading, setEventLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [previewEvent, setPreviewEvent] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
@@ -43,6 +45,7 @@ export function Edit() {
             imagen: ev.imagen || '',
             estadoPublicacion: ev.estadoPublicacion || 'PENDING',
           });
+          setPreviewEvent(ev);
         })
         .catch(e => setError(e.message))
         .finally(() => setEventLoading(false));
@@ -132,10 +135,26 @@ export function Edit() {
   if (eventId) {
     return (
       <div className="page">
-        <div className="container auth-form">
-          <h2>Editar Evento</h2>
-          {error && <div className="error" aria-live="polite">{error}</div>}
-          <EventForm initial={eventInitial || {}} onSubmit={onSubmitEvent} submitLabel={loading ? 'Guardando…' : 'Guardar cambios'} showCancel={true} onCancel={() => navigate('/administration?view=events')} />
+        <div className="edit-threecol container">
+          <aside className="preview-col">
+            <h3>Vista previa</h3>
+            {previewEvent ? <EventCard event={previewEvent} /> : <div className="loader">Cargando vista previa…</div>}
+          </aside>
+
+          <div className="form-wrap">
+            <div className="container auth-form">
+              <h2>Editar Evento</h2>
+              {error && <div className="error" aria-live="polite">{error}</div>}
+              <EventForm
+                initial={eventInitial}
+                onSubmit={onSubmitEvent}
+                submitLabel={loading ? 'Guardando…' : 'Guardar cambios'}
+                showCancel={true}
+                onCancel={() => navigate('/administration?view=events')}
+                onChange={setPreviewEvent}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
