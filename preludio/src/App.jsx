@@ -9,6 +9,8 @@ import { ComoLlegar } from './pages/ComoLlegar.jsx';
 import { Premium } from './pages/Premium.jsx';
 import { Faq } from './pages/Faq.jsx';
 import { Administration } from "./pages/Administration.jsx";
+import CreateEvent from "./pages/CreateEvent.jsx";
+import EditEvent from "./pages/EditEvent.jsx";
 import { Shows } from "./pages/Shows.jsx";
 import { Reviews } from './pages/Reviews.jsx'
 import { Footer } from "./components/layout/Footer.jsx";
@@ -39,6 +41,8 @@ export default function App() {
             {/* admin-only */}
             <Route element={<RequireRole roles={["ADMIN"]} />}>
               <Route path="/administration" element={<Administration />} />
+              <Route path="/events/create" element={<CreateEvent />} />
+              <Route path="/events/:id/edit" element={<EditEvent />} />
             </Route>
 
             {/* any authed-only (example) */}

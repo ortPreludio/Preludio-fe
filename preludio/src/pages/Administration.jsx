@@ -80,6 +80,9 @@ export function Administration() {
   const handleEditUser = (userId) => {
     navigate(`/edit?userId=${userId}`) // Pasamos el ID como query param
   }
+  const handleEditEvent = (eventId) => {
+    navigate(`/events/${eventId}/edit`);
+  }
 
   return (
     <div className="page">
@@ -98,6 +101,9 @@ export function Administration() {
           >
             Events
           </button>
+          {view === 'events' && (
+            <button className="btn btn-success" onClick={() => navigate('/events/create')}>Crear evento</button>
+          )}
         </div>
 
         {/* Filtros server-side */}
@@ -155,7 +161,7 @@ export function Administration() {
                         {/*<a className="btn btn-warning btn-xs" href={`/administration/${view}/${id}/edit`}>Editar</a>*/}
                         <button 
                           className="btn btn-primary btn-sm"
-                          onClick={() => handleEditUser(id)}
+                          onClick={() => view === 'users' ? handleEditUser(id) : handleEditEvent(id)}
                         >
                           Editar
                         </button>
