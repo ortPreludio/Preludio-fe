@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'; // <- AGREGAR ESTA LÍNEA
 import { Hero } from '../components/layout/Hero.jsx'
 import { Section } from '../components/layout/Section.jsx'
 import { EventGrid } from '../components/organisms/EventGrid.jsx'
@@ -27,6 +28,17 @@ export function Home() {
         {error && <div className="error">Error: {error}</div>}
         {!loading && !error && <EventGrid items={items} />}
       </Section>
+
+      {/* Nueva sección de Reviews */}
+      <Section title="¿Qué opinan nuestros usuarios?">
+        <div className="reviews-cta">
+          <p>Lee las experiencias de otros usuarios o comparte la tuya</p>
+          <Link to="/reviews" className="btn-reviews">
+            Ver todas las reseñas ⭐
+          </Link>
+        </div>
+      </Section>
+      
     </div>
   )
 }

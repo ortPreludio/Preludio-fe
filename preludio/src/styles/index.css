@@ -310,3 +310,81 @@ select {
   display: block;
   margin-top: 4px;
 }
+
+/* ...existing code... (todo lo que ya tienes) */
+
+/* ------------------------------------ */
+/* Botones específicos - Reviews        */
+/* ------------------------------------ */
+
+.btn-danger {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #ee5a52;
+}
+
+/* ------------------------------------ */
+/* Componentes de formulario - Reviews  */
+/* ------------------------------------ */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Rating (estrellas) */
+.rating {
+  color: #ffc107;
+  font-size: 1.3rem;
+  margin: 8px 0;
+  letter-spacing: 2px;
+}
