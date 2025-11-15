@@ -19,7 +19,7 @@ export function Reviews() {
 
   useEffect(() => {
     loadReviews();
-  }, [user]); // Cambiado de token a user
+  }, [user]);
 
   const loadReviews = async () => {
     setLoading(true);
@@ -28,7 +28,7 @@ export function Reviews() {
       const reviews = await fetchAllReviews();
       setAllReviews(reviews);
       
-      if (user) { // Cambiado de token a user
+      if (user) {
         const my = await fetchMyReview(); // Sin pasar token
         setMyReview(my);
         if (my) {
@@ -44,7 +44,7 @@ export function Reviews() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) { // Cambiado de token a user
+    if (!user) {
       alert('Debes iniciar sesión para dejar una reseña');
       return;
     }

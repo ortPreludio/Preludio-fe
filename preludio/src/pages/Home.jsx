@@ -28,8 +28,6 @@ export function Home() {
         {error && <div className="error">Error: {error}</div>}
         {!loading && !error && <EventGrid items={items} />}
       </Section>
-
-      {/* Nueva sección de Reviews */}
       <Section title="¿Qué opinan nuestros usuarios?">
         <div className="reviews-cta">
           <p>Lee las experiencias de otros usuarios o comparte la tuya</p>

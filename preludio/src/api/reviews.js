@@ -26,7 +26,7 @@ export async function createReview(data) {
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include', // <- IMPORTANTE: envía las cookies
+    credentials: 'include', //esto envía las cookies
     body: JSON.stringify(data)
   });
   if (!res.ok) {
@@ -43,7 +43,7 @@ export async function updateMyReview(data) {
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include', // <- IMPORTANTE: envía las cookies
+    credentials: 'include', //aca lo mismo, envía las cookies
     body: JSON.stringify(data)
   });
   if (!res.ok) {
@@ -57,7 +57,7 @@ export async function updateMyReview(data) {
 export async function deleteMyReview() {
   const res = await fetch(`${API_URL}/api/reviews/me`, {
     method: 'DELETE',
-    credentials: 'include' // <- IMPORTANTE: envía las cookies
+    credentials: 'include' //envía las cookies
   });
   if (!res.ok) {
     const error = await res.json();
