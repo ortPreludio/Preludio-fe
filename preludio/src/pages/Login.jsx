@@ -80,7 +80,7 @@ export function Login() {
                 {showPwd ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-            <small className="text-muted">Mínimo 77 caracteres.</small>
+            <small className="text-muted">Mínimo 8 caracteres.</small>
           </label>
 
           {error && <div className="error" aria-live="polite">{error}</div>}
