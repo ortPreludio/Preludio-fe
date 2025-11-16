@@ -2,33 +2,63 @@ import { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../state/auth.jsx';
 import { apiUpdateProfile } from '../api/auth.js';
-import { request } from '../api/client.js'; // 👈 Agregá este import
+import { request } from '../api/client.js';
+import { EventCard } from '../components/molecules/EventCard.jsx';
+import EventForm from '../components/organisms/EventForm.jsx';
+import UserForm from '../components/organisms/UserForm.jsx';
 
 
 export function Edit() {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const userId = searchParams.get('userId'); // 👈 Obtener userId de la URL
+  const userId = searchParams.get('userId');
+  const eventId = searchParams.get('eventId');
 
-  const [form, setForm] = useState({
+  const [userInitial, setUserInitial] = useState({
     nombre:'', apellido:'', dni:'', email:'', telefono:'', fechaNacimiento:''
   });
+  const [eventInitial, setEventInitial] = useState(null);
+  const [eventLoading, setEventLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [previewEvent, setPreviewEvent] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
   const maxDate = useMemo(() => new Date().toISOString().slice(0,10), []);
-  const set = (k,v)=> setForm(prev=>({...prev,[k]:v}));
 
    useEffect(() => {
+    // If editing an event (admin) - eventId in query param
+    if (eventId) {
+      setEventLoading(true);
+      request(`/events/${eventId}`)
+        .then(ev => {
+          setEventInitial({
+            titulo: ev.titulo,
+            descripcion: ev.descripcion,
+            categoria: ev.categoria,
+            fecha: ev.fecha ? ev.fecha.slice(0,10) : '',
+            hora: ev.hora,
+            ubicacion: ev.ubicacion || {},
+            precioBase: ev.precioBase ?? ev.precio ?? 0,
+            capacidadTotal: ev.capacidadTotal ?? ev.capacidad ?? 0,
+            imagen: ev.imagen || '',
+            estadoPublicacion: ev.estadoPublicacion || 'PENDING',
+          });
+          setPreviewEvent(ev);
+        })
+        .catch(e => setError(e.message))
+        .finally(() => setEventLoading(false));
+      return;
+    }
+
     // Si hay userId en la URL (admin editando otro usuario)
     if (userId) {
       setLoading(true);
       
       request(`/users/${userId}`)
         .then(userData => {
-          setForm({
+          setUserInitial({
             nombre: userData.nombre || '',
             apellido: userData.apellido || '',
             dni: userData.dni || '',
@@ -42,7 +72,7 @@ export function Edit() {
     } 
     // Si NO hay userId, es el usuario editando su propio perfil
     else if (user) {
-      setForm({
+      setUserInitial({
         nombre: user.nombre || '',
         apellido: user.apellido || '',
         dni: user.dni || '',
@@ -51,46 +81,21 @@ export function Edit() {
         fechaNacimiento: user.fechaNacimiento ? user.fechaNacimiento.slice(0,10) : ''
       });
     }
-  }, [user, userId]);
+  }, [user, userId, eventId]);
 
-  const isValid =
-    form.nombre.trim() &&
-    form.apellido.trim() &&
-    /^\d{7,10}$/.test(form.dni.trim()) &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) &&
-    /^\d{6,15}$/.test(form.telefono.trim()) &&
-    form.fechaNacimiento && form.fechaNacimiento <= maxDate;
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    if (!isValid || loading) return;
-    setLoading(true); 
+  // submit handler for user edits (called by UserForm)
+  const onSubmit = async (payload) => {
+    setLoading(true);
     setError(null);
     setSuccess(false);
-
-    const payload = {
-      nombre: form.nombre.trim(),
-      apellido: form.apellido.trim(),
-      dni: form.dni.trim(),
-      email: form.email.trim().toLowerCase(),
-      telefono: form.telefono.trim(),
-      fechaNacimiento: form.fechaNacimiento
-    };
-
     try {
       // Si hay userId, el admin está editando otro usuario
       if (userId) {
-        // 👇 Usá request en lugar de fetch
-        await request(`/users/${userId}`, {
-          method: 'PUT',
-          body: payload
-        });
-        
+        await request(`/users/${userId}`, { method: 'PUT', body: payload });
         setSuccess(true);
         setTimeout(() => navigate('/administration'), 2000);
-      } 
-      // Si NO hay userId, es el usuario editando su propio perfil
-      else {
+      } else {
+        // Si NO hay userId, es el usuario editando su propio perfil
         const data = await apiUpdateProfile(payload);
         setUser(data.user);
         setSuccess(true);
@@ -98,20 +103,59 @@ export function Edit() {
       }
     } catch (err) {
       setError(err?.message || 'Error al actualizar el perfil');
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
-  if (!user && !userId) {
+  // Event submit handler (reused path)
+  const onSubmitEvent = async (payload) => {
+    if (!eventId) return;
+    setLoading(true); setError(null);
+    try {
+      await request(`/events/${eventId}`, { method: 'PUT', body: payload });
+      navigate('/administration?view=events');
+    } catch (err) {
+      setError(err?.message || 'Error al actualizar evento');
+    } finally { setLoading(false); }
+  };
+
+  if (!user && !userId && !eventId) {
     navigate('/login');
     return null;
   }
 
-  if (loading && userId) {
+  if (eventId && eventLoading) {
     return (
       <div className="page">
-        <div className="loader">Cargando datos del usuario…</div>
+        <div className="loader">Cargando datos del evento…</div>
+      </div>
+    );
+  }
+
+  // If editing event, render EventForm
+  if (eventId) {
+    return (
+      <div className="page">
+        <div className="edit-threecol container">
+          <aside className="preview-col">
+            <h3>Vista previa</h3>
+            {previewEvent ? <EventCard event={previewEvent} /> : <div className="loader">Cargando vista previa…</div>}
+          </aside>
+
+          <div className="form-wrap">
+            <div className="container auth-form">
+              <h2>Editar Evento</h2>
+              {error && <div className="error" aria-live="polite">{error}</div>}
+              <EventForm
+                initial={eventInitial}
+                onSubmit={onSubmitEvent}
+                submitLabel={loading ? 'Guardando…' : 'Guardar cambios'}
+                showCancel={true}
+                onCancel={() => navigate('/administration?view=events')}
+                onChange={setPreviewEvent}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -120,48 +164,9 @@ export function Edit() {
     <div className="page">
       <div className="container auth-form">
         <h2>{userId ? 'Editar Usuario' : 'Editar perfil'}</h2>
-        <form onSubmit={onSubmit} noValidate>
-          <div className="grid2">
-            <label className="form-field"><span>Nombre</span>
-              <input value={form.nombre} onChange={e=>set('nombre',e.target.value)} required autoComplete="given-name" />
-            </label>
-            <label className="form-field"><span>Apellido</span>
-              <input value={form.apellido} onChange={e=>set('apellido',e.target.value)} required autoComplete="family-name" />
-            </label>
-          </div>
-
-          <label className="form-field"><span>DNI</span>
-            <input value={form.dni} onChange={e=>set('dni',e.target.value)} required inputMode="numeric"
-                   pattern="^\\d{7,10}$" title="Solo números, entre 7 y 10 dígitos" autoComplete="off" />
-          </label>
-
-          <label className="form-field"><span>Email</span>
-            <input type="email" value={form.email} onChange={e=>set('email',e.target.value)} required autoComplete="email" />
-          </label>
-
-          <label className="form-field"><span>Teléfono</span>
-            <input value={form.telefono} onChange={e=>set('telefono',e.target.value)} required
-                   type="tel" inputMode="tel" pattern="^\\d{6,15}$" title="Solo números, entre 6 y 15 dígitos"
-                   autoComplete="tel" />
-          </label>
-
-          <label className="form-field"><span>Fecha de nacimiento</span>
-            <input type="date" value={form.fechaNacimiento} onChange={e=>set('fechaNacimiento',e.target.value)}
-                   required max={maxDate} autoComplete="bday" />
-          </label>
-
-          {error && <div className="error" aria-live="polite">{error}</div>}
-          {success && <div className="success" aria-live="polite">{userId ? 'Usuario actualizado correctamente' : 'Perfil actualizado correctamente'}</div>}
-
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button className="btn btn-primary" type="submit" disabled={!isValid || loading}>
-              {loading ? 'Guardando…' : 'Guardar cambios'}
-            </button>
-            <button className="btn btn-ghost" type="button" onClick={() => navigate(userId ? '/administration' : '/profile')}>
-              Cancelar
-            </button>
-          </div>
-        </form>
+        <UserForm initial={userInitial} onSubmit={onSubmit} submitLabel={loading ? 'Guardando…' : 'Guardar cambios'} onCancel={() => navigate(userId ? '/administration' : '/profile')} />
+        {error && <div className="error" aria-live="polite">{error}</div>}
+        {success && <div className="success" aria-live="polite">{userId ? 'Usuario actualizado correctamente' : 'Perfil actualizado correctamente'}</div>}
       </div>
     </div>
   );
