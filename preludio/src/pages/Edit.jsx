@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../state/auth.jsx';
 import { apiUpdateProfile } from '../api/auth.js';
 import { request } from '../api/client.js';
@@ -15,6 +15,12 @@ export function Edit() {
   const userId = searchParams.get('userId');
   const eventId = searchParams.get('eventId');
 
+  // Immediate render-time guard: if trying to edit an event or user by id, only allow ADMINs.
+  // Return a <Navigate/> during render to avoid flashing any sensitive UI.
+  if ((eventId || userId) && (!user || user.rol !== 'ADMIN')) {
+    return <Navigate to="/forbidden" replace />;
+  }
+
   const [userInitial, setUserInitial] = useState({
     nombre:'', apellido:'', dni:'', email:'', telefono:'', fechaNacimiento:''
   });
@@ -29,6 +35,7 @@ export function Edit() {
 
    useEffect(() => {
     // If editing an event (admin) - eventId in query param
+    // Restrict access: only ADMIN users can edit events by id
     if (eventId) {
       setEventLoading(true);
       request(`/events/${eventId}`)
@@ -63,23 +70,33 @@ export function Edit() {
             apellido: userData.apellido || '',
             dni: userData.dni || '',
             email: userData.email || '',
-            telefono: userData.telefono || '',
-            fechaNacimiento: userData.fechaNacimiento ? userData.fechaNacimiento.slice(0,10) : ''
+              telefono: userData.telefono || '',
+              fechaNacimiento: userData.fechaNacimiento ? userData.fechaNacimiento.slice(0,10) : '',
+              rol: userData.rol || ''
           });
         })
         .catch(e => setError(e.message))
         .finally(() => setLoading(false));
     } 
-    // Si NO hay userId, es el usuario editando su propio perfil
+    // Si NO hay userId, es el usuario editando su propio perfil -> fetch authoritative data
     else if (user) {
-      setUserInitial({
-        nombre: user.nombre || '',
-        apellido: user.apellido || '',
-        dni: user.dni || '',
-        email: user.email || '',
-        telefono: user.telefono || '',
-        fechaNacimiento: user.fechaNacimiento ? user.fechaNacimiento.slice(0,10) : ''
-      });
+      setLoading(true);
+      request('/users/me')
+        .then(userData => {
+          // userData might be { user: { ... } } or a raw user depending on API shape
+          const u = userData?.user || userData;
+          setUserInitial({
+            nombre: u.nombre || '',
+            apellido: u.apellido || '',
+            dni: u.dni || '',
+            email: u.email || '',
+            telefono: u.telefono || '',
+            fechaNacimiento: u.fechaNacimiento ? u.fechaNacimiento.slice(0,10) : '',
+            rol: u.rol || ''
+          });
+        })
+        .catch(e => setError(e.message))
+        .finally(() => setLoading(false));
     }
   }, [user, userId, eventId]);
 
@@ -164,7 +181,26 @@ export function Edit() {
     <div className="page">
       <div className="container auth-form">
         <h2>{userId ? 'Editar Usuario' : 'Editar perfil'}</h2>
-        <UserForm initial={userInitial} onSubmit={onSubmit} submitLabel={loading ? 'Guardando…' : 'Guardar cambios'} onCancel={() => navigate(userId ? '/administration' : '/profile')} />
+        {/* If editing own profile as non-admin, restrict editable fields to email and telefono only */}
+        {
+          (() => {
+            const isAdmin = !!(user && user.rol === 'ADMIN');
+            // Non-admin owners may only edit email and telefono
+            const disabled = (!userId && user && !isAdmin) ? ['nombre','apellido','dni','fechaNacimiento','rol'] : [];
+            // If admin is editing another user, allow editing role and provide role options
+            const roles = (userId && isAdmin) ? ['ADMIN', 'USUARIO'] : [];
+            return (
+              <UserForm
+                initial={userInitial}
+                onSubmit={onSubmit}
+                submitLabel={loading ? 'Guardando…' : 'Guardar cambios'}
+                onCancel={() => navigate(userId ? '/administration' : '/profile')}
+                disabledFields={disabled}
+                roles={roles}
+              />
+            );
+          })()
+        }
         {error && <div className="error" aria-live="polite">{error}</div>}
         {success && <div className="success" aria-live="polite">{userId ? 'Usuario actualizado correctamente' : 'Perfil actualizado correctamente'}</div>}
       </div>

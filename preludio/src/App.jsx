@@ -42,13 +42,14 @@ export default function App() {
             <Route element={<RequireRole roles={["ADMIN"]} />}>
               <Route path="/administration" element={<Administration />} />
               <Route path="/events/create" element={<CreateEvent />} />
-              <Route path="/events/:id/edit" element={<EditEvent />} />
+              <Route path="/edit/:id" element={<EditEvent />} />
             </Route>
 
             {/* any authed-only (example) */}
             <Route element={<RequireAuth />}>
               <Route path="/profile" element={<div>Mi perfil</div>} />
               <Route path="/mistickets" element={<MisTickets />} /> 
+              <Route path="/edit" element={<Edit />} />
             </Route>
 
             {/* public */}
@@ -65,7 +66,6 @@ export default function App() {
             <Route path="/legal/terminos" element={<Terminos />} />
             <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
             <Route path="/refund" element={<Refund />} />
-            <Route path="/edit" element={<Edit />} />
 
           </Routes>
         </main>
