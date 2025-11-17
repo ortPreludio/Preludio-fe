@@ -4,6 +4,7 @@ import { Home } from "./pages/Home.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Edit } from "./pages/Edit.jsx";
+import Profile from "./pages/Profile.jsx";
 import { Header } from "./components/layout/Header.jsx";
 import { ComoLlegar } from './pages/ComoLlegar.jsx';
 import { Premium } from './pages/Premium.jsx';
@@ -47,7 +48,7 @@ export default function App() {
 
             {/* any authed-only (example) */}
             <Route element={<RequireAuth />}>
-              <Route path="/profile" element={<div>Mi perfil</div>} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/mistickets" element={<MisTickets />} /> 
               <Route path="/edit" element={<Edit />} />
             </Route>
