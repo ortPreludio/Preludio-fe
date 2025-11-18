@@ -24,18 +24,18 @@ export function Header() {
     <header className="site-header">
       <div className="container">
         <div className="brand">
-          <Link to="/">
+          <Link to="/" onClick={() => setIsProfileDropdownOpen(false)}>
             <img src="/assets/logo-preludio.png" alt="Logo de Preludio" className="header-logo" />
           </Link>
         </div>
 
         {/* NAV LIMPIO */}
         <nav className="nav">
-          <NavLink to="/" end className="nav-link">Inicio</NavLink>
-          <NavLink to="/shows" className="nav-link">Shows</NavLink>
-          <NavLink to="/comollegar" className="nav-link">Cómo Llegar</NavLink>
-          <NavLink to="/premium" className="nav-link">Premium</NavLink>
-          <NavLink to="/faq" className="nav-link">Ayuda/FAQ</NavLink>
+          <NavLink to="/" end className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Inicio</NavLink>
+          <NavLink to="/shows" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Shows</NavLink>
+          <NavLink to="/comollegar" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Cómo Llegar</NavLink>
+          <NavLink to="/premium" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Premium</NavLink>
+          <NavLink to="/faq" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Ayuda/FAQ</NavLink>
         </nav>
 
         <div className="actions">
@@ -52,9 +52,11 @@ export function Header() {
                   className="profile-avatar"
                 />
               </div>
-
               <div className={`profile-dropdown ${isProfileDropdownOpen ? "is-open" : ""}`}>
-                <p className="profile-name">Hola, {user.nombre}</p>
+                <p className="dropdown-welcome"> Hola, {user.nombre} </p>
+                <NavLink to="/profile" className="dropdown-item" onClick={() => setIsProfileDropdownOpen(false)}>
+                  Perfil
+                </NavLink>
 
                 <NavLink to="/mistickets" className="dropdown-item" onClick={() => setIsProfileDropdownOpen(false)}>
                   Mis Tickets
@@ -77,7 +79,7 @@ export function Header() {
           )}
 
           {user?.rol === "ADMIN" && (
-            <Link className="btn btn-ghost" to="/administration">
+            <Link className="btn btn-ghost" to="/administration" onClick={() => setIsProfileDropdownOpen(false)}>
               Administration
             </Link>
           )}

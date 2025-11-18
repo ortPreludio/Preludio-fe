@@ -8,6 +8,7 @@ export default function ChangePassword() {
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
+    const [showPwd, setShowPwd] = useState(false);
     const [error, setError] = useState(null);
 
     async function handleSubmit(e) {
@@ -23,7 +24,7 @@ export default function ChangePassword() {
 
         // Opcional: Validar que la nueva contraseña no esté vacía
         if (newPassword.length < 6) {
-            setError("La nueva contraseña debe tener al menos 6 caracteres.");
+            setError("La nueva contraseña debe tener al menos 8 caracteres.");
             return;
         }
 
@@ -68,14 +69,22 @@ export default function ChangePassword() {
     }
 
     return (
-        <div style={{ maxWidth: "450px", margin: "0 auto" }}>
+        <div className="container auth-form">
             <h2>Cambiar contraseña</h2>
-
+            <button
+                type="button"
+                className="btn btn-ghost"
+                style={{ position: 'absolute', right: 4, top: 4, padding: '6px 10px' }}
+                onClick={() => setShowPwd(s => !s)}
+                aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              >
+                {showPwd ? 'Ocultar' : 'Mostrar'}
+              </button>
             <form onSubmit={handleSubmit} style={{ display: "grid", gap: "1rem" }}>
                 <div>
                     <label>Contraseña actual</label>
                     <input
-                        type="password"
+                        type={showPwd ? 'text' : 'password'}
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         required
@@ -86,7 +95,7 @@ export default function ChangePassword() {
                 <div>
                     <label>Nueva contraseña</label>
                     <input
-                        type="password"
+                        type={showPwd ? 'text' : 'password'}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         required
@@ -97,7 +106,7 @@ export default function ChangePassword() {
                 <div>
                     <label>Confirmar nueva contraseña</label>
                     <input
-                        type="password"
+                        type={showPwd ? 'text' : 'password'}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
