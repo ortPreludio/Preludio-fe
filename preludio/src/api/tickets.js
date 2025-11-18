@@ -1,27 +1,12 @@
-import { request } from "./client.js";
+import { request, buildQuery } from "./client.js";
 
 /**
  * Obtiene los tickets comprados por el usuario actual.
- * El backend reconoce al usuario por el token/cookie (no se pasa manualmente).
- * @param {string} order - 'asc' o 'desc' para el orden de la fecha de compra.
- * @returns {Promise<Array>} 
+ * Se apoya en `request()` que envía cookies por defecto.
+ * @param {string} order - 'asc' o 'desc'
  */
-
-const API_URL = 'http://localhost:3001/api';
-
 export async function fetchMyTickets(order = 'desc') {
-  const url = `${API_URL}/tickets/mytickets?order=${order}`;
-
-  try {
-    const response = await request(url);
-
-    if (response.msg === 'No tienes tickets comprados aún.') {
-      return [];
-    }
-
-    return Array.isArray(response) ? response : [];
-  } catch (error) {
-    console.error("Error en fetchMyTickets:", error);
-    throw new Error(error.message || 'Error al conectar con el servidor de tickets.');
-  }
+  const path = `/tickets/mytickets${buildQuery({ order })}`;
+  const res = await request(path);
+  return Array.isArray(res) ? res : [];
 }

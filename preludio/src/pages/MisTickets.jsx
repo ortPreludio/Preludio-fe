@@ -8,7 +8,7 @@ const TicketCard = ({ ticket }) => {
     // Convertir la fecha de compra y la fecha del evento para mostrar
     const fechaCompra = new Date(ticket.fechaCompra).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
     
-    // Asumimos que ticket.evento.fecha es una fecha válida. Si no, se mostrará "Invalid Date".
+    // Asumimos que ticket.evento.fecha es una fecha válida.
     const fechaEvento = new Date(ticket.evento.fecha).toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: 'short' });
 
     // Status visual is handled by CSS classes (.ticket-status.valid / .ticket-status.cancel)
@@ -17,7 +17,7 @@ const TicketCard = ({ ticket }) => {
         <div className="ticket-card">
             <div className="ticket-body">
                 <div className="ticket-header">
-                    <h3>{ticket.evento.nombre}</h3>
+                    <h3>{ticket.evento.titulo || ticket.evento.nombre}</h3>
                     <span className={`ticket-status ${ticket.estado === 'Válido' ? 'valid' : ticket.estado === 'Cancelado' ? 'cancel' : ''}`}>
                         {ticket.estado}
                     </span>
@@ -25,7 +25,7 @@ const TicketCard = ({ ticket }) => {
 
                 <p style={{marginBottom:6}}><strong>Tipo de entrada:</strong> {ticket.tipoEntrada}</p>
                 <p style={{marginBottom:6}}><strong>Fecha del evento:</strong> {fechaEvento}</p>
-                <p style={{marginBottom:12}}><strong>Lugar:</strong> {ticket.evento.lugar || 'Ubicación no especificada'}</p>
+                <p style={{marginBottom:12}}><strong>Lugar:</strong> {ticket.evento.ubicacion?.lugar || ticket.evento.lugar || 'Ubicación no especificada'}</p>
 
                 <div className="ticket-meta">
                     <p className="ticket-price">${ticket.precioPagado.toFixed(2)}</p>
@@ -53,26 +53,20 @@ export function MisTickets() {
     const [order, setOrder] = useState('desc'); // Para ordenar en el frontend o enviar al backend
 
     useEffect(() => {
-        // Solo intenta cargar si el usuario está autenticado y tenemos el token
-        if (!user || !token) {
+        // Solo intenta cargar si el usuario está autenticado
+        if (!user) {
             setLoading(false);
             return; 
         }
         
         setLoading(true); setError(null);
 
-        // Llamamos a la API con el token de autenticación
-        // Nota: La función fetchMyTickets (en el otro archivo) debe manejar la adición del token en el header.
-        fetchMyTickets(token, order)
-            .then(js => {
-                setTickets(Array.isArray(js) ? js : js.tickets || []);
-            })
-            .catch(e => {
-                setError(e.message || 'Error al cargar tus tickets. Intenta recargar.');
-            })
-            .finally(() => setLoading(false))
+        fetchMyTickets(order)
+            .then(arr => setTickets(arr))
+            .catch(e => setError(e.message || 'Error al cargar tus tickets. Intenta recargar.'))
+            .finally(() => setLoading(false));
             
-    }, [user, token, order]) 
+    }, [user, order]) 
 
     if (!user) {
         return null;
