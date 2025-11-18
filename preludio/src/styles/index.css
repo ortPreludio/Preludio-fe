@@ -34,7 +34,7 @@ body {
   padding: 0 16px;
 }
 
-/* --------- HEADER --------- */
+/* --- HEADER --------------------------------------------------- */
 .site-header {
   position: sticky;
   top: 0;
@@ -47,53 +47,143 @@ body {
 .site-header .container {
   display: flex;
   align-items: center;
-  gap: 16px;
-  min-height: 64px;
+  justify-content: space-between;
+  min-height: 72px;
+  gap: 20px;
 }
 
-.brand {
-  font-weight: 700;
+/* --- LOGO ------------------------------------------------------ */
+.header-logo {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+.brand a {
   display: flex;
   align-items: center;
 }
 
+/* --- NAV -------------------------------------------------------- */
 .nav {
   display: flex;
-  gap: 12px;
+  gap: 24px;
   margin-left: auto;
 }
 
 .nav-link {
   color: var(--muted);
+  font-size: 0.97rem;
+  font-weight: 500;
   text-decoration: none;
+  padding: 6px 0;
+  transition: 0.2s ease;
 }
 
 .nav-link:hover {
   color: var(--text);
+  transform: translateY(-1px);
 }
 
-/* NavLink activo */
 .nav-link.active {
-  color: var(--text);
+  color: var(--primary);
   font-weight: 700;
+  position: relative;
 }
 
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* --- ACTIONS (botones + perfil) ------------------------------ */
 .actions {
   display: flex;
-  gap: 8px;
-}
-
-/* --------- LOGO HEADER --------- */
-.header-logo {
-  height: 40px;
-  width: auto;
-  display: block;
-}
-
-.site-header .brand a {
-  display: flex;
   align-items: center;
-  height: 100%;
+  gap: 14px;
+}
+
+/* --- PROFILE DROPDOWN ---------------------------------------- */
+.profile-menu {
+  position: relative;
+}
+
+.profile-icon {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 4px;
+  transition: 0.2s ease;
+}
+
+.profile-icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+/* Dropdown */
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  width: 200px;
+  padding: 10px 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.profile-dropdown.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.profile-name {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 12px 16px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.dropdown-item.logout {
+  color: #ff6b6b;
+}
+
+.dropdown-item.logout:hover {
+  background: rgba(255, 99, 99, 0.12);
 }
 
 /* --------- HERO --------- */
@@ -386,3 +476,4 @@ select {
   margin: 8px 0;
   letter-spacing: 2px;
 }
+

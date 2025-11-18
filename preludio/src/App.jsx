@@ -20,6 +20,7 @@ import { Terminos } from './pages/footer/Terminos.jsx';
 import { DefensaConsumidor } from './pages/footer/DefensaConsumidor.jsx';
 import { Refund } from './pages/footer/Refund.jsx';
 import { MisTickets } from "./pages/MisTickets.jsx";
+import ChangePassword from "./pages/ChangePassword.jsx";
 import Forbidden from "./pages/Forbidden.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
@@ -51,6 +52,7 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/mistickets" element={<MisTickets />} /> 
               <Route path="/edit" element={<Edit />} />
+              <Route path="/perfil/cambiar-password" element={<ChangePassword />} />
             </Route>
 
             {/* public */}
@@ -67,6 +69,7 @@ export default function App() {
             <Route path="/legal/terminos" element={<Terminos />} />
             <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
             <Route path="/refund" element={<Refund />} />
+
 
           </Routes>
         </main>
