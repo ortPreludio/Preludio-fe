@@ -1,0 +1,39 @@
+/* ============================================== */
+/* 1. Estilos Específicos: CÓMO LLEGAR (LOCATION) */
+/* ============================================== */
+
+.location-section .info-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+.location-details ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.location-details ul li {
+    background: var(--color-dark-bg);
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    border-left: 4px solid var(--color-primary); /* Barra de acento */
+    font-size: 1rem;
+    color: var(--color-text-strong, #e0e0e0);
+}
+
+.map-placeholder {
+    height: 300px;
+    background-color: #34495e;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+}

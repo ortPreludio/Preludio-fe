@@ -1,0 +1,134 @@
+/* ---------------------------------------- */
+/* Tickets page styles (MisTickets)         */
+/* ---------------------------------------- */
+.tickets-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    background: var(--bg-2);
+    border-radius: 8px;
+}
+
+.tickets-toolbar h2 {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--text);
+}
+
+.tickets-toolbar .select {
+    margin-left: 0.5rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background: var(--bg-3);
+    color: var(--text);
+}
+
+.ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .ticket-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .ticket-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.ticket-card {
+    background: var(--bg-2);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    border-top: 4px solid var(--color-primary);
+}
+
+.ticket-card .ticket-body {
+    padding: 1.25rem;
+}
+
+.ticket-card .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem
+}
+
+.ticket-card h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.05rem
+}
+
+.ticket-status {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+}
+
+.ticket-status.valid {
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a;
+    font-weight: 700
+}
+
+.ticket-status.cancel {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    opacity: 0.8
+}
+
+.ticket-meta {
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.ticket-price {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.ticket-cta {
+    margin-top: 0.75rem;
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    background: var(--primary);
+    color: #001018;
+    border-radius: 8px;
+    font-weight: 700;
+    border: none
+}
+
+.ticket-loader {
+    text-align: center;
+    padding: 2.5rem;
+    color: var(--primary);
+    font-size: 1.125rem
+}
+
+.ticket-empty {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text);
+}
+
+.ticket-empty p {
+    margin: 6px 0 0 0;
+    color: var(--text-muted);
+}

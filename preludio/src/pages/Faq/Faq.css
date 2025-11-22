@@ -1,0 +1,59 @@
+/* ============================================== */
+/* 3. Estilos Específicos: FAQ (PREGUNTAS)        */
+/* ============================================== */
+
+.faq-section {
+    max-width: 800px;
+    /* Ancho más estrecho para el texto del FAQ */
+    margin: 0 auto;
+}
+
+.faq-item {
+    /* Usamos una estructura limpia para los acordeones */
+    border: none;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--color-background-card);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.faq-item summary {
+    /* Pregunta - Barra principal */
+    display: block;
+    padding: 18px 20px;
+    background: var(--color-summary-bg, #34495e);
+    color: var(--color-text-strong, #e0e0e0);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-left: 5px solid transparent;
+    /* Inicialmente transparente */
+    transition: all 0.2s ease;
+}
+
+.faq-item summary:hover {
+    background-color: var(--color-summary-hover, #415a77);
+}
+
+.faq-item[open] summary {
+    background-color: var(--color-summary-hover, #415a77);
+    border-left-color: var(--color-primary);
+    /* Color de acento al abrir */
+}
+
+.faq-item p {
+    /* Respuesta - Contenido */
+    padding: 15px 20px 20px 25px;
+    /* Más padding a la izquierda por el border-left */
+    background: var(--color-background-content, #2c3e50);
+    color: var(--color-text-light, #a0a0a0);
+    border-top: 1px solid var(--color-border, #3a506b);
+    line-height: 1.7;
+}
+
+/* Oculta el marcador predeterminado del navegador */
+.faq-item summary::-webkit-details-marker,
+.faq-item summary::marker {
+    display: none;
+}

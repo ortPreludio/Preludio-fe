@@ -7,10 +7,11 @@
 /* ------------------------------------ */
 
 .page-content {
-    /* Mantenemos el padding y altura mínima */
-    padding: 60px 0;
-    min-height: 60vh;
-    background-color: var(--color-dark-bg); /* Asegura el fondo oscuro */
+  /* Mantenemos el padding y altura mínima */
+  padding: 60px 0;
+  min-height: 60vh;
+  background-color: var(--color-dark-bg);
+  /* Asegura el fondo oscuro */
 }
 
 /* ------------------------------------ */
@@ -18,37 +19,37 @@
 /* ------------------------------------ */
 
 .page-content h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    text-align: center;
-    color: var(--color-light, #f0f0f0);
-    margin-bottom: 10px;
-    /* Eliminamos bordes duros para un look más limpio */
-    border-bottom: none; 
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-light, #f0f0f0);
+  margin-bottom: 10px;
+  /* Eliminamos bordes duros para un look más limpio */
+  border-bottom: none;
 }
 
 .page-content .subtitle-page {
-    font-size: 1.25rem;
-    text-align: center;
-    color: var(--color-text-muted, #ccc);
-    margin-bottom: 50px;
+  font-size: 1.25rem;
+  text-align: center;
+  color: var(--color-text-muted, #ccc);
+  margin-bottom: 50px;
 }
 
 .page-content h2 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--color-light, #f0f0f0);
-    margin-top: 30px;
-    margin-bottom: 20px;
-    /* Línea sutil debajo de los subtítulos */
-    border-bottom: 2px solid var(--color-border, #3a506b);
-    padding-bottom: 8px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-light, #f0f0f0);
+  margin-top: 30px;
+  margin-bottom: 20px;
+  /* Línea sutil debajo de los subtítulos */
+  border-bottom: 2px solid var(--color-border, #3a506b);
+  padding-bottom: 8px;
 }
 
 .page-content p {
-    line-height: 1.6;
-    color: var(--color-text-light, #a0a0a0);
-    margin-bottom: 15px;
+  line-height: 1.6;
+  color: var(--color-text-light, #a0a0a0);
+  margin-bottom: 15px;
 }
 
 /* ------------------------------------ */
@@ -57,313 +58,11 @@
 
 /* Estilo base para cualquier tarjeta o contenedor de información */
 .info-card {
-    background-color: var(--color-background-card, #2c3e50);
-    border-radius: 10px;
-    padding: 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-/* ============================================== */
-/* 1. Estilos Específicos: CÓMO LLEGAR (LOCATION) */
-/* ============================================== */
-
-.location-section .info-card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: start;
-    max-width: 1000px;
-    margin: 30px auto;
-}
-
-.location-details ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 15px;
-}
-
-.location-details ul li {
-    background: var(--color-dark-bg);
-    padding: 12px 15px;
-    margin-bottom: 8px;
-    border-radius: 5px;
-    border-left: 4px solid var(--color-primary); /* Barra de acento */
-    font-size: 1rem;
-    color: var(--color-text-strong, #e0e0e0);
-}
-
-.map-placeholder {
-    height: 300px;
-    background-color: #34495e;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-text-muted);
-    font-style: italic;
-}
-
-
-/* ============================================== */
-/* 2. Estilos Específicos: PREMIUM (BENEFICIOS)   */
-/* ============================================== */
-
-.premium-section {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.benefit-item {
-    background: var(--color-background-card);
-    border-radius: 8px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    border-top: 4px solid var(--color-primary);
-    transition: transform 0.3s ease;
-}
-
-.benefit-item:hover {
-    transform: translateY(-5px);
-}
-
-.benefit-item h3 {
-    color: var(--color-primary);
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-}
-
-.benefit-item p {
-    color: var(--color-text-light);
-}
-
-.cta-premium {
-    text-align: center;
-    margin-top: 50px;
-    padding: 20px;
-    background: var(--color-background-card);
-    border-radius: 10px;
-}
-
-
-/* ============================================== */
-/* 3. Estilos Específicos: FAQ (PREGUNTAS)        */
-/* ============================================== */
-
-.faq-section {
-    max-width: 800px; /* Ancho más estrecho para el texto del FAQ */
-    margin: 0 auto;
-}
-
-.faq-item {
-    /* Usamos una estructura limpia para los acordeones */
-    border: none;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--color-background-card);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.faq-item summary {
-    /* Pregunta - Barra principal */
-    display: block;
-    padding: 18px 20px;
-    background: var(--color-summary-bg, #34495e);
-    color: var(--color-text-strong, #e0e0e0);
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border-left: 5px solid transparent; /* Inicialmente transparente */
-    transition: all 0.2s ease;
-}
-
-.faq-item summary:hover {
-    background-color: var(--color-summary-hover, #415a77);
-}
-
-.faq-item[open] summary {
-    background-color: var(--color-summary-hover, #415a77);
-    border-left-color: var(--color-primary); /* Color de acento al abrir */
-}
-
-.faq-item p {
-    /* Respuesta - Contenido */
-    padding: 15px 20px 20px 25px; /* Más padding a la izquierda por el border-left */
-    background: var(--color-background-content, #2c3e50);
-    color: var(--color-text-light, #a0a0a0);
-    border-top: 1px solid var(--color-border, #3a506b);
-    line-height: 1.7;
-}
-
-/* Oculta el marcador predeterminado del navegador */
-.faq-item summary::-webkit-details-marker,
-.faq-item summary::marker {
-    display: none; 
-}
-
-/* ============================================== */
-/* 4. REVIEWS - Sección en Home                  */
-/* ============================================== */
-
-.reviews-cta {
-  text-align: center;
-  padding: 48px 32px;
-  background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 100%);
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--color-background-card, #2c3e50);
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 30px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-.reviews-cta p {
-  font-size: 1.25rem;
-  color: var(--text);
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
-
-.btn-reviews {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: var(--primary);
-  color: #001018;
-  text-decoration: none;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(18, 164, 255, 0.3);
-}
-
-.btn-reviews:hover {
-  background: var(--primary-700);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(18, 164, 255, 0.4);
-}
-
-/* ============================================== */
-/* 5. REVIEWS - Página completa                  */
-/* ============================================== */
-
-.reviews-page {
-  padding: 60px 0;
-  min-height: 60vh;
-}
-
-/* Sección "Mi Reseña" */
-.my-review-section {
-  margin-bottom: 48px;
-  padding: 32px;
-  background: linear-gradient(180deg, var(--card), var(--card-2));
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-.my-review-card {
-  background: var(--bg-2);
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.my-review-card h3 {
-  margin: 0 0 12px 0;
-  color: var(--primary);
-  font-size: 1.4rem;
-}
-
-.my-review-card p {
-  line-height: 1.7;
-  color: var(--text);
-  margin: 12px 0;
-}
-
-/* Formulario de Reseña */
-.review-form {
-  background: var(--bg-2);
-  padding: 32px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.review-form h3 {
-  margin: 0 0 24px 0;
-  color: var(--primary);
-  font-size: 1.5rem;
-}
-
-/* Lista de Reseñas */
-.reviews-list {
-  margin-top: 48px;
-}
-
-.reviews-list h3 {
-  margin: 0 0 24px 0;
-  font-size: 1.75rem;
-  color: var(--text);
-  border-bottom: 2px solid var(--primary);
-  padding-bottom: 12px;
-}
-
-.review-card {
-  background: linear-gradient(180deg, var(--card), var(--card-2));
-  padding: 24px;
-  margin-bottom: 16px;
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.review-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.user-info strong {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--text);
-  font-size: 1.1rem;
-}
-
-.date {
-  color: var(--muted);
-  font-size: 0.875rem;
-}
-
-.review-comment {
-  line-height: 1.7;
-  color: var(--text);
-  margin: 0;
-}
-
-/* Mensaje cuando no hay reseñas */
-.reviews-list p {
-  text-align: center;
-  color: var(--muted);
-  padding: 32px;
-  font-style: italic;
 }
 
 /* ============================================== */
@@ -373,12 +72,14 @@
   display: block;
   margin-bottom: 12px;
 }
-.form-field > span {
+
+.form-field>span {
   display: block;
   margin-bottom: 6px;
   color: var(--color-text-strong, #e0e0e0);
   font-weight: 600;
 }
+
 .form-field input,
 .form-field textarea,
 .form-field select {
@@ -390,11 +91,34 @@
   color: var(--text);
   box-sizing: border-box;
 }
-.form-field textarea { min-height: 120px; resize: vertical; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.event-form { max-width: 900px; }
-.form-fieldset { border: 1px solid var(--color-border, #3a506b); padding: 0.6rem; border-radius: 8px; margin-bottom: 12px; }
-.form-actions { display: flex; gap: 12px; margin-top: 12px; }
+
+.form-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.event-form {
+  max-width: 900px;
+}
+
+.form-fieldset {
+  border: 1px solid var(--color-border, #3a506b);
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
 
 .edit-grid {
   display: grid;
@@ -402,6 +126,7 @@
   gap: 20px;
   align-items: start;
 }
+
 .edit-grid aside h3 {
   margin-top: 0;
   margin-bottom: 12px;
@@ -418,7 +143,10 @@
 }
 
 /* Floating preview that sits outside the form container */
-.auth-form { position: relative; }
+.auth-form {
+  position: relative;
+}
+
 .preview-floating {
   position: absolute;
   top: 48px;
@@ -426,7 +154,10 @@
   width: 360px;
   z-index: 80;
 }
-.preview-floating .loader { padding: 12px; }
+
+.preview-floating .loader {
+  padding: 12px;
+}
 
 @media (max-width: 900px) {
   .preview-floating {
@@ -444,31 +175,43 @@
   gap: 40px;
   align-items: start;
 }
+
 .edit-threecol .preview-col {
   position: sticky;
   top: 80px;
 }
-.edit-threecol .form-wrap { grid-column: 2 / 4; }
+
+.edit-threecol .form-wrap {
+  grid-column: 2 / 4;
+}
 
 @media (max-width: 1100px) {
   .edit-threecol {
     grid-template-columns: 1fr;
   }
-  .edit-threecol .form-wrap { grid-column: auto; }
-  .edit-threecol .preview-col { position: static; }
+
+  .edit-threecol .form-wrap {
+    grid-column: auto;
+  }
+
+  .edit-threecol .preview-col {
+    position: static;
+  }
 }
+
 /* ============================================== */
 /* Modal for create event in Administration       */
 /* ============================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 60;
 }
+
 .modal-content {
   width: min(900px, 95%);
   max-height: 90vh;
@@ -476,102 +219,19 @@
   background: var(--bg-2);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-}
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.modal-close { background: transparent; border: none; cursor: pointer; color: var(--text); }
-
-
-/* ============================================== */
-/* RESPONSIVE - Reviews                          */
-/* ============================================== */
-
-@media (max-width: 768px) {
-  .reviews-cta {
-    padding: 32px 20px;
-  }
-
-  .reviews-cta p {
-    font-size: 1.1rem;
-  }
-
-  .my-review-section,
-  .review-form {
-    padding: 20px;
-  }
-
-  .review-header {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-  }
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* ---------------------------------------- */
-/* Tickets page styles (MisTickets)         */
-/* ---------------------------------------- */
-.tickets-toolbar {
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding: 0.75rem;
-  background: var(--bg-2);
-  border-radius: 8px;
+  margin-bottom: 8px;
 }
-.tickets-toolbar h2 {
-  margin: 0;
-  font-size: 1.125rem;
+
+.modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
   color: var(--text);
 }
-.tickets-toolbar .select {
-  margin-left: 0.5rem;
-  padding: 0.45rem 0.6rem;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background: var(--bg-3);
-  color: var(--text);
-}
-
-.ticket-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1.25rem;
-}
-@media (min-width: 768px) {
-  .ticket-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1100px) {
-  .ticket-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.ticket-card {
-  background: var(--bg-2);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  border-top: 4px solid var(--color-primary);
-}
-.ticket-card .ticket-body { padding: 1.25rem; }
-.ticket-card .ticket-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem }
-.ticket-card h3 { margin:0; color: var(--text); font-size:1.05rem }
-.ticket-status { padding: 6px 10px; border-radius: 999px; font-size: 0.75rem; }
-.ticket-status.valid { background: rgba(34,197,94,0.12); color: #16a34a; font-weight:700 }
-.ticket-status.cancel { background: rgba(239,68,68,0.08); color: #dc2626; opacity:0.8 }
-.ticket-meta { border-top: 1px solid rgba(255,255,255,0.03); padding-top:0.75rem; display:flex; justify-content:space-between; align-items:center }
-.ticket-price { font-size:1.125rem; font-weight:800; color: var(--primary); }
-.ticket-cta { margin-top:0.75rem; width:100%; padding:0.6rem 0.9rem; background:var(--primary); color:#001018; border-radius:8px; font-weight:700; border:none }
-
-.ticket-loader { text-align:center; padding:2.5rem; color: var(--primary); font-size:1.125rem }
-.ticket-empty { text-align:center; padding:2rem; background: var(--bg-2); border-radius:8px; border:1px solid rgba(255,255,255,0.04); color: var(--text); }
-.ticket-empty p { margin: 6px 0 0 0; color: var(--text-muted); }
-
-
-
