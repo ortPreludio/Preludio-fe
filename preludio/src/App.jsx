@@ -47,7 +47,6 @@ export default function App() {
               <Route path="/administration" element={<Administration />} />
               <Route path="/events/create" element={<CreateEvent />} />
               <Route path="/events/edit/:id" element={<EditEvent />} />
-              <Route path="/events/:id" element={<EventDetails />} />
               <Route path="/users/edit/:id" element={<EditUser />} />
               <Route path="/users/:id" element={<UserDetails />} />
             </Route>
@@ -63,6 +62,7 @@ export default function App() {
             {/* public */}
             <Route path="/forbidden" element={<Forbidden />} />
             <Route path="/" element={<Home />} />
+            <Route path="/events/:id" element={<EventDetails />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/shows" element={<Shows />} />
             <Route path="/reviews" element={<Reviews />} />
