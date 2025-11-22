@@ -59,6 +59,8 @@ export function Login() {
 
           <label className="form-field">
             <span>Contraseña</span>
+
+
             <div style={{ position: 'relative' }}>
               <input
                 type={showPwd ? 'text' : 'password'}
@@ -72,7 +74,7 @@ export function Login() {
               />
               <button
                 type="button"
-                className="btn btn-ghost"
+                className={`btn btn-ghost ${showPwd ? 'showing-password' : ''}`}
                 style={{ position: 'absolute', right: 4, top: 4, padding: '6px 10px' }}
                 onClick={() => setShowPwd(s => !s)}
                 aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}

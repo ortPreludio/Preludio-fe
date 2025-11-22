@@ -4,22 +4,34 @@ import { fetchAllReviews, fetchMyReview, createReview, updateMyReview, deleteMyR
 import { Section } from '../../components/layout/Section/Section.jsx';
 
 export function Reviews() {
-  const { user } = useAuth(); // Solo necesitamos user, no token
-  
+  const { user } = useAuth();
+
   const [allReviews, setAllReviews] = useState([]);
   const [myReview, setMyReview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  
+
+  // Mensajes visuales
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState("success");
+
   const [formData, setFormData] = useState({
     rating: 5,
-    comment: ''
+    comment: ""
   });
 
   useEffect(() => {
     loadReviews();
   }, [user]);
+
+  // Hace desaparecer el mensaje 
+  useEffect(() => {
+    if (message) {
+      const t = setTimeout(() => setMessage(null), 3500);
+      return () => clearTimeout(t);
+    }
+  }, [message]);
 
   const loadReviews = async () => {
     setLoading(true);
@@ -27,9 +39,9 @@ export function Reviews() {
     try {
       const reviews = await fetchAllReviews();
       setAllReviews(reviews);
-      
+
       if (user) {
-        const my = await fetchMyReview(); // Sin pasar token
+        const my = await fetchMyReview();
         setMyReview(my);
         if (my) {
           setFormData({ rating: my.rating, comment: my.comment });
@@ -44,38 +56,50 @@ export function Reviews() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!user) {
-      alert('Debes iniciar sesión para dejar una reseña');
+      setMessage("Debes iniciar sesión para dejar una reseña");
+      setMessageType("error");
       return;
     }
 
     try {
       if (myReview) {
-        await updateMyReview(formData); // Sin pasar token
-        alert('Reseña actualizada correctamente');
+        await updateMyReview(formData);
+        setMessage("Reseña actualizada correctamente");
+        setMessageType("success");
       } else {
-        await createReview(formData); // Sin pasar token
-        alert('Reseña creada correctamente');
+        await createReview(formData);
+        setMessage("Reseña creada correctamente");
+        setMessageType("success");
       }
+
       setShowForm(false);
       loadReviews();
+
     } catch (e) {
-      alert(e.message);
+      setMessage(e.message);
+      setMessageType("error");
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm('¿Estás seguro de eliminar tu reseña?')) return;
-    
+    if (!confirm("¿Estás seguro de eliminar tu reseña?")) return;
+
     try {
-      await deleteMyReview(); // Sin pasar token
-      alert('Reseña eliminada correctamente');
+      await deleteMyReview();
+
+      setMessage("Reseña eliminada correctamente");
+      setMessageType("success");
+
       setMyReview(null);
-      setFormData({ rating: 5, comment: '' });
+      setFormData({ rating: 5, comment: "" });
       setShowForm(false);
       loadReviews();
+
     } catch (e) {
-      alert(e.message);
+      setMessage(e.message);
+      setMessageType("error");
     }
   };
 
@@ -84,8 +108,13 @@ export function Reviews() {
   return (
     <div className="reviews-page">
       <Section title="Reseñas de nuestros usuarios">
-        
-        {/* Sección para dejar/editar reseña */}
+
+        {message && (
+          <div className={`msg msg-${messageType}`}>
+            {message}
+          </div>
+        )}
+
         {user && (
           <div className="my-review-section">
             {!showForm && !myReview && (
@@ -112,13 +141,15 @@ export function Reviews() {
 
             {showForm && (
               <form onSubmit={handleSubmit} className="review-form">
-                <h3>{myReview ? 'Editar reseña' : 'Nueva reseña'}</h3>
-                
+                <h3>{myReview ? "Editar reseña" : "Nueva reseña"}</h3>
+
                 <div className="form-group">
                   <label>Calificación:</label>
-                  <select 
+                  <select
                     value={formData.rating}
-                    onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, rating: Number(e.target.value) })
+                    }
                     required
                   >
                     <option value={1}>⭐ 1</option>
@@ -133,7 +164,9 @@ export function Reviews() {
                   <label>Comentario:</label>
                   <textarea
                     value={formData.comment}
-                    onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, comment: e.target.value })
+                    }
                     minLength={10}
                     maxLength={500}
                     required
@@ -145,11 +178,11 @@ export function Reviews() {
 
                 <div className="form-actions">
                   <button type="submit" className="btn btn-primary">
-                    {myReview ? 'Actualizar' : 'Publicar'}
+                    {myReview ? "Actualizar" : "Publicar"}
                   </button>
-                  <button 
-                    type="button" 
-                    onClick={() => setShowForm(false)} 
+                  <button
+                    type="button"
+                    onClick={() => setShowForm(false)}
                     className="btn btn-secondary"
                   >
                     Cancelar
@@ -160,12 +193,12 @@ export function Reviews() {
           </div>
         )}
 
-        {/* Lista de todas las reseñas */}
+        {/* Lista de reseñas */}
         <div className="reviews-list">
           <h3>Todas las reseñas ({allReviews.length})</h3>
-          
+
           {error && <div className="error">{error}</div>}
-          
+
           {allReviews.length === 0 && (
             <p>No hay reseñas todavía. ¡Sé el primero en dejar una!</p>
           )}
