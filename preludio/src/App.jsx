@@ -1,28 +1,28 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./state/auth.jsx";
-import { Home } from "./pages/Home.jsx";
-import { Login } from "./pages/Login.jsx";
-import { Register } from "./pages/Register.jsx";
-import { Edit } from "./pages/Edit.jsx";
-import Profile from "./pages/Profile.jsx";
-import { Header } from "./components/layout/Header.jsx";
-import { ComoLlegar } from './pages/ComoLlegar.jsx';
-import { Premium } from './pages/Premium.jsx';
-import { Faq } from './pages/Faq.jsx';
-import { Administration } from "./pages/Administration.jsx";
-import CreateEvent from "./pages/CreateEvent.jsx";
-import EditEvent from "./pages/EditEvent.jsx";
-import { Shows } from "./pages/Shows.jsx";
-import { Reviews } from './pages/Reviews.jsx'
-import { Footer } from "./components/layout/Footer.jsx";
+import { Home } from "./pages/Home/Home.jsx";
+import { Login } from "./pages/Login/Login.jsx";
+import { Register } from "./pages/Register/Register.jsx";
+import { Edit } from "./pages/Edit/Edit.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
+import { Header } from "./components/layout/Header/Header.jsx";
+import { ComoLlegar } from './pages/ComoLlegar/ComoLlegar.jsx';
+import { Premium } from './pages/Premium/Premium.jsx';
+import { Faq } from './pages/Faq/Faq.jsx';
+import { Administration } from "./pages/Administration/Administration.jsx";
+import CreateEvent from "./pages/CreateEvent/CreateEvent.jsx";
+import EditEvent from "./pages/EditEvent/EditEvent.jsx";
+import { Shows } from "./pages/Shows/Shows.jsx";
+import { Reviews } from './pages/Reviews/Reviews.jsx'
+import { Footer } from "./components/layout/Footer/Footer.jsx";
 import { Privacidad } from './pages/footer/Privacidad.jsx';
 import { Terminos } from './pages/footer/Terminos.jsx';
 import { DefensaConsumidor } from './pages/footer/DefensaConsumidor.jsx';
 import { Refund } from './pages/footer/Refund.jsx';
-import { MisTickets } from "./pages/MisTickets.jsx";
-import ChangePassword from "./pages/ChangePassword.jsx";
-import Forbidden from "./pages/Forbidden.jsx";
-import NotFound from "./pages/NotFound.jsx";
+import { MisTickets } from "./pages/MisTickets/MisTickets.jsx";
+import ChangePassword from "./pages/ChangePassword/ChangePassword.jsx";
+import Forbidden from "./pages/Forbidden/Forbidden.jsx";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
 import RequireRole from "./routes/RequireRole.jsx";
 import RedirectIfAuthenticated from "./routes/RedirectIfAuthenticated.jsx";
@@ -50,7 +50,7 @@ export default function App() {
             {/* any authed-only (example) */}
             <Route element={<RequireAuth />}>
               <Route path="/profile" element={<Profile />} />
-              <Route path="/mistickets" element={<MisTickets />} /> 
+              <Route path="/mistickets" element={<MisTickets />} />
               <Route path="/edit" element={<Edit />} />
               <Route path="/perfil/cambiar-password" element={<ChangePassword />} />
             </Route>

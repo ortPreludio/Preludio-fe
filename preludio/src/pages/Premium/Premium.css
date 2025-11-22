@@ -1,0 +1,47 @@
+/* ============================================== */
+/* 2. Estilos Específicos: PREMIUM (BENEFICIOS)   */
+/* ============================================== */
+
+.premium-section {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.benefit-item {
+    background: var(--color-background-card);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-top: 4px solid var(--color-primary);
+    transition: transform 0.3s ease;
+}
+
+.benefit-item:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-item h3 {
+    color: var(--color-primary);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.benefit-item p {
+    color: var(--color-text-light);
+}
+
+.cta-premium {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    background: var(--color-background-card);
+    border-radius: 10px;
+}
