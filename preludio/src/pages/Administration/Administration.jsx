@@ -3,8 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Section } from "../../components/layout/Section/Section.jsx";
 import { fetchUsers } from "../../api/users.js";
 import { fetchAdminEvents } from "../../api/events.js";
-import EventForm from "../../components/organisms/EventForm/EventForm.jsx";
-import { request } from "../../api/client.js";
+
 import { useNavigate } from 'react-router-dom'
 
 export function Administration() {
@@ -13,8 +12,7 @@ export function Administration() {
   const [view, setView] = useState("users"); // "users" | "events"
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -52,7 +50,7 @@ export function Administration() {
       }
     })();
     return () => { cancel = true; };
-  }, [view, page, perPage, q, sortDefaults, refreshKey]);
+  }, [view, page, perPage, q, sortDefaults]);
 
   // Cuando se pasa view como queryparam hacer el filtrado por esa vista
   useEffect(() => {
@@ -63,32 +61,32 @@ export function Administration() {
   // columnas por vista
   const columns = view === "users"
     ? [
-        { key: "nombre", label: "Nombre" },
-        { key: "apellido", label: "Apellido" },
-        { key: "email", label: "Email" },
-        { key: "dni", label: "DNI" },
-        { key: "telefono", label: "Teléfono" },
-        { key: "rol", label: "Rol" },
-      ]
+      { key: "nombre", label: "Nombre" },
+      { key: "apellido", label: "Apellido" },
+      { key: "email", label: "Email" },
+      { key: "dni", label: "DNI" },
+      { key: "telefono", label: "Teléfono" },
+      { key: "rol", label: "Rol" },
+    ]
     : [
-        { key: "titulo", label: "Título" },
-        { key: "categoria", label: "Categoría" },
-        { key: "fecha", label: "Fecha", render: (e) => e.fecha ? new Date(e.fecha).toLocaleDateString() : "—" },
-        { key: "hora", label: "Hora" },
-        { key: "estadoPublicacion", label: "Publicación" },
-        { key: "estado", label: "Estado" },
-        {
-          key: "ubicacion",
-          label: "Ubicación",
-          render: (e) => {
-            const u = e.ubicacion || {};
-            return [u.lugar, u.ciudad, u.provincia].filter(Boolean).join(" · ") || "—";
-          },
+      { key: "titulo", label: "Título" },
+      { key: "categoria", label: "Categoría" },
+      { key: "fecha", label: "Fecha", render: (e) => e.fecha ? new Date(e.fecha).toLocaleDateString() : "—" },
+      { key: "hora", label: "Hora" },
+      { key: "estadoPublicacion", label: "Publicación" },
+      { key: "estado", label: "Estado" },
+      {
+        key: "ubicacion",
+        label: "Ubicación",
+        render: (e) => {
+          const u = e.ubicacion || {};
+          return [u.lugar, u.ciudad, u.provincia].filter(Boolean).join(" · ") || "—";
         },
-      ];
+      },
+    ];
 
   const maxPage = Math.max(1, Math.ceil((total || 0) / (perPage || 1)));
-  
+
   const handleEditUser = (userId) => {
     navigate(`/edit?userId=${userId}`) // Pasamos el ID como query param
   }
@@ -115,7 +113,7 @@ export function Administration() {
           </button>
           {view === 'events' && (
             <>
-              <button className="btn btn-success" onClick={() => setShowCreateModal(true)}>Crear evento</button>
+              <button className="btn btn-success" onClick={() => navigate('/events/create')}>Crear evento</button>
             </>
           )}
         </div>
@@ -138,7 +136,7 @@ export function Administration() {
               value={perPage}
               onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}
             >
-              {[5,10,25,50,100].map(n => <option key={n} value={n}>{n}</option>)}
+              {[5, 10, 25, 50, 100].map(n => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
           <div className="ml-auto text-sm opacity-75">Total: <b>{total}</b></div>
@@ -148,31 +146,7 @@ export function Administration() {
         {loading && <div className="loader">Cargando…</div>}
         {error && <div className="alert alert-error">Error: {error}</div>}
 
-        {/* Create-event modal (simple overlay). Visible only when showCreateModal === true */}
-        {showCreateModal && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h3 style={{ margin: 0 }}>Crear Evento</h3>
-                <button className="btn btn-ghost modal-close" onClick={() => setShowCreateModal(false)}>Cerrar</button>
-              </div>
-              <EventForm
-                onSubmit={async (payload) => {
-                  try {
-                    await request('/events', { method: 'POST', body: payload });
-                    setShowCreateModal(false);
-                    // trigger reload
-                    setRefreshKey(k => k + 1);
-                  } catch (err) {
-                    // show small inline error — reuse alert area above by temporarily setting error
-                    setError(err?.message || 'Error creando evento');
-                  }
-                }}
-                submitLabel={'Crear Evento'}
-              />
-            </div>
-          </div>
-        )}
+
 
         {/* Tabla */}
         {!loading && !error && (
@@ -199,7 +173,7 @@ export function Administration() {
                       ))}
                       <td className="flex gap-2">
                         {/*<a className="btn btn-warning btn-xs" href={`/administration/${view}/${id}/edit`}>Editar</a>*/}
-                        <button 
+                        <button
                           className="btn btn-primary btn-sm"
                           onClick={() => view === 'users' ? handleEditUser(id) : handleEditEvent(id)}
                         >
