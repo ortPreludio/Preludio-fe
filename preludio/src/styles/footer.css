@@ -4,10 +4,11 @@
 
 .site-footer {
     /* Fondo ligeramente más oscuro que el cuerpo para crear separación */
-    background-color: var(--color-footer-bg, #0d1117); 
+    background-color: var(--color-footer-bg, #0d1117);
     color: var(--color-text-muted, #ccc);
     padding-top: 50px;
-    border-top: 1px solid var(--color-border, #3a506b); /* Separador visual */
+    border-top: 1px solid var(--color-border, #3a506b);
+    /* Separador visual */
 }
 
 .footer-grid {
@@ -18,11 +19,26 @@
     padding-bottom: 40px;
 }
 
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .footer-section h3 {
+        display: inline-block;
+        /* Mantiene el subrayado ajustado al texto */
+    }
+}
+
 .footer-section h3 {
-    color: var(--color-light, #f0f0f0); /* Títulos en color claro */
+    color: var(--color-light, #f0f0f0);
+    /* Títulos en color claro */
     font-size: 1.25rem;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--color-primary); /* Línea de acento */
+    border-bottom: 2px solid var(--color-primary);
+    /* Línea de acento */
     display: inline-block;
     padding-bottom: 5px;
 }
@@ -45,13 +61,15 @@
 }
 
 .footer-section a:hover {
-    color: var(--color-primary); /* Resalta en el color principal al pasar el mouse */
+    color: var(--color-primary);
+    /* Resalta en el color principal al pasar el mouse */
     text-decoration: underline;
 }
 
 /* Estilos de la franja de Copyright */
 .footer-bottom {
-    background-color: var(--color-dark-bg, #1a202c); /* Fondo más oscuro aún */
+    background-color: var(--color-dark-bg, #1a202c);
+    /* Fondo más oscuro aún */
     padding: 15px 0;
     text-align: center;
     border-top: 1px solid var(--color-border, #3a506b);

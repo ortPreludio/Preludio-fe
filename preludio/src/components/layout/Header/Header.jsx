@@ -9,6 +9,7 @@ export function Header() {
   const navigate = useNavigate();
 
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -30,13 +31,19 @@ export function Header() {
           </Link>
         </div>
 
+        <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
         {/* NAV LIMPIO */}
-        <nav className="nav">
-          <NavLink to="/" end className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Inicio</NavLink>
-          <NavLink to="/shows" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Shows</NavLink>
-          <NavLink to="/comollegar" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Cómo Llegar</NavLink>
-          <NavLink to="/premium" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Premium</NavLink>
-          <NavLink to="/faq" className="nav-link" onClick={() => setIsProfileDropdownOpen(false)}>Ayuda/FAQ</NavLink>
+        <nav className={`nav ${isMenuOpen ? 'is-open' : ''}`}>
+          <NavLink to="/" end className="nav-link" onClick={() => setIsMenuOpen(false)}>Inicio</NavLink>
+          <NavLink to="/shows" className="nav-link" onClick={() => setIsMenuOpen(false)}>Shows</NavLink>
+          <NavLink to="/comollegar" className="nav-link" onClick={() => setIsMenuOpen(false)}>Cómo Llegar</NavLink>
+          <NavLink to="/premium" className="nav-link" onClick={() => setIsMenuOpen(false)}>Premium</NavLink>
+          <NavLink to="/faq" className="nav-link" onClick={() => setIsMenuOpen(false)}>Ayuda/FAQ</NavLink>
         </nav>
 
         <div className="actions">
