@@ -42,7 +42,7 @@ export default function Profile() {
               <p><strong>Rol:</strong> {user.rol}</p>
 
               <div style={{ marginTop: 12 }}>
-                <button className="btn btn-primary" onClick={() => navigate('/edit')}>Editar perfil</button>
+                <button className="btn btn-primary" onClick={() => navigate('/profile/edit')}>Editar perfil</button>
               </div>
             </div>
           </Section>

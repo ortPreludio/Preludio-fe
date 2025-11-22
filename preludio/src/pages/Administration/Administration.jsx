@@ -88,10 +88,10 @@ export function Administration() {
   const maxPage = Math.max(1, Math.ceil((total || 0) / (perPage || 1)));
 
   const handleEditUser = (userId) => {
-    navigate(`/edit?userId=${userId}`) // Pasamos el ID como query param
+    navigate(`/users/edit/${userId}`)
   }
   const handleEditEvent = (eventId) => {
-    navigate(`/edit?eventId=${eventId}`);
+    navigate(`/events/edit/${eventId}`);
   }
 
   return (

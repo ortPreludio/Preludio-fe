@@ -3,7 +3,7 @@ import { AuthProvider, useAuth } from "./state/auth.jsx";
 import { Home } from "./pages/Home/Home.jsx";
 import { Login } from "./pages/Login/Login.jsx";
 import { Register } from "./pages/Register/Register.jsx";
-import { Edit } from "./pages/Edit/Edit.jsx";
+import { EditUser } from "./pages/EditUser/EditUser.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
 import { Header } from "./components/layout/Header/Header.jsx";
 import { ComoLlegar } from './pages/ComoLlegar/ComoLlegar.jsx';
@@ -44,14 +44,15 @@ export default function App() {
             <Route element={<RequireRole roles={["ADMIN"]} />}>
               <Route path="/administration" element={<Administration />} />
               <Route path="/events/create" element={<CreateEvent />} />
-              <Route path="/edit/:id" element={<EditEvent />} />
+              <Route path="/events/edit/:id" element={<EditEvent />} />
+              <Route path="/users/edit/:id" element={<EditUser />} />
             </Route>
 
             {/* any authed-only (example) */}
             <Route element={<RequireAuth />}>
               <Route path="/profile" element={<Profile />} />
               <Route path="/mistickets" element={<MisTickets />} />
-              <Route path="/edit" element={<Edit />} />
+              <Route path="/profile/edit" element={<EditUser />} />
               <Route path="/perfil/cambiar-password" element={<ChangePassword />} />
             </Route>
 
