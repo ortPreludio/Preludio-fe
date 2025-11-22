@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound/NotFound.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
 import RequireRole from "./routes/RequireRole.jsx";
 import RedirectIfAuthenticated from "./routes/RedirectIfAuthenticated.jsx";
+import UserDetails from "./pages/UserDetails/UserDetails.jsx";
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
               <Route path="/events/create" element={<CreateEvent />} />
               <Route path="/events/edit/:id" element={<EditEvent />} />
               <Route path="/users/edit/:id" element={<EditUser />} />
+              <Route path="/users/:id" element={<UserDetails />} />
             </Route>
 
             {/* any authed-only (example) */}

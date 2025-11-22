@@ -4,7 +4,7 @@ import { Section } from "../../components/layout/Section/Section.jsx";
 import { fetchUsers } from "../../api/users.js";
 import { fetchAdminEvents } from "../../api/events.js";
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 export function Administration() {
   const navigate = useNavigate()
@@ -87,12 +87,7 @@ export function Administration() {
 
   const maxPage = Math.max(1, Math.ceil((total || 0) / (perPage || 1)));
 
-  const handleEditUser = (userId) => {
-    navigate(`/users/edit/${userId}`)
-  }
-  const handleEditEvent = (eventId) => {
-    navigate(`/events/edit/${eventId}`);
-  }
+
 
   return (
     <div className="page">
@@ -173,13 +168,18 @@ export function Administration() {
                       ))}
                       <td className="flex gap-2">
                         {/*<a className="btn btn-warning btn-xs" href={`/administration/${view}/${id}/edit`}>Editar</a>*/}
-                        <button
+                        <Link
                           className="btn btn-primary btn-sm"
-                          onClick={() => view === 'users' ? handleEditUser(id) : handleEditEvent(id)}
+                          to={view === 'users' ? `/users/edit/${id}` : `/events/edit/${id}`}
                         >
                           Editar
-                        </button>
-                        <a className="btn btn-info btn-xs" href={`/administration/${view}/${id}`}>Detalles</a>
+                        </Link>
+                        <Link
+                          className="btn btn-primary btn-sm"
+                          to={view === 'users' ? `/users/${id}` : `/administration/${view}/${id}`}
+                        >
+                          Detalles
+                        </Link>
                       </td>
                     </tr>
                   );
