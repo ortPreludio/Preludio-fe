@@ -175,8 +175,6 @@
 
 /* Responsive Logic */
 @media (max-width: 768px) {
-    .table-container {}
-
     .actions-desktop {
         display: none;
     }

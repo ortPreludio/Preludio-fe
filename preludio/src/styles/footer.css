@@ -1,9 +1,9 @@
 .site-footer {
     /* Fondo ligeramente más oscuro que el cuerpo para crear separación */
-    background-color: var(--color-footer-bg, #0d1117);
-    color: var(--color-text-muted, #ccc);
+    background-color: var(--bg-2);
+    color: var(--muted);
     padding-top: 50px;
-    border-top: 1px solid var(--color-border, #3a506b);
+    border-top: 1px solid var(--border-color);
     /* Separador visual */
 }
 
@@ -28,11 +28,11 @@
 }
 
 .footer-section h3 {
-    color: var(--color-light, #f0f0f0);
+    color: var(--text);
     /* Títulos en color claro */
     font-size: 1.25rem;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--primary);
     /* Línea de acento */
     display: inline-block;
     padding-bottom: 5px;
@@ -49,28 +49,28 @@
 
 .footer-section a,
 .footer-section p {
-    color: var(--color-text-light, #a0a0a0);
+    color: var(--muted);
     text-decoration: none;
     font-size: 0.95rem;
     transition: color 0.2s ease;
 }
 
 .footer-section a:hover {
-    color: var(--color-primary);
+    color: var(--primary);
     /* Resalta en el color principal al pasar el mouse */
     text-decoration: underline;
 }
 
 .footer-bottom {
-    background-color: var(--color-dark-bg, #1a202c);
+    background-color: #081016;
     /* Fondo más oscuro aún */
     padding: 15px 0;
     text-align: center;
-    border-top: 1px solid var(--color-border, #3a506b);
+    border-top: 1px solid var(--border-light);
 }
 
 .footer-bottom p {
     margin: 0;
     font-size: 0.85rem;
-    color: var(--color-text-muted, #888);
+    color: var(--muted);
 }
