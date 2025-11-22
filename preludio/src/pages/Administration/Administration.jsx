@@ -176,7 +176,7 @@ export function Administration() {
                         </Link>
                         <Link
                           className="btn btn-primary btn-sm"
-                          to={view === 'users' ? `/users/${id}` : `/administration/${view}/${id}`}
+                          to={view === 'users' ? `/users/${id}` : `/events/${id}`}
                         >
                           Detalles
                         </Link>
