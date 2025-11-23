@@ -49,9 +49,13 @@ export function Register() {
 
     try {
       const data = await apiRegister(payload);
-      setToken(data.token);
-      setUser(data.user);
-      navigate(returnTo, { replace: true });     // 👈 vuelve a donde quería ir
+      // Backend sets cookies and returns { user }
+      if (data && data.user) {
+        setUser(data.user);
+        navigate(returnTo, { replace: true });
+      } else {
+        throw new Error('Respuesta del servidor inválida');
+      }
     } catch (err) {
       setError(err?.message || 'Error al crear la cuenta');
     } finally {

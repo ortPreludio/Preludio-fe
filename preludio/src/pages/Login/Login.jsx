@@ -30,9 +30,12 @@ export function Login() {
 
     try {
       const data = await apiLogin({ email: email.trim().toLowerCase(), password });
-      setToken(data.token);
-      setUser(data.user);
-      navigate(returnTo, { replace: true });   // redirige a returnTo o '/'
+      if (data && data.user) {
+        setUser(data.user);
+        navigate(returnTo, { replace: true });
+      } else {
+        throw new Error('Respuesta del servidor inválida');
+      }
     } catch (err) {
       setError(err?.message || 'Error al iniciar sesión');
     } finally {
