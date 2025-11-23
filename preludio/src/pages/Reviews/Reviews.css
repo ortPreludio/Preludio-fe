@@ -202,13 +202,6 @@
 /* ============================================== */
 
 @media (max-width: 768px) {
-    .reviews-cta {
-        padding: 32px 20px;
-    }
-
-    .reviews-cta p {
-        font-size: 1.1rem;
-    }
 
     .my-review-section,
     .review-form {
