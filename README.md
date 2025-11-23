@@ -38,9 +38,17 @@ PORT=4000
   npm run preview
   ```
 
-## Usuarios de prueba (mock)
-- Admin: `admin@demo.com` / `admin123`
-- Cliente: `cliente@demo.com` / `cliente123`
+## 🔑 Credenciales de prueba
+
+```text
+ADMIN
+- Email: admin@preludio.com
+- Password: Password01!
+
+USUARIO
+- Email: usuario@preludio.com
+- Password: Password01!
+```
 
 ## Flujo principal
 1. Home: listado, búsqueda, filtros, orden por fecha.
