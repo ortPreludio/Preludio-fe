@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { apiLogin } from '../../api/auth.js';
 import { useAuth } from '../../state/authHook.js';
+import { PasswordInput } from '../../components/atoms/PasswordInput/PasswordInput.jsx';
 
 export function Login() {
   const { setToken, setUser } = useAuth();
@@ -15,7 +16,6 @@ export function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -59,29 +59,14 @@ export function Login() {
 
           <label className="form-field">
             <span>Contraseña</span>
-
-
-            <div style={{ position: 'relative' }}>
-              <input
-                type={showPwd ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={7}
-                autoComplete="current-password"
-                style={{ paddingRight: 90 }}
-                aria-invalid={password ? String(!isValidPassword) : undefined}
-              />
-              <button
-                type="button"
-                className={`btn btn-ghost ${showPwd ? 'showing-password' : ''}`}
-                style={{ position: 'absolute', right: 4, top: 4, padding: '6px 10px' }}
-                onClick={() => setShowPwd(s => !s)}
-                aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-              >
-                {showPwd ? 'Ocultar' : 'Mostrar'}
-              </button>
-            </div>
+            <PasswordInput
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={7}
+              autoComplete="current-password"
+              ariaInvalid={password ? String(!isValidPassword) : undefined}
+            />
             <small className="text-muted">Mínimo 8 caracteres.</small>
           </label>
 

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { apiRegister } from '../../api/auth.js';
 import { useAuth } from '../../state/authHook.js';
+import { PasswordInput } from '../../components/atoms/PasswordInput/PasswordInput.jsx';
 
 export function Register() {
   const { setToken, setUser } = useAuth();
@@ -18,7 +19,6 @@ export function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showPwd, setShowPwd] = useState(false);
 
   const maxDate = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
@@ -75,24 +75,22 @@ export function Register() {
 
           <label className="form-field"><span>DNI</span>
             <input value={form.dni} onChange={e => set('dni', e.target.value)} required inputMode="numeric"
-              pattern="^\\d{7,10}$" title="Solo números, entre 7 y 10 dígitos" autoComplete="off" />
+              pattern="^\d{7,10}$" title="Solo números, entre 7 y 10 dígitos" autoComplete="off" />
           </label>
 
           <label className="form-field"><span>Email</span>
             <input type="email" value={form.email} onChange={e => set('email', e.target.value)} required autoComplete="email" />
           </label>
 
-          <label className="form-field"><span>Contraseña</span>
-            <div style={{ position: 'relative' }}>
-              <input type={showPwd ? 'text' : 'password'} value={form.password}
-                onChange={e => set('password', e.target.value)} required minLength={8}
-                autoComplete="new-password" style={{ paddingRight: 90 }} />
-              <button type="button" className="btn btn-ghost"
-                style={{ position: 'absolute', right: 4, top: 4, padding: '6px 10px' }}
-                onClick={() => setShowPwd(s => !s)}>
-                {showPwd ? 'Ocultar' : 'Mostrar'}
-              </button>
-            </div>
+          <label className="form-field">
+            <span>Contraseña</span>
+            <PasswordInput
+              value={form.password}
+              onChange={e => set('password', e.target.value)}
+              required
+              minLength={8}
+              autoComplete="new-password"
+            />
             <small className="text-muted">Mínimo 8 caracteres.</small>
           </label>
 
