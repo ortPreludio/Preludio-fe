@@ -10,8 +10,8 @@ export function Home() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [order, setOrder] = useState('asc')
-  const [categoria, setCategoria] = useState('')
+  const [order] = useState('asc')
+  const [categoria] = useState('')
 
   useEffect(() => {
     setLoading(true); setError(null)

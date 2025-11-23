@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../state/auth.jsx";
+import { useAuth } from "../state/authHook.js";
 
 export default function RequireRole({ roles = [] }) {
   const { user } = useAuth();

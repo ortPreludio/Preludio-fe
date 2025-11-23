@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../state/auth.jsx';
+import { useAuth } from '../../state/authHook.js';
 import { fetchAllReviews, fetchMyReview, createReview, updateMyReview, deleteMyReview } from '../../api/reviews.js';
 import { Section } from '../../components/layout/Section/Section.jsx';
+import './Reviews.css';
 
 export function Reviews() {
   const { user } = useAuth();
@@ -22,7 +23,36 @@ export function Reviews() {
   });
 
   useEffect(() => {
+    let mounted = true;
+
+    const loadReviews = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const reviews = await fetchAllReviews();
+        if (!mounted) return;
+        setAllReviews(reviews);
+
+        if (user) {
+          const my = await fetchMyReview();
+          if (!mounted) return;
+          setMyReview(my);
+          if (my) {
+            setFormData({ rating: my.rating, comment: my.comment });
+          }
+        }
+      } catch (e) {
+        if (!mounted) return;
+        setError(e.message);
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
     loadReviews();
+    return () => { mounted = false; };
   }, [user]);
 
   // Hace desaparecer el mensaje 
@@ -33,7 +63,7 @@ export function Reviews() {
     }
   }, [message]);
 
-  const loadReviews = async () => {
+  const refetchReviews = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -75,7 +105,7 @@ export function Reviews() {
       }
 
       setShowForm(false);
-      loadReviews();
+      refetchReviews();
 
     } catch (e) {
       setMessage(e.message);
@@ -95,7 +125,7 @@ export function Reviews() {
       setMyReview(null);
       setFormData({ rating: 5, comment: "" });
       setShowForm(false);
-      loadReviews();
+      refetchReviews();
 
     } catch (e) {
       setMessage(e.message);

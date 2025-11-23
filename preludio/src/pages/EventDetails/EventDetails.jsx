@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { request } from '../../api/client.js';
-import { useAuth } from '../../state/auth.jsx';
+import { useAuth } from '../../state/authHook.js';
 import { Section } from '../../components/layout/Section/Section.jsx';
 import { EventCard } from '../../components/molecules/EventCard/EventCard.jsx';
 

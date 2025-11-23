@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { apiLogin } from '../../api/auth.js';
-import { useAuth } from '../../state/auth.jsx';
+import { useAuth } from '../../state/authHook.js';
 
 export function Login() {
   const { setToken, setUser } = useAuth();

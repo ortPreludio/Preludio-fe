@@ -65,12 +65,13 @@
 
 .review-card {
     background: linear-gradient(180deg, var(--card), var(--card-2));
-    padding: 24px;
-    margin-bottom: 16px;
+    padding: 20px;
+    margin-bottom: 32px;
     border-radius: var(--radius);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
 }
 
 .review-card:hover {
@@ -82,32 +83,39 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+    flex: 1;
 }
 
 .user-info strong {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     color: var(--text);
     font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .date {
     color: var(--muted);
     font-size: 0.875rem;
+    white-space: nowrap;
 }
 
 .review-comment {
-    line-height: 1.7;
+    line-height: 1.6;
     color: var(--text);
+    text-align: left;
     margin: 0;
 }
 
 /* Mensaje cuando no hay reseñas */
 .reviews-list p {
-    text-align: center;
+    text-align: left;
     color: var(--muted);
     padding: 32px;
     font-style: italic;

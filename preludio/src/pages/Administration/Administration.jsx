@@ -7,7 +7,7 @@ import { AdminList } from "../../components/organisms/AdminList/AdminList.jsx";
 
 export function Administration() {
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [view, setView] = useState("users"); // "users" | "events"
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);

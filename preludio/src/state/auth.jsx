@@ -1,7 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { apiLogin, apiLogout } from "../api/auth.js";
-
-const AuthCtx = createContext(null);
+import { AuthCtx } from "./authContext.js";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -28,7 +27,7 @@ export function AuthProvider({ children }) {
           // Clearear user
           setUser(null);
         }
-      } catch (err) {
+      } catch {
         if (!mounted) return;
         setUser(null);
       }
@@ -46,7 +45,7 @@ export function AuthProvider({ children }) {
     try { await apiLogout(); } finally { setUser(null); }
   };
 
-  const setToken = () => {};
+  const setToken = () => { };
 
   return (
     <AuthCtx.Provider value={{ user, setUser, login, logout, setToken }}>
@@ -54,5 +53,3 @@ export function AuthProvider({ children }) {
     </AuthCtx.Provider>
   );
 }
-
-export function useAuth() { return useContext(AuthCtx); }
