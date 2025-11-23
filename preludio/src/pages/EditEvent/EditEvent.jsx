@@ -26,6 +26,7 @@ export default function EditEvent() {
           ubicacion: data.ubicacion || {},
           precioBase: data.precioBase ?? data.precio ?? 0,
           capacidadTotal: data.capacidadTotal ?? data.capacidad ?? 0,
+          entradasDisponibles: data.entradasDisponibles ?? data.ticketsDisponibles ?? data.capacidadTotal ?? 0,
           imagen: data.imagen || '',
           estadoPublicacion: data.estadoPublicacion || 'PENDING',
         };

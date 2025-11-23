@@ -10,6 +10,7 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
     ubicacion: { lugar: '', direccion: '', ciudad: '', provincia: '' },
     precioBase: 0,
     capacidadTotal: 0,
+    entradasDisponibles: 0,
     imagen: '',
     estadoPublicacion: 'PENDING',
     ...initial,
@@ -20,7 +21,7 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
   useEffect(() => {
     const merged = {
       ...{
-        titulo: '', descripcion: '', categoria: 'Concierto', fecha: '', hora: '20:00', ubicacion: { lugar: '', direccion: '', ciudad: '', provincia: '' }, precioBase: 0, capacidadTotal: 0, imagen: '', estadoPublicacion: 'PENDING'
+        titulo: '', descripcion: '', categoria: 'Concierto', fecha: '', hora: '20:00', ubicacion: { lugar: '', direccion: '', ciudad: '', provincia: '' }, precioBase: 0, capacidadTotal: 0, entradasDisponibles: 0, imagen: '', estadoPublicacion: 'PENDING'
       }, ...initial
     };
     onChange && onChange(merged);
@@ -45,6 +46,8 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
     if (!form.ubicacion?.lugar || !form.ubicacion?.direccion) return false;
     if (Number(form.precioBase) < 0) return false;
     if (Number(form.capacidadTotal) <= 0) return false;
+    if (Number(form.entradasDisponibles) < 0) return false;
+    if (Number(form.entradasDisponibles) > Number(form.capacidadTotal)) return false;
     return true;
   };
 
@@ -60,6 +63,7 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
       ubicacion: form.ubicacion,
       precioBase: Number(form.precioBase),
       capacidadTotal: Number(form.capacidadTotal),
+      entradasDisponibles: Number(form.entradasDisponibles),
       imagen: form.imagen || undefined,
       estadoPublicacion: form.estadoPublicacion,
     };
@@ -124,10 +128,22 @@ export default function EventForm({ initial = {}, onSubmit, submitLabel = 'Guard
         <label className="form-field"><span>Precio</span>
           <input type="number" min="0" value={form.precioBase} onChange={e => setField('precioBase', e.target.value)} />
         </label>
-        <label className="form-field"><span>Capacidad</span>
+        <label className="form-field"><span>Capacidad Total</span>
           <input type="number" min="1" value={form.capacidadTotal} onChange={e => setField('capacidadTotal', e.target.value)} />
         </label>
       </div>
+
+      <label className="form-field">
+        <span>Entradas Disponibles</span>
+        <input
+          type="number"
+          min="0"
+          max={form.capacidadTotal}
+          value={form.entradasDisponibles}
+          onChange={e => setField('entradasDisponibles', e.target.value)}
+        />
+        <small className="text-muted">Máximo: {form.capacidadTotal}</small>
+      </label>
 
       <label className="form-field"><span>Estado publicación</span>
         <select value={form.estadoPublicacion} onChange={e => setField('estadoPublicacion', e.target.value)}>
