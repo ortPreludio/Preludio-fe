@@ -1,0 +1,96 @@
+/* Event Carousel - Desktop Only */
+.event-carousel {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+}
+
+.event-carousel__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.event-carousel__track-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.event-carousel__track {
+    display: flex;
+    gap: 20px;
+    will-change: transform;
+}
+
+.event-carousel__slide {
+    flex: 0 0 calc(33.333% - 14px);
+    /* 3 cards visible, accounting for gap */
+    min-width: 0;
+}
+
+/* Navigation Arrows */
+.event-carousel__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-carousel__arrow:hover {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: var(--primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.event-carousel__arrow--left {
+    left: -24px;
+}
+
+.event-carousel__arrow--right {
+    right: -24px;
+}
+
+/* Dot Indicators */
+.event-carousel__dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.event-carousel__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.event-carousel__dot:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.2);
+}
+
+.event-carousel__dot--active {
+    background: var(--primary);
+    width: 32px;
+    border-radius: 6px;
+}

@@ -3,6 +3,7 @@ import './Home.css';
 import { Hero } from '../../components/layout/Hero/Hero.jsx'
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { EventGrid } from '../../components/organisms/EventGrid/EventGrid.jsx'
+import { EventCarousel } from '../../components/organisms/EventCarousel/EventCarousel.jsx'
 import { useEffect, useState } from 'react'
 import { fetchPublicEvents } from '../../api/events.js'
 
@@ -27,7 +28,22 @@ export function Home() {
       <Section title="Nuevos shows">
         {loading && <div className="loader">Cargando eventos…</div>}
         {error && <div className="error">Error: {error}</div>}
-        {!loading && !error && <EventGrid items={items} />}
+        {!loading && !error && (
+          <>
+            {/* Desktop: Carousel */}
+            <div className="home-event-carousel">
+              <EventCarousel items={items} />
+            </div>
+            {/* Mobile: Grid */}
+            <div className="home-event-grid">
+              <EventGrid items={items} />
+            </div>
+            {/* Ver todos button */}
+            <div className="view-all-container">
+              <Link to="/shows" className="btn btn-primary">Ver todos los shows →</Link>
+            </div>
+          </>
+        )}
       </Section>
       <Section title="¿Qué opinan nuestros usuarios?">
         <div className="reviews-cta">

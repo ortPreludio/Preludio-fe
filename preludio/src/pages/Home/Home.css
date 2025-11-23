@@ -33,3 +33,39 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(18, 164, 255, 0.3);
 }
+
+/* Ver todos button */
+.view-all-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.view-all-container .btn {
+    min-width: 200px;
+}
+
+/* Home page specific - hide grid on desktop, show carousel */
+.home-event-grid {
+    display: grid;
+}
+
+@media (min-width: 768px) {
+    .home-event-grid {
+        display: none;
+        /* Hide grid on desktop in Home */
+    }
+}
+
+@media (max-width: 767px) {
+    .home-event-carousel {
+        display: none;
+        /* Hide carousel on mobile in Home */
+    }
+
+    .home-event-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        /* Single column on mobile */
+    }
+}
