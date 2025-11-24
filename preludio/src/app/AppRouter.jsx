@@ -17,6 +17,7 @@ import { Terminos } from '../pages/footer/Terminos.jsx';
 import { DefensaConsumidor } from '../pages/footer/DefensaConsumidor.jsx';
 import { Refund } from '../pages/footer/Refund.jsx';
 import { MisTickets } from "../pages/MisTickets/MisTickets.jsx";
+import { TicketDetail } from "../pages/TicketDetail/TicketDetail.jsx";
 import ChangePassword from "../pages/ChangePassword/ChangePassword.jsx";
 import Forbidden from "../pages/Forbidden/Forbidden.jsx";
 import NotFound from "../pages/NotFound/NotFound.jsx";
@@ -25,6 +26,7 @@ import RequireRole from "../routes/RequireRole.jsx";
 import RedirectIfAuthenticated from "../routes/RedirectIfAuthenticated.jsx";
 import UserDetails from "../pages/UserDetails/UserDetails.jsx";
 import EventDetails from "../pages/EventDetails/EventDetails.jsx";
+import CheckoutPage from "../pages/CheckoutPage.jsx";
 
 export function AppRouter() {
     return (
@@ -48,6 +50,8 @@ export function AppRouter() {
             <Route element={<RequireAuth />}>
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/mistickets" element={<MisTickets />} />
+                <Route path="/ticket/:id" element={<TicketDetail />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/profile/edit" element={<EditUser />} />
                 <Route path="/perfil/cambiar-password" element={<ChangePassword />} />
             </Route>

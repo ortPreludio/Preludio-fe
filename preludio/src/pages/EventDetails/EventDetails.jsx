@@ -113,13 +113,12 @@ export default function EventDetails() {
                             <span className="event-cta-price-label">Desde</span>
                             <span className="event-cta-price-value">${event.precioBase ?? event.precio ?? 0}</span>
                         </div>
-                        <a
-                            href={event.buyUrl || '#'}
-                            className={`btn btn-primary btn-block ${!event.buyUrl ? 'btn-disabled' : ''}`}
-                            {...(!event.buyUrl && { disabled: true })}
+                        <button
+                            onClick={() => navigate(`/checkout?evento=${id}&precio=${event.precioBase ?? event.precio ?? 0}`)}
+                            className="btn btn-primary btn-block"
                         >
                             Comprar Entradas
-                        </a>
+                        </button>
                         <div className="event-cta-actions">
                             <button className="btn btn-ghost btn-block" onClick={() => navigate(-1)}>
                                 ← Volver
