@@ -171,14 +171,14 @@ export function AdminList({
             </div>
 
             {/* Pagination */}
-            <div className="join mt-4 flex justify-center">
-                <button className="btn join-item btn-sm" onClick={() => setPage(1)} disabled={page <= 1}>«</button>
-                <button className="btn join-item btn-sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>‹</button>
-                <button className="btn join-item btn-ghost btn-sm no-animation pointer-events-none">
+            <div className="pagination">
+                <button className="pagination-btn" onClick={() => setPage(1)} disabled={page <= 1}>«</button>
+                <button className="pagination-btn" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>‹</button>
+                <span className="pagination-info">
                     Página {page} / {maxPage}
-                </button>
-                <button className="btn join-item btn-sm" onClick={() => setPage(p => Math.min(maxPage, p + 1))} disabled={page >= maxPage}>›</button>
-                <button className="btn join-item btn-sm" onClick={() => setPage(maxPage)} disabled={page >= maxPage}>»</button>
+                </span>
+                <button className="pagination-btn" onClick={() => setPage(p => Math.min(maxPage, p + 1))} disabled={page >= maxPage}>›</button>
+                <button className="pagination-btn" onClick={() => setPage(maxPage)} disabled={page >= maxPage}>»</button>
             </div>
         </div>
     );
