@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { request } from '../../lib/infra/http-client.js';
 import { useAuth } from '../../store/authStore.js';
+import { BuyButton } from '../../components/molecules/BuyButton/BuyButton.jsx';
 import { formatDateISOToLong } from '../../utils/format.js';
 import './EventDetails.css';
 
@@ -113,12 +114,15 @@ export default function EventDetails() {
                             <span className="event-cta-price-label">Desde</span>
                             <span className="event-cta-price-value">${event.precioBase ?? event.precio ?? 0}</span>
                         </div>
-                        <button
-                            onClick={() => navigate(`/checkout?evento=${id}`)}
-                            className="btn btn-primary btn-block"
+
+                        <BuyButton
+                            eventId={id}
+                            entradasDisponibles={event.entradasDisponibles}
+                            fullWidth
                         >
                             Comprar Entradas
-                        </button>
+                        </BuyButton>
+
                         <div className="event-cta-actions">
                             <button className="btn btn-ghost btn-block" onClick={() => navigate(-1)}>
                                 ← Volver
