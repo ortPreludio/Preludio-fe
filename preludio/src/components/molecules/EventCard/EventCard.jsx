@@ -11,8 +11,8 @@ export function EventCard({ event }) {
   const id = event._id
   const precio = event.precioBase ?? event.precio ?? 0
 
-  const handleBuyClick = () => {
-    navigate(`/checkout?evento=${id}&precio=${precio}`);
+  const handleBuy = () => {
+    navigate(`/checkout?evento=${event._id}`);
   };
 
   return (
@@ -30,7 +30,7 @@ export function EventCard({ event }) {
         ) : (
           <Button variant="ghost" disabled>Más info</Button>
         )}
-        <Button variant="primary" onClick={handleBuyClick}>Comprar</Button>
+        <Button variant="primary" onClick={handleBuy}>Comprar</Button>
       </div>
     </article>
   )

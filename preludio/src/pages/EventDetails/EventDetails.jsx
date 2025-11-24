@@ -114,7 +114,7 @@ export default function EventDetails() {
                             <span className="event-cta-price-value">${event.precioBase ?? event.precio ?? 0}</span>
                         </div>
                         <button
-                            onClick={() => navigate(`/checkout?evento=${id}&precio=${event.precioBase ?? event.precio ?? 0}`)}
+                            onClick={() => navigate(`/checkout?evento=${id}`)}
                             className="btn btn-primary btn-block"
                         >
                             Comprar Entradas

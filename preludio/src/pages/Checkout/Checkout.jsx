@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { checkout } from '../../lib/services/pagos.service';
-import { MercadoPagoPreview } from '../../components/molecules/MercadoPagoPreview/MercadoPagoPreview';
-import { CardReader } from '../../components/molecules/CardReader/CardReader';
+import { fetchEventById } from '../../lib/services/events.service';
 import {
     MercadoPagoProcessor,
     CardProcessor,
     CashProcessor
 } from '../../components/organisms/PaymentProcessors';
+import { MercadoPagoPreview } from '../../components/molecules/MercadoPagoPreview/MercadoPagoPreview';
+import { CardReader } from '../../components/molecules/CardReader/CardReader';
 import './Checkout.css';
 
 /**
@@ -18,19 +19,43 @@ export function Checkout() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    // Obtener eventId y precio desde la URL
+    // Obtener eventId desde la URL (NO el precio, por seguridad)
     const eventId = searchParams.get('evento');
-    const precio = searchParams.get('precio') || 0;
 
     const [loading, setLoading] = useState(false);
+    const [loadingEvent, setLoadingEvent] = useState(true);
     const [error, setError] = useState(null);
     const [showAnimation, setShowAnimation] = useState(false);
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState('success');
+    const [event, setEvent] = useState(null);
     const [formData, setFormData] = useState({
         metodo: 'MERCADO_PAGO',
         tipoEntrada: 'GENERAL',
     });
+
+    // Fetch event data on mount
+    useEffect(() => {
+        const loadEvent = async () => {
+            if (!eventId) {
+                setLoadingEvent(false);
+                return;
+            }
+
+            try {
+                const eventData = await fetchEventById(eventId);
+                setEvent(eventData);
+            } catch (err) {
+                setError(err.message || 'Error al cargar el evento');
+                setMessage(err.message || 'Error al cargar el evento');
+                setMessageType('error');
+            } finally {
+                setLoadingEvent(false);
+            }
+        };
+
+        loadEvent();
+    }, [eventId]);
 
     // Auto-dismiss message after 3.5 seconds
     useEffect(() => {
@@ -58,9 +83,9 @@ export function Checkout() {
             const pagoData = {
                 evento: eventId,
                 metodo: formData.metodo,
-                monto: parseFloat(precio),
+                monto: event.precioBase,
                 tipoEntrada: formData.tipoEntrada,
-                precioPagado: parseFloat(precio),
+                precioPagado: event.precioBase,
                 // Simular referencia externa de MercadoPago
                 referenciaExterna: formData.metodo === 'MERCADO_PAGO'
                     ? `MP-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
@@ -96,8 +121,31 @@ export function Checkout() {
                     <p>Error: No se especificó un evento para el checkout.</p>
                     <button
                         onClick={() => navigate('/shows')}
-                        className="btn btn-ghost"
-                        style={{ marginTop: 'var(--spacing-2)' }}
+                        className="btn btn-ghost checkout-page__error-button"
+                    >
+                        Volver a eventos
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (loadingEvent) {
+        return (
+            <div className="checkout-page">
+                <div className="loader">Cargando información del evento...</div>
+            </div>
+        );
+    }
+
+    if (!event) {
+        return (
+            <div className="checkout-page">
+                <div className="checkout-page__error">
+                    <p>Error: No se pudo cargar la información del evento.</p>
+                    <button
+                        onClick={() => navigate('/shows')}
+                        className="btn btn-ghost checkout-page__error-button"
                     >
                         Volver a eventos
                     </button>
@@ -124,9 +172,18 @@ export function Checkout() {
 
             <div className="checkout-page__summary">
                 <h2 className="checkout-page__summary-title">Resumen de Compra</h2>
+                <div className="checkout-page__summary-event">
+                    <h3>{event.titulo}</h3>
+                    <p>{new Date(event.fecha).toLocaleDateString('es-ES', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })}</p>
+                </div>
                 <div className="checkout-page__summary-total">
                     <span>Precio Total:</span>
-                    <span className="price">${precio}</span>
+                    <span className="price">${event.precioBase}</span>
                 </div>
             </div>
 
@@ -216,4 +273,3 @@ export function Checkout() {
         </div>
     );
 }
-
