@@ -52,3 +52,23 @@
 .buy-button.sold-out:hover .buy-button__tooltip {
     opacity: 1;
 }
+
+/* Mobile: Show as static message */
+@media (max-width: 768px) {
+    .buy-button__tooltip {
+        position: static;
+        display: block;
+        transform: none;
+        opacity: 1;
+        margin-top: 8px;
+        width: 100%;
+        text-align: center;
+        background: rgba(255, 107, 107, 0.1);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 107, 107, 0.2);
+    }
+
+    .buy-button__tooltip::after {
+        display: none;
+    }
+}
