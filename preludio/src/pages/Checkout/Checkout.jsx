@@ -192,23 +192,26 @@ export function Checkout() {
                     </div>
                 )}
 
-                <div className="checkout-page__actions">
-                    <button
-                        type="button"
-                        onClick={() => navigate(-1)}
-                        className="btn btn-ghost"
-                        disabled={loading}
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        disabled={loading || !eventId}
-                    >
-                        {loading ? 'Procesando...' : 'Confirmar Pago'}
-                    </button>
-                </div>
+                {/* Solo mostrar botones si no hay mensaje de éxito para evitar que se puedan enviar dos veces */}
+                {!(message && messageType === 'success') && (
+                    <div className="checkout-page__actions">
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="btn btn-ghost"
+                            disabled={loading}
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={loading || !eventId}
+                        >
+                            {loading ? 'Procesando...' : 'Confirmar Pago'}
+                        </button>
+                    </div>
+                )}
             </form>
         </div>
     );
