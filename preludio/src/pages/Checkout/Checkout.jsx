@@ -1,6 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { checkout } from '../../lib/services/pagos.service';
+import { MercadoPagoPreview } from '../../components/molecules/MercadoPagoPreview/MercadoPagoPreview';
+import { CardReader } from '../../components/molecules/CardReader/CardReader';
+import {
+    MercadoPagoProcessor,
+    CardProcessor,
+    CashProcessor
+} from '../../components/organisms/PaymentProcessors';
 import './Checkout.css';
 
 /**
@@ -17,10 +24,21 @@ export function Checkout() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showAnimation, setShowAnimation] = useState(false);
+    const [message, setMessage] = useState(null);
+    const [messageType, setMessageType] = useState('success');
     const [formData, setFormData] = useState({
         metodo: 'MERCADO_PAGO',
         tipoEntrada: 'GENERAL',
     });
+
+    // Auto-dismiss message after 3.5 seconds
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => setMessage(null), 3500);
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,6 +49,10 @@ export function Checkout() {
         e.preventDefault();
         setLoading(true);
         setError(null);
+        setShowAnimation(true);
+
+        // Simular tiempo de procesamiento de pago con animación
+        await new Promise(resolve => setTimeout(resolve, 3000));
 
         try {
             const pagoData = {
@@ -47,12 +69,21 @@ export function Checkout() {
 
             const result = await checkout(pagoData);
 
-            // Redirigir a mis tickets tras un pago exitoso
-            alert('¡Pago completado exitosamente!');
-            navigate('/mistickets');
+            // Mostrar mensaje de éxito
+            setShowAnimation(false);
+            setMessage('¡Pago completado exitosamente!');
+            setMessageType('success');
+
+            // Redirigir después de 2 segundos
+            setTimeout(() => {
+                navigate('/mistickets');
+            }, 2000);
 
         } catch (err) {
+            setShowAnimation(false);
             setError(err.message || 'Error al procesar el pago');
+            setMessage(err.message || 'Error al procesar el pago');
+            setMessageType('error');
         } finally {
             setLoading(false);
         }
@@ -79,7 +110,13 @@ export function Checkout() {
         <div className="checkout-page">
             <h1 className="checkout-page__title">Checkout - Finalizar Compra</h1>
 
-            {error && (
+            {message && (
+                <div className={`msg msg-${messageType}`}>
+                    {message}
+                </div>
+            )}
+
+            {error && !message && (
                 <div className="checkout-page__error">
                     {error}
                 </div>
@@ -106,6 +143,7 @@ export function Checkout() {
                         onChange={handleChange}
                         className="checkout-page__form-select"
                         required
+                        disabled={loading}
                     >
                         <option value="MERCADO_PAGO">Mercado Pago</option>
                         <option value="TARJETA">Tarjeta de Crédito/Débito</option>
@@ -123,6 +161,7 @@ export function Checkout() {
                         onChange={handleChange}
                         className="checkout-page__form-select"
                         required
+                        disabled={loading}
                     >
                         <option value="GENERAL">General</option>
                         <option value="VIP">VIP</option>
@@ -130,12 +169,26 @@ export function Checkout() {
                     </select>
                 </div>
 
-                {formData.metodo === 'MERCADO_PAGO' && (
+                {/* Preview de Mercado Pago */}
+                {formData.metodo === 'MERCADO_PAGO' && !showAnimation && (
                     <div className="checkout-page__info-box">
-                        <p>
-                            ⓘ En producción, aquí se mostraría el botón de Mercado Pago.
-                            Por ahora, esto es una simulación.
-                        </p>
+                        <MercadoPagoPreview />
+                    </div>
+                )}
+
+                {/* Preview de Tarjeta */}
+                {formData.metodo === 'TARJETA' && !showAnimation && (
+                    <div className="checkout-page__info-box">
+                        <CardReader />
+                    </div>
+                )}
+
+                {/* Animaciones durante procesamiento */}
+                {showAnimation && (
+                    <div className="payment-animation">
+                        {formData.metodo === 'MERCADO_PAGO' && <MercadoPagoProcessor />}
+                        {formData.metodo === 'TARJETA' && <CardProcessor />}
+                        {formData.metodo === 'EFECTIVO' && <CashProcessor />}
                     </div>
                 )}
 
@@ -160,3 +213,4 @@ export function Checkout() {
         </div>
     );
 }
+
