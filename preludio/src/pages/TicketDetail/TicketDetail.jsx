@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchTicketById } from '../../lib/services/tickets.service';
 import { Section } from '../../components/layout/Section/Section';
 import { Text } from '../../components/atoms/Text/Text';
+import QRCode from "react-qr-code"; 
 import './TicketDetail.css';
 
 export function TicketDetail() {
@@ -100,14 +101,17 @@ export function TicketDetail() {
                             </div>
                         </div>
 
-                        <div className="ticket-qr-column">
-                            <div className="qr-card">
-                                <div className="qr-placeholder">
-                                    {/* Placeholder para componente de QR */}
-                                    <div className="qr-mockup">
-                                        <span className="qr-icon">📱</span>
-                                        <p>Código QR</p>
-                                    </div>
+                        {/* QR Code Section */}
+                        <div className="ticket-detail__qr-section">
+                            <h3 className="ticket-detail__section-title">Código QR</h3>
+                            <div className="ticket-detail__qr-wrapper">
+                                <div className="ticket-detail__qr">
+                                    <QRCode 
+                                        value={ticket.codigoQR}   // << EL QR REAL
+                                        size={180}
+                                    />
+                                    <p className="ticket-detail__qr-id">{ticket._id}</p>
+                                    <small>Presenta este código en el evento</small>
                                 </div>
                                 <p className="qr-instruction">Presenta este código al ingresar</p>
                                 <p className="qr-id-ref">{ticket._id}</p>
