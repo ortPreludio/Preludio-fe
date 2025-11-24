@@ -1,67 +1,54 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// src/lib/services/reviews.service.js
+import { request } from "../infra/http-client.js";
 
-// Obtener todas las reseñas (público)
-export async function fetchAllReviews() {
-  const res = await fetch(`${API_URL}/api/reviews`);
-  if (!res.ok) throw new Error('Error al obtener reseñas');
-  return res.json();
+/**
+ * Obtener todas las reseñas (público)
+ */
+export function fetchAllReviews() {
+  return request('/reviews');
 }
 
-// Obtener mi reseña (autenticado) - SIN TOKEN, usa cookies
+/**
+ * Obtener mi reseña (autenticado)
+ * Usa cookies httpOnly automáticamente
+ */
 export async function fetchMyReview() {
-  const res = await fetch(`${API_URL}/api/reviews/me/review`, {
-    credentials: 'include' // <- IMPORTANTE: envía las cookies
-  });
-  if (!res.ok) {
-    if (res.status === 404) return null;
-    throw new Error('Error al obtener tu reseña');
+  try {
+    return await request('/reviews/me/review');
+  } catch (error) {
+    // Si es 404, no hay reseña
+    if (error.message?.includes('404')) return null;
+    throw error;
   }
-  return res.json();
 }
 
-// Crear reseña (autenticado) - SIN TOKEN, usa cookies
-export async function createReview(data) {
-  const res = await fetch(`${API_URL}/api/reviews`, {
+/**
+ * Crear reseña (autenticado)
+ * @param {Object} data - Datos de la reseña (rating, comentario, etc.)
+ */
+export function createReview(data) {
+  return request('/reviews', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include', //esto envía las cookies
-    body: JSON.stringify(data)
+    body: data
   });
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || error.message || 'Error al crear reseña');
-  }
-  return res.json();
 }
 
-// Actualizar mi reseña (autenticado) - SIN TOKEN, usa cookies
-export async function updateMyReview(data) {
-  const res = await fetch(`${API_URL}/api/reviews/me`, {
+/**
+ * Actualizar mi reseña (autenticado)
+ * @param {Object} data - Datos actualizados
+ */
+export function updateMyReview(data) {
+  return request('/reviews/me', {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include', //aca lo mismo, envía las cookies
-    body: JSON.stringify(data)
+    body: data
   });
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || 'Error al actualizar reseña');
-  }
-  return res.json();
 }
 
-// Eliminar mi reseña (autenticado) - SIN TOKEN, usa cookies
-export async function deleteMyReview() {
-  const res = await fetch(`${API_URL}/api/reviews/me`, {
-    method: 'DELETE',
-    credentials: 'include' //envía las cookies
+/**
+ * Eliminar mi reseña (autenticado)
+ */
+export function deleteMyReview() {
+  return request('/reviews/me', {
+    method: 'DELETE'
   });
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || 'Error al eliminar reseña');
-  }
-  return res.json();
 }
