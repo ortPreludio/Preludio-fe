@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../state/authHook.js';
+import { useAuth } from '../../store/authStore.js';
 import { apiUpdateProfile } from '../../api/auth.js';
 import { request } from '../../api/client.js';
 import UserForm from '../../components/organisms/UserForm/UserForm.jsx';

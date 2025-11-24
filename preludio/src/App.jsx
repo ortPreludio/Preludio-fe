@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "./state/auth.jsx";
+import { useEffect } from "react";
+import { useAuthStore } from "./store/authStore.js";
 import { Home } from "./pages/Home/Home.jsx";
 import { Login } from "./pages/Login/Login.jsx";
 import { Register } from "./pages/Register/Register.jsx";
@@ -30,57 +31,62 @@ import UserDetails from "./pages/UserDetails/UserDetails.jsx";
 import EventDetails from "./pages/EventDetails/EventDetails.jsx";
 
 export default function App() {
+  const validateSession = useAuthStore((state) => state.validateSession);
+
+  // Validate session on app mount
+  useEffect(() => {
+    validateSession();
+  }, [validateSession]);
+
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Header />
-        <main style={{ minHeight: "80vh", padding: "2rem" }}>
-          <Routes>
-            {/* guest-only */}
-            <Route element={<RedirectIfAuthenticated />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Route>
+    <BrowserRouter>
+      <Header />
+      <main style={{ minHeight: "80vh", padding: "2rem" }}>
+        <Routes>
+          {/* guest-only */}
+          <Route element={<RedirectIfAuthenticated />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
 
-            {/* admin-only */}
-            <Route element={<RequireRole roles={["ADMIN"]} />}>
-              <Route path="/administration" element={<Administration />} />
-              <Route path="/events/create" element={<CreateEvent />} />
-              <Route path="/events/edit/:id" element={<EditEvent />} />
-              <Route path="/users/edit/:id" element={<EditUser />} />
-              <Route path="/users/:id" element={<UserDetails />} />
-            </Route>
+          {/* admin-only */}
+          <Route element={<RequireRole roles={["ADMIN"]} />}>
+            <Route path="/administration" element={<Administration />} />
+            <Route path="/events/create" element={<CreateEvent />} />
+            <Route path="/events/edit/:id" element={<EditEvent />} />
+            <Route path="/users/edit/:id" element={<EditUser />} />
+            <Route path="/users/:id" element={<UserDetails />} />
+          </Route>
 
-            {/* any authed-only (example) */}
-            <Route element={<RequireAuth />}>
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/mistickets" element={<MisTickets />} />
-              <Route path="/profile/edit" element={<EditUser />} />
-              <Route path="/perfil/cambiar-password" element={<ChangePassword />} />
-            </Route>
+          {/* any authed-only (example) */}
+          <Route element={<RequireAuth />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/mistickets" element={<MisTickets />} />
+            <Route path="/profile/edit" element={<EditUser />} />
+            <Route path="/perfil/cambiar-password" element={<ChangePassword />} />
+          </Route>
 
-            {/* public */}
-            <Route path="/forbidden" element={<Forbidden />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/events/:id" element={<EventDetails />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/shows" element={<Shows />} />
-            <Route path="/reviews" element={<Reviews />} />
-            {/* 2. RUTAS DE INFORMACIÓN (QUE ESTABAN BLOQUEADAS) */}
-            <Route path="/comollegar" element={<ComoLlegar />} />
-            <Route path="/premium" element={<Premium />} />
-            <Route path="/faq" element={<Faq />} />
-            <Route path="/legal/privacidad" element={<Privacidad />} />
-            <Route path="/legal/terminos" element={<Terminos />} />
-            <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
-            <Route path="/refund" element={<Refund />} />
+          {/* public */}
+          <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/events/:id" element={<EventDetails />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/shows" element={<Shows />} />
+          <Route path="/reviews" element={<Reviews />} />
+          {/* 2. RUTAS DE INFORMACIÓN (QUE ESTABAN BLOQUEADAS) */}
+          <Route path="/comollegar" element={<ComoLlegar />} />
+          <Route path="/premium" element={<Premium />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/legal/privacidad" element={<Privacidad />} />
+          <Route path="/legal/terminos" element={<Terminos />} />
+          <Route path="/legal/defensaconsumidor" element={<DefensaConsumidor />} />
+          <Route path="/refund" element={<Refund />} />
 
 
-          </Routes>
-        </main>
-        <Footer />
-      </BrowserRouter>
-    </AuthProvider>
+        </Routes>
+      </main>
+      <Footer />
+    </BrowserRouter>
   );
 }
 

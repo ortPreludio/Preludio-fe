@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../state/authHook.js';
-import { fetchAllReviews, fetchMyReview, createReview, updateMyReview, deleteMyReview } from '../../api/reviews.js';
+import { useAuth } from '../../store/authStore.js';
+import { fetchMyReview, createReview, updateMyReview, deleteMyReview } from '../../api/reviews.js';
+import { useReviewsStore } from '../../store/reviewsStore.js';
 import { Section } from '../../components/layout/Section/Section.jsx';
 import './Reviews.css';
 
 export function Reviews() {
   const { user } = useAuth();
 
-  const [allReviews, setAllReviews] = useState([]);
+  // Use Zustand store for all reviews
+  const { reviews: allReviews, loading, error, fetchReviews, isStale } = useReviewsStore();
+
+  // Keep myReview as local state (user-specific)
   const [myReview, setMyReview] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadingMyReview, setLoadingMyReview] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
   // Mensajes visuales
@@ -26,34 +29,35 @@ export function Reviews() {
     let mounted = true;
 
     const loadReviews = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const reviews = await fetchAllReviews();
-        if (!mounted) return;
-        setAllReviews(reviews);
+      // Load all reviews from store (or fetch if stale/empty)
+      if (allReviews.length === 0 || isStale()) {
+        fetchReviews();
+      }
 
-        if (user) {
+      // Load my review if user is logged in
+      if (user) {
+        setLoadingMyReview(true);
+        try {
           const my = await fetchMyReview();
           if (!mounted) return;
           setMyReview(my);
           if (my) {
             setFormData({ rating: my.rating, comment: my.comment });
           }
-        }
-      } catch (e) {
-        if (!mounted) return;
-        setError(e.message);
-      } finally {
-        if (mounted) {
-          setLoading(false);
+        } catch {
+          // 404 means no review yet, which is fine
+          if (!mounted) return;
+        } finally {
+          if (mounted) {
+            setLoadingMyReview(false);
+          }
         }
       }
     };
 
     loadReviews();
     return () => { mounted = false; };
-  }, [user]);
+  }, [user, allReviews.length, fetchReviews, isStale]);
 
   // Hace desaparecer el mensaje 
   useEffect(() => {
@@ -64,23 +68,20 @@ export function Reviews() {
   }, [message]);
 
   const refetchReviews = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const reviews = await fetchAllReviews();
-      setAllReviews(reviews);
+    // Refetch all reviews and update store
+    await fetchReviews();
 
-      if (user) {
+    // Refetch my review
+    if (user) {
+      try {
         const my = await fetchMyReview();
         setMyReview(my);
         if (my) {
           setFormData({ rating: my.rating, comment: my.comment });
         }
+      } catch {
+        // No review found
       }
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -133,7 +134,7 @@ export function Reviews() {
     }
   };
 
-  if (loading) return <div className="loader">Cargando reseñas...</div>;
+  if (loading || loadingMyReview) return <div className="loader">Cargando reseñas...</div>;
 
   return (
     <div className="reviews-page">

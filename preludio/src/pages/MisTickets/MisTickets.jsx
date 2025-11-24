@@ -1,6 +1,6 @@
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../../state/authHook.js'; // Importación necesaria
+import { useAuth } from '../../store/authStore.js'; // Importación necesaria
 import { fetchMyTickets } from '../../api/tickets.js'; // Función de API
 
 // Componente individual para mostrar un ticket
