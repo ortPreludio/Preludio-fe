@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchTicketById } from '../../lib/services/tickets.service';
 import { Section } from '../../components/layout/Section/Section';
+import QRCode from "react-qr-code"; 
 import './TicketDetail.css';
 
 export function TicketDetail() {
@@ -29,6 +30,7 @@ export function TicketDetail() {
         month: 'long',
         year: 'numeric'
     });
+
     const fechaCompra = new Date(ticket.createdAt || ticket.fechaCompra).toLocaleDateString('es-ES');
 
     return (
@@ -106,9 +108,11 @@ export function TicketDetail() {
                         <div className="ticket-detail__qr-section">
                             <h3 className="ticket-detail__section-title">Código QR</h3>
                             <div className="ticket-detail__qr-wrapper">
-                                {/* Placeholder for QR code - you can integrate a library like 'qrcode.react' */}
-                                <div className="ticket-detail__qr-placeholder">
-                                    <p>Código QR del Ticket</p>
+                                <div className="ticket-detail__qr">
+                                    <QRCode 
+                                        value={ticket.codigoQR}   // << EL QR REAL
+                                        size={180}
+                                    />
                                     <p className="ticket-detail__qr-id">{ticket._id}</p>
                                     <small>Presenta este código en el evento</small>
                                 </div>
