@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { fetchPublicEvents } from '../api/events.js';
+import { fetchPublicEvents } from '../lib/services/events.service.js';
 
 /**
  * Events Store with localStorage persistence

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { request } from '../../api/client.js';
+import { request } from '../../lib/infra/http-client.js';
 import { Section } from '../../components/layout/Section/Section.jsx';
 
 export default function UserDetails() {

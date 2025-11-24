@@ -1,5 +1,5 @@
-// src/api/events.js
-import { request, buildQuery } from "./client.js";
+// src/lib/services/events.service.js
+import { request, buildQuery } from "../infra/http-client.js";
 
 export function fetchPublicEvents(params = {}) {
   const q = buildQuery({ estadoPublicacion: "PUBLISHED", ...params });

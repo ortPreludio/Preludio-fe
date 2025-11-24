@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { apiLogin, apiLogout } from '../api/auth.js';
+import { apiLogin, apiLogout } from '../lib/services/auth.service.js';
 
 /**
  * Auth/Session Store with sessionStorage persistence

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { fetchAllReviews } from '../api/reviews.js';
+import { fetchAllReviews } from '../lib/services/reviews.service.js';
 
 /**
  * Reviews Store with localStorage persistence

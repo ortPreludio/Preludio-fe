@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../store/authStore.js';
-import { fetchMyReview, createReview, updateMyReview, deleteMyReview } from '../../api/reviews.js';
+import { fetchMyReview, createReview, updateMyReview, deleteMyReview } from '../../lib/services/reviews.service.js';
 import { useReviewsStore } from '../../store/reviewsStore.js';
 import { Section } from '../../components/layout/Section/Section.jsx';
 import './Reviews.css';

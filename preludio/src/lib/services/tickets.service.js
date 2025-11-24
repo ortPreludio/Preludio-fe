@@ -1,4 +1,4 @@
-import { request, buildQuery } from "./client.js";
+import { request, buildQuery } from "../infra/http-client.js";
 
 /**
  * Obtiene los tickets comprados por el usuario actual.

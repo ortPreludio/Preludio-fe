@@ -1,7 +1,7 @@
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../store/authStore.js'; // Importación necesaria
-import { fetchMyTickets } from '../../api/tickets.js'; // Función de API
+import { fetchMyTickets } from '../../lib/services/tickets.service.js'; // Función de API
 
 // Componente individual para mostrar un ticket
 const TicketCard = ({ ticket }) => {

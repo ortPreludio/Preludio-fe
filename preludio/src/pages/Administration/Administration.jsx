@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Section } from "../../components/layout/Section/Section.jsx";
-import { fetchUsers } from "../../api/users.js";
-import { fetchAdminEvents } from "../../api/events.js";
+import { fetchUsers } from "../../lib/services/users.service.js";
+import { fetchAdminEvents } from '../../lib/services/events.service.js';
 import { AdminList } from "../../components/organisms/AdminList/AdminList.jsx";
+import { usePagination } from "../../hooks/usePagination.js";
+import { useDebounce } from "../../hooks/useDebounce.js";
 
 export function Administration() {
   const navigate = useNavigate()
@@ -15,10 +17,12 @@ export function Administration() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // server-side pagination + search
-  const [page, setPage] = useState(1);      // 1-based
-  const [perPage, setPerPage] = useState(10);
+  // Usar hook de paginación
+  const { page, perPage, setPage, changePerPage, resetPage, getMaxPage } = usePagination(1, 10);
+
+  // Search input con debounce
   const [q, setQ] = useState("");
+  const debouncedQ = useDebounce(q, 350); // Espera 350ms después de dejar de escribir
 
   // sort por defecto por vista
   const sortDefaults = useMemo(() => (
@@ -34,7 +38,7 @@ export function Administration() {
         const { items, total } = await api({
           page,
           limit: perPage,
-          q,
+          q: debouncedQ, // Usar el valor con debounce
           sort: sortDefaults.sort,
           order: sortDefaults.order,
         });
@@ -49,7 +53,7 @@ export function Administration() {
       }
     })();
     return () => { cancel = true; };
-  }, [view, page, perPage, q, sortDefaults]);
+  }, [view, page, perPage, debouncedQ, sortDefaults]); // debouncedQ en lugar de q
 
   // Cuando se pasa view como queryparam hacer el filtrado por esa vista
   useEffect(() => {
@@ -57,7 +61,7 @@ export function Administration() {
     if (v === 'events' || v === 'users') setView(v);
   }, [searchParams]);
 
-  // columnas por vista
+  // Definición de todas las columnas posibles
   const columns = view === "users"
     ? [
       { key: "nombre", label: "Nombre" },
@@ -84,7 +88,7 @@ export function Administration() {
       },
     ];
 
-  const maxPage = Math.max(1, Math.ceil((total || 0) / (perPage || 1)));
+  const maxPage = getMaxPage(total);
 
   return (
     <div className="page">
@@ -93,13 +97,13 @@ export function Administration() {
         <div className="toolbar mb-6 flex gap-2 border-b border-[rgba(255,255,255,0.1)] pb-4">
           <button
             className={`btn ${view === "users" ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => { setView("users"); setPage(1); }}
+            onClick={() => { setView("users"); resetPage(); }}
           >
             Usuarios
           </button>
           <button
             className={`btn ${view === "events" ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => { setView("events"); setPage(1); }}
+            onClick={() => { setView("events"); resetPage(); }}
           >
             Eventos
           </button>
@@ -118,7 +122,7 @@ export function Administration() {
               className="input input-bordered w-full bg-[rgba(0,0,0,0.2)]"
               placeholder={view === "users" ? "Nombre, email, DNI…" : "Título, lugar, ciudad…"}
               value={q}
-              onChange={(e) => { setQ(e.target.value); setPage(1); }}
+              onChange={(e) => { setQ(e.target.value); resetPage(); }}
             />
           </div>
           <div>
@@ -126,7 +130,7 @@ export function Administration() {
             <select
               className="select select-bordered bg-[rgba(0,0,0,0.2)]"
               value={perPage}
-              onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}
+              onChange={(e) => changePerPage(Number(e.target.value))}
             >
               {[5, 10, 25, 50, 100].map(n => <option key={n} value={n}>{n}</option>)}
             </select>

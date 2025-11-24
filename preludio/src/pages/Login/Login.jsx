@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { apiLogin } from '../../api/auth.js';
+import { apiLogin } from '../../lib/services/auth.service.js';
 import { useAuth } from '../../store/authStore.js';
 import { PasswordInput } from '../../components/atoms/PasswordInput/PasswordInput.jsx';
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { request } from '../../api/client.js';
+import { request } from '../../lib/infra/http-client.js';
 import { useAuth } from '../../store/authStore.js';
 import { formatDateISOToLong } from '../../utils/format.js';
 import './EventDetails.css';

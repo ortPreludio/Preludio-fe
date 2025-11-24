@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { request } from '../../api/client.js';
+import { request } from '../../lib/infra/http-client.js';
 import { Section } from '../../components/layout/Section/Section.jsx';
 import { MisTickets } from '../MisTickets/MisTickets.jsx';
 

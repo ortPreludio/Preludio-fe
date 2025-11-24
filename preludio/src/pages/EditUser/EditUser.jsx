@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../store/authStore.js';
-import { apiUpdateProfile } from '../../api/auth.js';
-import { request } from '../../api/client.js';
+import { apiUpdateProfile } from '../../lib/services/auth.service.js';
+import { request } from '../../lib/infra/http-client.js';
 import UserForm from '../../components/organisms/UserForm/UserForm.jsx';
 
 export function EditUser() {

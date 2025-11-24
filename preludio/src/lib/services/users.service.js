@@ -1,5 +1,5 @@
-// src/api/users.js
-import { request, buildQuery } from "./client.js";
+// src/lib/services/users.service.js
+import { request, buildQuery } from "../infra/http-client.js";
 
 /** Solo ADMIN puede listar */
 export function fetchUsers({
