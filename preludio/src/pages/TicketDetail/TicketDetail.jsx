@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchTicketById } from '../../lib/services/tickets.service';
 import { Section } from '../../components/layout/Section/Section';
+import { Text } from '../../components/atoms/Text/Text';
 import './TicketDetail.css';
 
 export function TicketDetail() {
@@ -25,109 +26,101 @@ export function TicketDetail() {
 
     const fechaEvento = new Date(ticket.evento?.fecha).toLocaleDateString('es-ES', {
         weekday: 'long',
-        day: '2-digit',
+        day: 'numeric',
         month: 'long',
         year: 'numeric'
     });
-    const fechaCompra = new Date(ticket.createdAt || ticket.fechaCompra).toLocaleDateString('es-ES');
+
+    const fechaCompra = new Date(ticket.createdAt || ticket.fechaCompra).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 
     return (
-        <div className="page">
-            <Section title="Detalles del Ticket">
-                <div className="ticket-detail">
-                    <div className="ticket-detail__header">
-                        <div className="ticket-detail__image-wrapper">
-                            {ticket.evento?.imagen && (
-                                <img
-                                    src={ticket.evento.imagen}
-                                    alt={ticket.evento.titulo}
-                                    className="ticket-detail__image"
-                                />
-                            )}
-                        </div>
-                        <div className="ticket-detail__info">
-                            <h1 className="ticket-detail__title">{ticket.evento?.titulo || 'Evento'}</h1>
-                            <span className={`ticket-detail__status ticket-detail__status--${ticket.estado?.toLowerCase() || 'activo'}`}>
-                                {ticket.estado || 'ACTIVO'}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="ticket-detail__body">
-                        <div className="ticket-detail__section">
-                            <h3 className="ticket-detail__section-title">Información del Evento</h3>
-                            <div className="ticket-detail__grid">
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">📅 Fecha:</span>
-                                    <span className="ticket-detail__value">{fechaEvento}</span>
-                                </div>
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">🕐 Hora:</span>
-                                    <span className="ticket-detail__value">{ticket.evento?.hora || '—'}</span>
-                                </div>
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">📍 Lugar:</span>
-                                    <span className="ticket-detail__value">
-                                        {ticket.evento?.ubicacion?.lugar || '—'}
-                                    </span>
-                                </div>
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">🏙️ Ciudad:</span>
-                                    <span className="ticket-detail__value">
-                                        {ticket.evento?.ubicacion?.ciudad || '—'}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="ticket-detail__section">
-                            <h3 className="ticket-detail__section-title">Información del Ticket</h3>
-                            <div className="ticket-detail__grid">
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">🎫 Tipo de entrada:</span>
-                                    <span className="ticket-detail__value">{ticket.tipoEntrada || 'General'}</span>
-                                </div>
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">💰 Precio pagado:</span>
-                                    <span className="ticket-detail__value">${ticket.precioPagado?.toFixed(2) || '0.00'}</span>
-                                </div>
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">📅 Fecha de compra:</span>
-                                    <span className="ticket-detail__value">{fechaCompra}</span>
-                                </div>
-                                <div className="ticket-detail__item">
-                                    <span className="ticket-detail__label">🆔 ID del ticket:</span>
-                                    <span className="ticket-detail__value ticket-detail__value--code">{ticket._id}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* QR Code Section */}
-                        <div className="ticket-detail__qr-section">
-                            <h3 className="ticket-detail__section-title">Código QR</h3>
-                            <div className="ticket-detail__qr-wrapper">
-                                {/* Placeholder for QR code - you can integrate a library like 'qrcode.react' */}
-                                <div className="ticket-detail__qr-placeholder">
-                                    <p>Código QR del Ticket</p>
-                                    <p className="ticket-detail__qr-id">{ticket._id}</p>
-                                    <small>Presenta este código en el evento</small>
-                                </div>
+        <div className="page ticket-page">
+            <Section>
+                <div className="ticket-container">
+                    {/* Ticket Header / Event Image */}
+                    <div className="ticket-header" style={{ backgroundImage: `url(${ticket.evento?.imagen || '/placeholder.png'})` }}>
+                        <div className="ticket-header-overlay">
+                            <h1 className="ticket-event-title">{ticket.evento?.titulo}</h1>
+                            <div className="ticket-event-meta">
+                                <span>📅 {fechaEvento}</span>
+                                <span>📍 {ticket.evento?.ubicacion?.lugar}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="ticket-detail__actions">
-                        <button
-                            className="btn btn-ghost"
-                            onClick={() => navigate('/mistickets')}
-                        >
-                            ← Volver a Mis Tickets
+                    <div className="ticket-body">
+                        {/* Left Column: Ticket Info */}
+                        <div className="ticket-info-column">
+                            <div className="ticket-section">
+                                <h3 className="ticket-section-title">Información del Ticket</h3>
+                                <div className="ticket-data-grid">
+                                    <div className="ticket-data-item">
+                                        <span className="label">Tipo de Entrada</span>
+                                        <span className="value highlight">{ticket.tipoEntrada || 'General'}</span>
+                                    </div>
+                                    <div className="ticket-data-item">
+                                        <span className="label">Estado</span>
+                                        <span className={`status-badge status-${ticket.estado?.toLowerCase()}`}>
+                                            {ticket.estado || 'ACTIVO'}
+                                        </span>
+                                    </div>
+                                    <div className="ticket-data-item">
+                                        <span className="label">ID del Ticket</span>
+                                        <span className="value code">{ticket._id}</span>
+                                    </div>
+                                    <div className="ticket-data-item">
+                                        <span className="label">Precio</span>
+                                        <span className="value">${ticket.precioPagado?.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="ticket-section">
+                                <h3 className="ticket-section-title">Datos del Comprador</h3>
+                                <div className="ticket-data-grid">
+                                    <div className="ticket-data-item">
+                                        <span className="label">Nombre</span>
+                                        <span className="value">{ticket.comprador?.nombre} {ticket.comprador?.apellido}</span>
+                                    </div>
+                                    <div className="ticket-data-item">
+                                        <span className="label">Email</span>
+                                        <span className="value">{ticket.comprador?.email}</span>
+                                    </div>
+                                    <div className="ticket-data-item">
+                                        <span className="label">Fecha de Compra</span>
+                                        <span className="value">{fechaCompra}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="ticket-qr-column">
+                            <div className="qr-card">
+                                <div className="qr-placeholder">
+                                    {/* Placeholder para componente de QR */}
+                                    <div className="qr-mockup">
+                                        <span className="qr-icon">📱</span>
+                                        <p>Código QR</p>
+                                    </div>
+                                </div>
+                                <p className="qr-instruction">Presenta este código al ingresar</p>
+                                <p className="qr-id-ref">{ticket._id}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="ticket-footer">
+                        <button className="btn btn-ghost" onClick={() => navigate('/mistickets')}>
+                            ← Volver
                         </button>
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => window.print()}
-                        >
-                            🖨️ Imprimir Ticket
+                        <button className="btn btn-primary" onClick={() => window.print()}>
+                            🖨️ Descargar / Imprimir
                         </button>
                     </div>
                 </div>
