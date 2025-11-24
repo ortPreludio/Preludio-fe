@@ -30,6 +30,8 @@ import RedirectIfAuthenticated from "./routes/RedirectIfAuthenticated.jsx";
 import UserDetails from "./pages/UserDetails/UserDetails.jsx";
 import EventDetails from "./pages/EventDetails/EventDetails.jsx";
 
+import { ScrollToTop } from "./utils/ScrollToTop.jsx";
+
 export default function App() {
   const validateSession = useAuthStore((state) => state.validateSession);
 
@@ -40,6 +42,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <main style={{ minHeight: "80vh", padding: "2rem" }}>
         <Routes>
