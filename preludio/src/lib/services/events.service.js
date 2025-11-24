@@ -30,3 +30,8 @@ export function fetchAdminEvents({
   });
   return request(`/events${query}`, { token, withCredentials });
 }
+
+/** Fetch single event by ID */
+export function fetchEventById(id) {
+  return request(`/events/${id}`);
+}

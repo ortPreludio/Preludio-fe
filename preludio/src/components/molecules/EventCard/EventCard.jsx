@@ -1,19 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../../atoms/Button/Button.jsx'
+import { Link } from 'react-router-dom';
+import { Button } from '../../atoms/Button/Button.jsx';
+import { BuyButton } from '../BuyButton/BuyButton.jsx';
 import './EventCard.css';
-import { Text } from '../../atoms/Text/Text.jsx'
-import { formatDateISOToLong } from '../../../utils/format.js'
+import { Text } from '../../atoms/Text/Text.jsx';
+import { formatDateISOToLong } from '../../../utils/format.js';
 
 export function EventCard({ event }) {
-  const navigate = useNavigate();
-  const fecha = formatDateISOToLong(event.fecha)
-  const image = event.imagen || '/placeholder.png'
-  const id = event._id
-  const precio = event.precioBase ?? event.precio ?? 0
-
-  const handleBuyClick = () => {
-    navigate(`/checkout?evento=${id}&precio=${precio}`);
-  };
+  const fecha = formatDateISOToLong(event.fecha);
+  const image = event.imagen || '/placeholder.png';
+  const id = event._id;
 
   return (
     <article className="event-card">
@@ -30,8 +25,13 @@ export function EventCard({ event }) {
         ) : (
           <Button variant="ghost" disabled>Más info</Button>
         )}
-        <Button variant="primary" onClick={handleBuyClick}>Comprar</Button>
+        <BuyButton
+          eventId={id}
+          entradasDisponibles={event.entradasDisponibles}
+        >
+          Comprar
+        </BuyButton>
       </div>
     </article>
-  )
+  );
 }
