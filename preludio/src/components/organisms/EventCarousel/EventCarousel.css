@@ -18,6 +18,28 @@
     position: relative;
 }
 
+/* Soft fade overlays on the sides so off-screen cards don't cut abruptly */
+.event-carousel__track-wrapper::before,
+.event-carousel__track-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8%;
+    pointer-events: none;
+    z-index: 6;
+}
+
+.event-carousel__track-wrapper::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg-2), rgba(14,34,48,0));
+}
+
+.event-carousel__track-wrapper::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bg-2), rgba(14,34,48,0));
+}
+
 .event-carousel__track {
     display: flex;
     gap: 20px;
@@ -28,6 +50,31 @@
     flex: 0 0 calc(33.333% - 14px);
     /* 3 cards visible, accounting for gap */
     min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: stretch;
+}
+
+/* Force consistent card size only inside the carousel (does not affect EventCard elsewhere) */
+.event-carousel__slide .event-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 360px; /* fixed visual height for all cards in carousel */
+}
+
+.event-carousel__slide .event-card__media { flex: 0 0 55%; }
+.event-carousel__slide .event-card__body { flex: 1 1 auto; overflow: hidden; }
+.event-carousel__slide .event-card__footer { flex: 0 0 auto; }
+
+/* Make cards pop a bit and feel modern */
+.event-carousel__slide .event-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.event-carousel__slide .event-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(6,16,24,0.5);
 }
 
 /* Navigation Arrows */
@@ -93,4 +140,30 @@
     background: var(--primary);
     width: 32px;
     border-radius: 6px;
+}
+
+/* Responsive adjustments: fewer cards on smaller screens */
+@media (max-width: 900px) {
+    .event-carousel__slide { flex: 0 0 calc(50% - 10px); }
+    .event-carousel__slide .event-card { height: 320px; }
+}
+
+@media (max-width: 640px) {
+    .event-carousel__slide { flex: 0 0 calc(100%); }
+    .event-carousel__slide .event-card { height: auto; }
+    .event-carousel__arrow { display: none; }
+    .event-carousel__track-wrapper::before, .event-carousel__track-wrapper::after { width: 14%; }
+}
+
+/* Make sure arrow sits above overlays */
+.event-carousel__arrow { z-index: 12; }
+
+/* Responsive adjustments: fewer cards on small screens */
+@media (max-width: 900px) {
+    .event-carousel__slide { flex: 0 0 calc(50% - 10px); }
+}
+
+@media (max-width: 640px) {
+    .event-carousel__slide { flex: 0 0 calc(100%); }
+    .event-carousel__arrow { display: none; }
 }

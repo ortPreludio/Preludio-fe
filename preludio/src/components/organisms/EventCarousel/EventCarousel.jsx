@@ -9,6 +9,8 @@ export function EventCarousel({ items = [] }) {
 
     const totalSlides = items.length;
     const tripleItems = [...items, ...items, ...items];
+    const trackRef = useRef(null);
+    const [slideSize, setSlideSize] = useState(0);
 
     // Auto-scroll every 5 seconds
     useEffect(() => {
@@ -20,6 +22,23 @@ export function EventCarousel({ items = [] }) {
 
         return () => clearInterval(interval);
     }, [isPaused, totalSlides]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const track = trackRef.current;
+            if (!track) return;
+            const firstSlide = track.querySelector('.event-carousel__slide');
+            if (!firstSlide) return;
+            const slideRect = firstSlide.getBoundingClientRect();
+            const style = window.getComputedStyle(track);
+            const gap = parseFloat(style.gap || 0);
+            setSlideSize(slideRect.width + gap);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [items]);
 
     if (!items.length) return <div className="empty">No hay eventos disponibles</div>;
 
@@ -35,8 +54,8 @@ export function EventCarousel({ items = [] }) {
         setCurrentIndex((prev) => (prev + 1) % totalSlides);
     };
 
-    // Calculate transform offset - show 3 cards, start at middle set
-    const offset = -(currentIndex + totalSlides) * (100 / 3);
+    // Calculate transform offset in pixels using measured slide size
+    const offsetPx = -Math.round((currentIndex + totalSlides) * slideSize);
 
     return (
         <div
@@ -50,14 +69,17 @@ export function EventCarousel({ items = [] }) {
                     onClick={goToPrevious}
                     aria-label="Anterior"
                 >
-                    ❮
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                 </button>
 
                 <div className="event-carousel__track-wrapper">
                     <div
                         className="event-carousel__track"
+                        ref={trackRef}
                         style={{
-                            transform: `translateX(${offset}%)`,
+                            transform: `translateX(${offsetPx}px)`,
                             transition: 'transform 0.5s ease-in-out',
                         }}
                     >
@@ -74,7 +96,9 @@ export function EventCarousel({ items = [] }) {
                     onClick={goToNext}
                     aria-label="Siguiente"
                 >
-                    ❯
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                 </button>
             </div>
 
