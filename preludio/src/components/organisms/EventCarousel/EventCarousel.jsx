@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { EventCard } from '../../molecules/EventCard/EventCard.jsx';
+import { EventCard } from '../../molecules/Cards/EventCard/EventCard.jsx';
 import './EventCarousel.css';
 
 export function EventCarousel({ items = [] }) {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import EventForm from '../../components/organisms/EventForm/EventForm.jsx';
-import { EventCard } from '../../components/molecules/EventCard/EventCard.jsx';
+import { EventCard } from '../../components/molecules/Cards/EventCard/EventCard.jsx';
 import { request } from '../../lib/infra/http-client.js';
 
 export default function EditEvent() {
