@@ -1,25 +1,53 @@
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../../state/authHook.js'; // Importación necesaria
-import { fetchMyTickets } from '../../api/tickets.js'; // Función de API
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../store/authStore.js'; // Importación necesaria
+import { fetchMyTickets } from '../../lib/services/tickets.service.js'; // Función de API
+import './MisTickets.css'
 // Componente individual para mostrar un ticket
-const TicketCard = ({ ticket }) => {
+const TicketCard = ({ ticket, onViewTicket }) => {
     // Convertir la fecha de compra y la fecha del evento para mostrar
     const fechaCompra = new Date(ticket.fechaCompra).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     // Asumimos que ticket.evento.fecha es una fecha válida.
     const fechaEvento = new Date(ticket.evento.fecha).toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: 'short' });
 
-    // Status visual is handled by CSS classes (.ticket-status.valid / .ticket-status.cancel)
+    // Status display - normalize to show properly
+    const getStatusDisplay = (estado) => {
+        if (!estado) return 'VALIDO';
+        const normalized = estado.toUpperCase();
+        if (normalized === 'VALIDO' || normalized === 'VÁLIDO') return 'Válido';
+        if (normalized === 'USADO') return 'Usado';
+        if (normalized === 'CANCELADO') return 'Cancelado';
+        return estado;
+    };
+
+    const getStatusClass = (estado) => {
+        if (!estado) return 'valid';
+        const normalized = estado.toUpperCase();
+        if (normalized === 'VALIDO' || normalized === 'VÁLIDO') return 'valid';
+        if (normalized === 'CANCELADO') return 'cancel';
+        return '';
+    };
+
+    // Check if ticket is valid - handle both 'VALIDO' and 'Válido'
+    const isValidTicket = (estado) => {
+        if (!estado) return true; // Default is valid
+        const normalized = estado.toUpperCase();
+        return normalized === 'VALIDO' || normalized === 'VÁLIDO';
+    };
+
+    const statusDisplay = getStatusDisplay(ticket.estado);
+    const statusClass = getStatusClass(ticket.estado);
+    const canViewTicket = isValidTicket(ticket.estado);
 
     return (
         <div className="ticket-card">
             <div className="ticket-body">
                 <div className="ticket-header">
                     <h3>{ticket.evento.titulo || ticket.evento.nombre}</h3>
-                    <span className={`ticket-status ${ticket.estado === 'Válido' ? 'valid' : ticket.estado === 'Cancelado' ? 'cancel' : ''}`}>
-                        {ticket.estado}
+                    <span className={`ticket-status ${statusClass}`}>
+                        {statusDisplay}
                     </span>
                 </div>
 
@@ -32,10 +60,10 @@ const TicketCard = ({ ticket }) => {
                     <p style={{ fontSize: 12, color: 'var(--muted)' }}>Comprado: {fechaCompra}</p>
                 </div>
 
-                {ticket.estado === 'Válido' && (
+                {canViewTicket && (
                     <button
                         className="ticket-cta"
-                        onClick={() => console.log(`Mostrando QR para Ticket ID: ${ticket._id}`)}
+                        onClick={() => onViewTicket(ticket._id)}
                     >
                         Ver Ticket y QR
                     </button>
@@ -47,6 +75,7 @@ const TicketCard = ({ ticket }) => {
 
 export function MisTickets() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -61,12 +90,16 @@ export function MisTickets() {
 
         setLoading(true); setError(null);
 
-        fetchMyTickets(order)
+        fetchMyTickets({ order })
             .then(arr => setTickets(arr))
             .catch(e => setError(e.message || 'Error al cargar tus tickets. Intenta recargar.'))
             .finally(() => setLoading(false));
 
     }, [user, order])
+
+    const handleViewTicket = (ticketId) => {
+        navigate(`/ticket/${ticketId}`);
+    };
 
     if (!user) {
         return null;
@@ -102,7 +135,7 @@ export function MisTickets() {
                 {!loading && !error && tickets.length > 0 && (
                     <div className="ticket-grid">
                         {tickets.map(ticket => (
-                            ticket.evento && <TicketCard key={ticket._id} ticket={ticket} />
+                            ticket.evento && <TicketCard key={ticket._id} ticket={ticket} onViewTicket={handleViewTicket} />
                         ))}
                     </div>
                 )}

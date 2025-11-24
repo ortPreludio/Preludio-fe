@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiLogin, apiLogout } from "../api/auth.js";
+import { apiLogin, apiLogout } from '../lib/services/auth.service.js';
 import { AuthCtx } from "./authContext.js";
 
 export function AuthProvider({ children }) {

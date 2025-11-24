@@ -1,0 +1,192 @@
+.ticket-detail {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ticket-detail__header {
+  display: flex;
+  gap: var(--spacing-4);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.ticket-detail__image-wrapper {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.ticket-detail__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ticket-detail__info {
+  flex: 1;
+}
+
+.ticket-detail__title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  margin: 0 0 var(--spacing-2) 0;
+  color: var(--foreground);
+}
+
+.ticket-detail__status {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.ticket-detail__status--activo,
+.ticket-detail__status--válido {
+  background: var(--success-bg, #d4edda);
+  color: var(--success-text, #155724);
+}
+
+.ticket-detail__status--usado {
+  background: var(--muted-bg, #e9ecef);
+  color: var(--muted, #6c757d);
+}
+
+.ticket-detail__status--cancelado {
+  background: var(--error-bg, #f8d7da);
+  color: var(--error-text, #721c24);
+}
+
+.ticket-detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.ticket-detail__section {
+  padding: var(--spacing-4);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.ticket-detail__section-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  margin: 0 0 var(--spacing-4) 0;
+  color: var(--foreground);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: var(--spacing-2);
+}
+
+.ticket-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.ticket-detail__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.ticket-detail__label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.ticket-detail__value {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.ticket-detail__value--code {
+  font-family: 'Courier New', monospace;
+  font-size: var(--text-xs);
+  word-break: break-all;
+}
+
+.ticket-detail__qr-section {
+  padding: var(--spacing-6);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.ticket-detail__qr-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-6);
+}
+
+.ticket-detail__qr-placeholder {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--background);
+  text-align: center;
+}
+
+.ticket-detail__qr-placeholder p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.ticket-detail__qr-id {
+  font-family: 'Courier New', monospace;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  word-break: break-all;
+  padding: 0 var(--spacing-2);
+}
+
+.ticket-detail__qr-placeholder small {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.ticket-detail__actions {
+  display: flex;
+  gap: var(--spacing-3);
+  justify-content: center;
+  margin-top: var(--spacing-6);
+  padding: var(--spacing-4);
+}
+
+@media (max-width: 768px) {
+  .ticket-detail__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .ticket-detail__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-detail__actions {
+    flex-direction: column;
+  }
+
+  .ticket-detail__actions .btn {
+    width: 100%;
+  }
+}

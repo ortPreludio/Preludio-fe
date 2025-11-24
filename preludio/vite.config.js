@@ -15,5 +15,19 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  build: {
+    sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        passes: 2
+      },
+      mangle: true,
+      format: {
+        beautify: false,
+        comments: false
+      }
+    }
   }
 })

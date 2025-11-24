@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../state/authHook.js";
+import { useAuth } from "../store/authStore.js";
 
 export default function RedirectIfAuthenticated() {
   const { user } = useAuth();

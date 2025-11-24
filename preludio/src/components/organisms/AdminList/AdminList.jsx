@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAdminStore } from '../../../store/adminStore.js';
 import './AdminList.css';
 
 export function AdminList({
@@ -12,26 +13,17 @@ export function AdminList({
     setPage,
     columns: initialColumns
 }) {
-    // State for visible columns
-    const [visibleColumns, setVisibleColumns] = useState(() => {
-        const saved = localStorage.getItem(`admin_columns_${view}`);
-        if (saved) {
-            return JSON.parse(saved);
-        }
-        // Default visible columns based on view
-        if (view === 'users') {
-            return ['nombre', 'email', 'dni', 'rol'];
-        }
-        return initialColumns.map(c => c.key);
-    });
+    // Use Zustand store instead of local state + localStorage
+    const { getVisibleColumns, getActiveColumns, toggleColumn: storeToggleColumn, resetColumns } = useAdminStore();
+
+    // Get visibility state (true/false for each column)
+    const visibleColumnsState = getVisibleColumns(view);
+
+    // Get array of active column keys (for filtering table columns)
+    const visibleColumnKeys = getActiveColumns(view);
 
     const [isConfigOpen, setIsConfigOpen] = useState(false);
     const [openMenuRowId, setOpenMenuRowId] = useState(null);
-
-    // Save to localStorage when changed
-    useEffect(() => {
-        localStorage.setItem(`admin_columns_${view}`, JSON.stringify(visibleColumns));
-    }, [visibleColumns, view]);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -48,15 +40,11 @@ export function AdminList({
     }, [openMenuRowId]);
 
     const toggleColumn = (key) => {
-        setVisibleColumns(prev =>
-            prev.includes(key)
-                ? prev.filter(k => k !== key)
-                : [...prev, key]
-        );
+        storeToggleColumn(view, key);
     };
 
-    // Filter columns based on visibility
-    const activeColumns = initialColumns.filter(c => visibleColumns.includes(c.key));
+    // Filter columns based on visibility from store (for TABLE display)
+    const activeColumns = initialColumns.filter(c => visibleColumnKeys.includes(c.key));
 
     if (loading) return <div className="loader">Cargando…</div>;
     if (error) return <div className="alert alert-error">Error: {error}</div>;
@@ -76,14 +64,23 @@ export function AdminList({
             {/* Column Toggles Panel */}
             {isConfigOpen && (
                 <div className="config-panel">
-                    <h3 className="config-title">Columnas visibles</h3>
+                    <div className="config-header">
+                        <h3 className="config-title">Columnas visibles</h3>
+                        <button
+                            className="btn btn-xs btn-ghost"
+                            onClick={() => resetColumns(view)}
+                            title="Restaurar valores por defecto"
+                        >
+                            Resetear
+                        </button>
+                    </div>
                     <div className="config-options">
                         {initialColumns.map(col => (
                             <label key={col.key} className="config-label">
                                 <input
                                     type="checkbox"
                                     className="checkbox checkbox-xs checkbox-primary"
-                                    checked={visibleColumns.includes(col.key)}
+                                    checked={visibleColumnsState[col.key] || false}
                                     onChange={() => toggleColumn(col.key)}
                                 />
                                 <span>{col.label}</span>
@@ -174,14 +171,14 @@ export function AdminList({
             </div>
 
             {/* Pagination */}
-            <div className="join mt-4 flex justify-center">
-                <button className="btn join-item btn-sm" onClick={() => setPage(1)} disabled={page <= 1}>«</button>
-                <button className="btn join-item btn-sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>‹</button>
-                <button className="btn join-item btn-ghost btn-sm no-animation pointer-events-none">
+            <div className="pagination">
+                <button className="pagination-btn" onClick={() => setPage(1)} disabled={page <= 1}>«</button>
+                <button className="pagination-btn" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>‹</button>
+                <span className="pagination-info">
                     Página {page} / {maxPage}
-                </button>
-                <button className="btn join-item btn-sm" onClick={() => setPage(p => Math.min(maxPage, p + 1))} disabled={page >= maxPage}>›</button>
-                <button className="btn join-item btn-sm" onClick={() => setPage(maxPage)} disabled={page >= maxPage}>»</button>
+                </span>
+                <button className="pagination-btn" onClick={() => setPage(p => Math.min(maxPage, p + 1))} disabled={page >= maxPage}>›</button>
+                <button className="pagination-btn" onClick={() => setPage(maxPage)} disabled={page >= maxPage}>»</button>
             </div>
         </div>
     );

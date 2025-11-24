@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { request } from '../../api/client.js';
+import { request } from '../../lib/infra/http-client.js';
 import { EventCard } from '../../components/molecules/EventCard/EventCard.jsx';
 import EventForm from '../../components/organisms/EventForm/EventForm.jsx';
 

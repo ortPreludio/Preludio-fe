@@ -4,23 +4,18 @@ import { Hero } from '../../components/layout/Hero/Hero.jsx'
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { EventGrid } from '../../components/organisms/EventGrid/EventGrid.jsx'
 import { EventCarousel } from '../../components/organisms/EventCarousel/EventCarousel.jsx'
-import { useEffect, useState } from 'react'
-import { fetchPublicEvents } from '../../api/events.js'
+import { useEffect } from 'react'
+import { useEventsStore } from '../../store/eventsStore.js'
 
 export function Home() {
-  const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [order] = useState('asc')
-  const [categoria] = useState('')
+  const { events, loading, error, fetchEvents, isStale } = useEventsStore();
 
   useEffect(() => {
-    setLoading(true); setError(null)
-    fetchPublicEvents({ sort: 'fecha', order, categoria: categoria || undefined, limit: 12 })
-      .then(js => setItems(Array.isArray(js) ? js : js.items || []))
-      .catch(e => setError(e.message || 'Error'))
-      .finally(() => setLoading(false))
-  }, [order, categoria])
+    // Fetch events if store is empty or data is stale
+    if (events.length === 0 || isStale()) {
+      fetchEvents({ sort: 'fecha', order: 'asc', limit: 12 });
+    }
+  }, [events.length, fetchEvents, isStale]);
 
   return (
     <div className="page">
@@ -32,11 +27,11 @@ export function Home() {
           <>
             {/* Desktop: Carousel */}
             <div className="home-event-carousel">
-              <EventCarousel items={items} />
+              <EventCarousel items={events} />
             </div>
             {/* Mobile: Grid */}
             <div className="home-event-grid">
-              <EventGrid items={items} />
+              <EventGrid items={events} />
             </div>
             {/* Ver todos button */}
             <div className="view-all-container">

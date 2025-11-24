@@ -7,15 +7,12 @@ export function EventCarousel({ items = [] }) {
     const [isPaused, setIsPaused] = useState(false);
     const carouselRef = useRef(null);
 
-    if (!items.length) return <div className="empty">No hay eventos disponibles</div>;
-
-    // Triple the items for infinite loop effect
-    const tripleItems = [...items, ...items, ...items];
     const totalSlides = items.length;
+    const tripleItems = [...items, ...items, ...items];
 
     // Auto-scroll every 5 seconds
     useEffect(() => {
-        if (isPaused) return;
+        if (isPaused || totalSlides === 0) return;
 
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % totalSlides);
@@ -23,6 +20,8 @@ export function EventCarousel({ items = [] }) {
 
         return () => clearInterval(interval);
     }, [isPaused, totalSlides]);
+
+    if (!items.length) return <div className="empty">No hay eventos disponibles</div>;
 
     const goToSlide = (index) => {
         setCurrentIndex(index % totalSlides);
