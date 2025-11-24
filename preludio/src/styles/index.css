@@ -8,6 +8,10 @@
   --card: #0f2636;
   --card-2: #143247;
   --radius: 16px;
+
+  /* Semantic aliases / Common borders */
+  --border-color: rgba(255, 255, 255, 0.15);
+  --border-light: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -54,7 +58,7 @@ body {
 select {
   background: var(--card);
   color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--border-color);
   padding: 8px 10px;
   border-radius: 8px;
 }
@@ -83,8 +87,8 @@ select {
 .auth-form {
   max-width: 520px;
   margin: 36px auto;
-  background: #ffffff08;
-  border: 1px solid #ffffff14;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-light);
   padding: 20px;
   border-radius: 12px;
 }
@@ -96,22 +100,35 @@ select {
   margin-bottom: 12px;
 }
 
-.form-field>span {
+.form-field>span,
+.form-field>label {
   font-weight: 600;
+  color: var(--text);
+  display: block;
 }
 
 .auth-form input[type="text"],
 .auth-form input[type="email"],
 .auth-form input[type="password"],
 .auth-form input[type="tel"],
-.auth-form input[type="date"] {
+.auth-form input[type="date"],
+.form-field input,
+.form-field textarea,
+.form-field select {
   width: 100%;
-  background: #0f2636;
-  color: #e6f0f6;
-  border: 1px solid #ffffff26;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border-color);
   padding: 10px 12px;
   border-radius: 10px;
   outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-field textarea {
+  min-height: 120px;
+  resize: vertical;
 }
 
 .grid2 {

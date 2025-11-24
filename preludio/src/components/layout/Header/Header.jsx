@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../state/auth.jsx";
+import { useAuth } from "../../../state/authHook.js";
 import { useState, useEffect } from "react";
 import "./Header.css";
 

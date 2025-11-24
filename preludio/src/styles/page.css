@@ -10,7 +10,7 @@
   /* Mantenemos el padding y altura mínima */
   padding: 60px 0;
   min-height: 60vh;
-  background-color: var(--color-dark-bg);
+  background-color: var(--bg);
   /* Asegura el fondo oscuro */
 }
 
@@ -22,7 +22,7 @@
   font-size: 3rem;
   font-weight: 700;
   text-align: center;
-  color: var(--color-light, #f0f0f0);
+  color: var(--text);
   margin-bottom: 10px;
   /* Eliminamos bordes duros para un look más limpio */
   border-bottom: none;
@@ -31,24 +31,24 @@
 .page-content .subtitle-page {
   font-size: 1.25rem;
   text-align: center;
-  color: var(--color-text-muted, #ccc);
+  color: var(--muted);
   margin-bottom: 50px;
 }
 
 .page-content h2 {
   font-size: 1.75rem;
   font-weight: 600;
-  color: var(--color-light, #f0f0f0);
+  color: var(--text);
   margin-top: 30px;
   margin-bottom: 20px;
   /* Línea sutil debajo de los subtítulos */
-  border-bottom: 2px solid var(--color-border, #3a506b);
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 8px;
 }
 
 .page-content p {
   line-height: 1.6;
-  color: var(--color-text-light, #a0a0a0);
+  color: var(--muted);
   margin-bottom: 15px;
 }
 
@@ -58,7 +58,7 @@
 
 /* Estilo base para cualquier tarjeta o contenedor de información */
 .info-card {
-  background-color: var(--color-background-card, #2c3e50);
+  background-color: var(--card);
   border-radius: 10px;
   padding: 30px;
   margin-bottom: 30px;
@@ -68,47 +68,14 @@
 /* ============================================== */
 /* Form styles used by UserForm and EventForm        */
 /* ============================================== */
-.form-field {
-  display: block;
-  margin-bottom: 12px;
-}
-
-.form-field>span {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--color-text-strong, #e0e0e0);
-  font-weight: 600;
-}
-
-.form-field input,
-.form-field textarea,
-.form-field select {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--color-border, #3a506b);
-  background: var(--bg-2);
-  color: var(--text);
-  box-sizing: border-box;
-}
-
-.form-field textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+/* .form-field, .grid2, and inputs are now in index.css */
 
 .event-form {
   max-width: 900px;
 }
 
 .form-fieldset {
-  border: 1px solid var(--color-border, #3a506b);
+  border: 1px solid var(--border-color);
   padding: 0.6rem;
   border-radius: 8px;
   margin-bottom: 12px;

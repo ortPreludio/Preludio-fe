@@ -7,6 +7,8 @@ export function useEvents(initialParams = {}) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const paramsKey = JSON.stringify(params);
+
   useEffect(() => {
     let stop = false
     setLoading(true); setError(null)
@@ -21,7 +23,7 @@ export function useEvents(initialParams = {}) {
       setLoading(false)
     })
     return () => { stop = true }
-  }, [JSON.stringify(params)])
+  }, [paramsKey, params])
 
   return { ...data, loading, error, setParams }
 }

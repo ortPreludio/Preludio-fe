@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Section } from "../../components/layout/Section/Section.jsx";
 import { fetchUsers } from "../../api/users.js";
 import { fetchAdminEvents } from "../../api/events.js";
-
-import { useNavigate, Link } from 'react-router-dom'
+import { AdminList } from "../../components/organisms/AdminList/AdminList.jsx";
 
 export function Administration() {
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [view, setView] = useState("users"); // "users" | "events"
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -87,120 +86,64 @@ export function Administration() {
 
   const maxPage = Math.max(1, Math.ceil((total || 0) / (perPage || 1)));
 
-
-
   return (
     <div className="page">
       <Section title="Administración">
         {/* Toggle de vistas */}
-        <div className="toolbar mb-3 flex gap-2">
+        <div className="toolbar mb-6 flex gap-2 border-b border-[rgba(255,255,255,0.1)] pb-4">
           <button
             className={`btn ${view === "users" ? "btn-primary" : "btn-ghost"}`}
             onClick={() => { setView("users"); setPage(1); }}
           >
-            Users
+            Usuarios
           </button>
           <button
             className={`btn ${view === "events" ? "btn-primary" : "btn-ghost"}`}
             onClick={() => { setView("events"); setPage(1); }}
           >
-            Events
+            Eventos
           </button>
           {view === 'events' && (
-            <>
-              <button className="btn btn-success" onClick={() => navigate('/events/create')}>Crear evento</button>
-            </>
+            <button className="btn btn-success ml-auto" onClick={() => navigate('/events/create')}>
+              + Crear evento
+            </button>
           )}
         </div>
 
         {/* Filtros server-side */}
-        <div className="rounded-box border p-3 mb-3 flex flex-wrap items-end gap-3">
+        <div className="rounded-box border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4 mb-6 flex flex-wrap items-end gap-4">
           <div className="grow">
-            <label className="label"><span className="label-text">Buscar</span></label>
+            <label className="label"><span className="label-text text-muted">Buscar</span></label>
             <input
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-[rgba(0,0,0,0.2)]"
               placeholder={view === "users" ? "Nombre, email, DNI…" : "Título, lugar, ciudad…"}
               value={q}
               onChange={(e) => { setQ(e.target.value); setPage(1); }}
             />
           </div>
           <div>
-            <label className="label"><span className="label-text">Items por página</span></label>
+            <label className="label"><span className="label-text text-muted">Items por página</span></label>
             <select
-              className="select select-bordered"
+              className="select select-bordered bg-[rgba(0,0,0,0.2)]"
               value={perPage}
               onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}
             >
               {[5, 10, 25, 50, 100].map(n => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
-          <div className="ml-auto text-sm opacity-75">Total: <b>{total}</b></div>
+          <div className="ml-auto text-sm text-muted pb-3">Total: <b className="text-text">{total}</b></div>
         </div>
 
-        {/* Estado */}
-        {loading && <div className="loader">Cargando…</div>}
-        {error && <div className="alert alert-error">Error: {error}</div>}
-
-
-
-        {/* Tabla */}
-        {!loading && !error && (
-          <div className="overflow-x-auto">
-            <table className="table w-full">
-              <thead>
-                <tr>
-                  {columns.map(c => <th key={c.key}>{c.label}</th>)}
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.length === 0 && (
-                  <tr><td colSpan={columns.length + 1}>Sin resultados.</td></tr>
-                )}
-                {rows.map(row => {
-                  const id = row._id || row.id || row.uuid;
-                  return (
-                    <tr key={id}>
-                      {columns.map(c => (
-                        <td key={c.key}>
-                          {c.render ? c.render(row) : row[c.key]}
-                        </td>
-                      ))}
-                      <td className="flex gap-2">
-                        {/*<a className="btn btn-warning btn-xs" href={`/administration/${view}/${id}/edit`}>Editar</a>*/}
-                        <Link
-                          className="btn btn-primary btn-sm"
-                          to={view === 'users' ? `/users/edit/${id}` : `/events/edit/${id}`}
-                        >
-                          Editar
-                        </Link>
-                        <Link
-                          className="btn btn-primary btn-sm"
-                          to={view === 'users' ? `/users/${id}` : `/events/${id}`}
-                        >
-                          Detalles
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* Paginación */}
-        {!loading && !error && (
-          <div className="join mt-4">
-            <button className="btn join-item" onClick={() => setPage(1)} disabled={page <= 1}>Primera</button>
-            <button className="btn join-item" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>Anterior</button>
-            <button className="btn join-item btn-ghost no-animation">
-              Página {page} / {maxPage}
-            </button>
-            <button className="btn join-item" onClick={() => setPage(p => Math.min(maxPage, p + 1))} disabled={page >= maxPage}>Siguiente</button>
-            <button className="btn join-item" onClick={() => setPage(maxPage)} disabled={page >= maxPage}>Última</button>
-          </div>
-        )}
+        <AdminList
+          view={view}
+          rows={rows}
+          loading={loading}
+          error={error}
+          page={page}
+          maxPage={maxPage}
+          setPage={setPage}
+          columns={columns}
+        />
       </Section>
     </div>
   );

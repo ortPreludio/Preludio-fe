@@ -36,10 +36,19 @@ export async function request(
 
   if (!res.ok) {
     if (res.status === 401 && typeof window !== "undefined") {
-      const here = window.location.pathname + window.location.search;
-      window.location.assign(`/login?returnTo=${encodeURIComponent(here)}`);
-      return; // stop
+      // Si ya estamos en login/register, no redirigir
+      // Error de credenciales debe mostrarse en el formulario
+      const currentPath = window.location.pathname;
+      const isAuthPage = currentPath === '/login' || currentPath === '/register';
+
+      if (!isAuthPage) {
+        // Si expiró la sesión, redirigir a login
+        const here = window.location.pathname + window.location.search;
+        window.location.assign(`/login?returnTo=${encodeURIComponent(here)}`);
+        return;
+      }
     }
+
     const msg = data?.message || data?.error || data?.errorMsg || res.statusText || "Error";
     const err = new Error(msg);
     err.status = res.status;

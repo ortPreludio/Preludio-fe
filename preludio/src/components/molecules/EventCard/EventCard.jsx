@@ -12,7 +12,7 @@ export function EventCard({ event }) {
 
   return (
     <article className="event-card">
-      <div className="event-card__media">
+      <div className="event-card__media" style={{ '--event-image': `url(${image})` }}>
         <img src={image} alt={event.titulo} loading="lazy" />
       </div>
       <div className="event-card__body">

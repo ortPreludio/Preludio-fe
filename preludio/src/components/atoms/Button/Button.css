@@ -47,3 +47,36 @@
     padding: 4px 8px;
     font-size: 0.75rem;
 }
+
+/* Password field wrapper and input */
+.password-field-wrapper {
+    position: relative;
+}
+
+.password-field-input {
+    padding-right: 85px;
+}
+
+/* Show password button - positioned inside input field */
+.btn-show-password {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    padding: 6px 8px;
+    font-size: 0.813rem;
+    white-space: nowrap;
+    min-width: auto;
+}
+
+/* Make button much smaller on mobile to prevent overlap */
+@media (max-width: 640px) {
+    .password-field-input {
+        padding-right: 70px;
+    }
+
+    .btn-show-password {
+        padding: 3px 6px;
+        font-size: 0.688rem;
+        border-radius: 4px;
+    }
+}

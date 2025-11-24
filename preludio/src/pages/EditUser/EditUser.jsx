@@ -1,6 +1,6 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../state/auth.jsx';
+import { useAuth } from '../../state/authHook.js';
 import { apiUpdateProfile } from '../../api/auth.js';
 import { request } from '../../api/client.js';
 import UserForm from '../../components/organisms/UserForm/UserForm.jsx';
@@ -14,19 +14,12 @@ export function EditUser() {
   // If accessing via /profile/edit, we don't have an ID, so we edit "me".
   const userId = id;
 
-  // Guard: if trying to edit another user by id, only allow ADMINs.
-  if (userId && (!user || user.rol !== 'ADMIN')) {
-    return <Navigate to="/forbidden" replace />;
-  }
-
   const [userInitial, setUserInitial] = useState({
     nombre: '', apellido: '', dni: '', email: '', telefono: '', fechaNacimiento: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-
-  const maxDate = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   useEffect(() => {
     // Si hay userId en la URL (admin editando otro usuario)
@@ -92,6 +85,11 @@ export function EditUser() {
       setError(err?.message || 'Error al actualizar el perfil');
     } finally { setLoading(false); }
   };
+
+  // Guard: if trying to edit another user by id, only allow ADMINs.
+  if (userId && (!user || user.rol !== 'ADMIN')) {
+    return <Navigate to="/forbidden" replace />;
+  }
 
   if (!user && !userId) {
     navigate('/login');
