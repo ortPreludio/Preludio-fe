@@ -52,7 +52,7 @@ export const useAuthStore = create(
 
                 set({ loading: true });
                 try {
-                    const res = await fetch('/api/auth/me', { credentials: 'include' });
+                    const res = await fetch('https://preludioback.netlify.app/api/auth/me', { credentials: 'include' });
                     if (res.ok) {
                         const data = await res.json();
                         set({ user: data.user || null, loading: false, isInitialized: true });
