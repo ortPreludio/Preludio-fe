@@ -167,7 +167,17 @@ USUARIO
 La idea de desarrollar ORT Preludio surgió de la curiosidad que teníamos sobre cómo funcionan las plataformas que gestionan eventos masivos. Nos llamaba la atención entender cómo se organizan miles de entradas, cómo se controla el acceso y, especialmente, cómo se generan códigos QR únicos e irrepetibles para cada ticket.
 Ese interés terminó convirtiéndose en un proyecto que nos permitió trabajar estas tecnologías, entendendiendo sus desafíos y bondades para construir una solución completa que simula, a menor escala, el funcionamiento real de un sistema de venta y validación de entradas.
 
-## 🧑‍💻 Autores
+## 🔑 Credenciales de prueba
+
+```text
+ADMIN
+- Email: admin@preludio.com
+- Password: Password01!
+
+USUARIO
+- Email: usuario@preludio.com
+- Password: Password01!
+```
 
 * **[Ian Gregorini, Gustavo Adonai Rios, Santiago Muñoz y Paola Mattjie]** - [https://github.com/ortPreludio/]
 
