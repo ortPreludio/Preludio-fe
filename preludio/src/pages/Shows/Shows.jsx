@@ -2,50 +2,63 @@ import { Section } from '../../components/layout/Section/Section.jsx'
 import { EventGrid } from '../../components/organisms/EventGrid/EventGrid.jsx'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { fetchPublicEvents } from '../../lib/services/events.service.js'
+import ShowsFilters from './ShowsFilters.jsx'
+import './Shows.css'
 
 export function Shows() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [order, setOrder] = useState('asc');
+
+  // Filter state (simplified)
+  const [sortBy, setSortBy] = useState('fecha-asc');
   const [categoria, setCategoria] = useState('');
+  const [hideSoldOut, setHideSoldOut] = useState(false);
+
+  // Pagination state
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [total, setTotal] = useState(0);
   const observerRef = useRef(null);
   const loadingRef = useRef(false);
 
-  // Reset to page 1 when filters change
+  // Reset pagination when filters change
   useEffect(() => {
     setEvents([]);
     setPage(1);
     setHasMore(true);
-  }, [order, categoria]);
+    setTotal(0);
+  }, [sortBy, categoria, hideSoldOut]);
 
-  // Fetch events based on current page and filters
+  // Fetch events with pagination
   useEffect(() => {
-    if (!hasMore || loadingRef.current) return;
+    if (!hasMore && page > 1) return;
+    if (loadingRef.current) return;
 
     loadingRef.current = true;
     setLoading(true);
     setError(null);
 
-    fetchPublicEvents({
-      sort: 'fecha',
-      order,
-      categoria: categoria || undefined,
+    // Parse sortBy into sort field and order
+    const [sortField, sortOrder] = sortBy.split('-');
+
+    const params = {
+      sort: sortField,
+      order: sortOrder,
       page,
-      limit: 6 // Load 6 events per page
-    })
+      limit: 6
+    };
+
+    if (categoria) params.categoria = categoria;
+    if (hideSoldOut) params.hideSoldOut = 'true';
+
+    fetchPublicEvents(params)
       .then(data => {
         const newEvents = data.items || [];
-        const total = data.total || 0;
+        const totalCount = data.total || 0;
 
         setEvents(prev => page === 1 ? newEvents : [...prev, ...newEvents]);
-
-        // Check if there are more events to load
-        const loadedCount = page === 1 ? newEvents.length : events.length + newEvents.length;
-        setHasMore(loadedCount < total);
-
+        setTotal(totalCount);
         setLoading(false);
         loadingRef.current = false;
       })
@@ -54,9 +67,14 @@ export function Shows() {
         setLoading(false);
         loadingRef.current = false;
       });
-  }, [page, order, categoria]);
+  }, [page, sortBy, categoria, hideSoldOut, hasMore]);
 
-  // Intersection Observer callback
+  // Update hasMore when events or total changes
+  useEffect(() => {
+    setHasMore(events.length < total);
+  }, [events.length, total]);
+
+  // Intersection Observer for infinite scroll
   const lastEventRef = useCallback((node) => {
     if (loading) return;
     if (observerRef.current) observerRef.current.disconnect();
@@ -70,34 +88,28 @@ export function Shows() {
     if (node) observerRef.current.observe(node);
   }, [loading, hasMore]);
 
+  const handleClearFilters = () => {
+    setSortBy('fecha-asc');
+    setCategoria('');
+    setHideSoldOut(false);
+  };
+
   return (
     <div className="page shows-page">
       <Section title="Todos los eventos">
-        <div className="toolbar">
-          <label>Orden:
-            <select onChange={(e) => setOrder(e.target.value)} value={order}>
-              <option value="asc">Ascendente</option>
-              <option value="desc">Descendente</option>
-            </select>
-          </label>
-          <label>Categoría:
-            <select onChange={(e) => setCategoria(e.target.value)} value={categoria}>
-              <option value="">Todas</option>
-              <option value="Concierto">Concierto</option>
-              <option value="Teatro">Teatro</option>
-              <option value="Deporte">Deporte</option>
-              <option value="Festival">Festival</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </label>
-        </div>
+        <ShowsFilters
+          sortBy={sortBy} setSortBy={setSortBy}
+          categoria={categoria} setCategoria={setCategoria}
+          hideSoldOut={hideSoldOut} setHideSoldOut={setHideSoldOut}
+          onClear={handleClearFilters}
+        />
 
         {error && <div className="error">Error: {error}</div>}
 
         {events.length > 0 && (
           <>
             <EventGrid items={events} />
-            {/* Invisible element to trigger loading more */}
+            {/* Trigger for loading more */}
             {hasMore && <div ref={lastEventRef} style={{ height: '20px' }} />}
           </>
         )}

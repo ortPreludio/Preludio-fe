@@ -92,7 +92,7 @@ export function Checkout() {
                     : undefined
             };
 
-            const result = await checkout(pagoData);
+            await checkout(pagoData);
 
             // Mostrar mensaje de éxito
             setShowAnimation(false);
