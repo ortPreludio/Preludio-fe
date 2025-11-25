@@ -118,7 +118,7 @@ export function TicketDetail() {
                     </div>
 
                     <div className="ticket-footer">
-                        <button className="btn btn-ghost" onClick={() => navigate('/mistickets')}>
+                        <button className="btn btn-ghost" onClick={() => navigate(-1)}>
                             ← Volver
                         </button>
                         <button className="btn btn-primary" onClick={() => window.print()}>
