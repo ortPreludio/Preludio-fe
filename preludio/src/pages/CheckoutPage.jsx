@@ -45,7 +45,7 @@ export default function CheckoutPage() {
                     : undefined
             };
 
-            const result = await checkout(pagoData);
+            await checkout(pagoData);
 
             // Redirigir a mis tickets tras un pago exitoso
             alert('¡Pago completado exitosamente!');
