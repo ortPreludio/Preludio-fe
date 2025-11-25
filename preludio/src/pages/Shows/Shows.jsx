@@ -1,6 +1,6 @@
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { EventGrid } from '../../components/organisms/EventGrid/EventGrid.jsx'
-import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { fetchPublicEvents } from '../../lib/services/events.service.js'
 import ShowsFilters from './ShowsFilters.jsx'
 import './Shows.css'
