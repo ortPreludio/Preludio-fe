@@ -18,6 +18,7 @@ import { DefensaConsumidor } from '../pages/footer/DefensaConsumidor.jsx';
 import { Refund } from '../pages/footer/Refund.jsx';
 import { MisTickets } from "../pages/MisTickets/MisTickets.jsx";
 import { TicketDetail } from "../pages/TicketDetail/TicketDetail.jsx";
+import { EventTickets } from "../pages/EventTickets/EventTickets.jsx";
 import { Checkout } from "../pages/Checkout/Checkout.jsx";
 import ChangePassword from "../pages/ChangePassword/ChangePassword.jsx";
 import Forbidden from "../pages/Forbidden/Forbidden.jsx";
@@ -51,6 +52,7 @@ export function AppRouter() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/mistickets" element={<MisTickets />} />
                 <Route path="/ticket/:id" element={<TicketDetail />} />
+                <Route path="/event-tickets/:eventId" element={<EventTickets />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/profile/edit" element={<EditUser />} />
                 <Route path="/perfil/cambiar-password" element={<ChangePassword />} />

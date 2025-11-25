@@ -1,6 +1,6 @@
 import './TicketCard.css';
 
-export const TicketCard = ({ ticket, onViewTicket }) => {
+export const TicketCard = ({ ticket, ticketCount = 1, onViewTicket }) => {
     const fechaCompra = new Date(ticket.fechaCompra).toLocaleDateString('es-ES', {
         day: '2-digit',
         month: '2-digit',
@@ -52,6 +52,11 @@ export const TicketCard = ({ ticket, onViewTicket }) => {
                         {statusDisplay}
                     </span>
                 </div>
+                {ticketCount > 1 && (
+                    <div className="ticket-card__count-badge">
+                        {ticketCount} tickets
+                    </div>
+                )}
             </div>
 
             {/* Cuerpo del ticket */}
@@ -80,9 +85,9 @@ export const TicketCard = ({ ticket, onViewTicket }) => {
                     {canViewTicket && (
                         <button
                             className="ticket-card__cta"
-                            onClick={() => onViewTicket(ticket._id)}
+                            onClick={onViewTicket}
                         >
-                            Ver Ticket y QR →
+                            {ticketCount > 1 ? `Ver ${ticketCount} Tickets →` : 'Ver Ticket y QR →'}
                         </button>
                     )}
                 </div>
