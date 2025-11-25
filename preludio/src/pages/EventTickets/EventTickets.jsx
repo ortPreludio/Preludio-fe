@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchMyTickets } from '../../lib/services/tickets.service';
 import { Section } from '../../components/layout/Section/Section';
@@ -12,6 +12,10 @@ export function EventTickets() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Touch/swipe handling
+    const touchStartX = useRef(0);
+    const touchEndX = useRef(0);
 
     useEffect(() => {
         setLoading(true);
@@ -39,6 +43,32 @@ export function EventTickets() {
         setCurrentIndex((prev) => (prev - 1 + tickets.length) % tickets.length);
     };
 
+    // Swipe handlers
+    const handleTouchStart = (e) => {
+        touchStartX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e) => {
+        touchEndX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+        if (tickets.length <= 1) return;
+
+        const swipeThreshold = 50; // Minimum distance for a swipe
+        const diff = touchStartX.current - touchEndX.current;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swiped left - go to next
+                goToNext();
+            } else {
+                // Swiped right - go to previous
+                goToPrevious();
+            }
+        }
+    };
+
     if (loading) return <div className="page"><div className="loader">Cargando tickets…</div></div>;
     if (error) return <div className="page"><div className="error">{error}</div></div>;
     if (tickets.length === 0) return <div className="page"><div className="error">No hay tickets disponibles</div></div>;
@@ -59,7 +89,12 @@ export function EventTickets() {
                 </div>
 
                 {/* Carousel Container */}
-                <div className="event-tickets__carousel">
+                <div
+                    className="event-tickets__carousel"
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                >
                     {tickets.length > 1 && (
                         <button
                             className="carousel-arrow carousel-arrow--left"

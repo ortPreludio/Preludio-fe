@@ -23,6 +23,10 @@
     align-items: center;
     gap: 24px;
     margin-bottom: 32px;
+    touch-action: pan-y;
+    /* Allow vertical scroll, horizontal for swipe */
+    user-select: none;
+    /* Prevent text selection during swipe */
 }
 
 /* Navigation Arrows */
@@ -115,10 +119,9 @@
         align-items: flex-start;
     }
 
+    /* Hide arrows on mobile - use swipe instead */
     .carousel-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1.25rem;
+        display: none;
     }
 
     .event-tickets__counter {
