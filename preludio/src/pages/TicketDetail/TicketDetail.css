@@ -167,6 +167,7 @@
 .ticket-qr-column {
   padding: 32px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.2);
@@ -175,43 +176,29 @@
 .qr-card {
   text-align: center;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.qr-placeholder {
+.qr-wrapper {
   width: 200px;
   height: 200px;
-  margin: 0 auto 16px;
+  margin: 16px auto;
   background: white;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-}
-
-.qr-mockup {
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.qr-icon {
-  font-size: 3rem;
-  opacity: 0.2;
-}
-
-.qr-mockup p {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #999;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .qr-instruction {
   font-size: 0.875rem;
-  color: var(--muted);
-  margin-bottom: 8px;
+  color: var(--text);
+  margin: 8px 0 4px 0;
+  font-weight: 500;
 }
 
 .qr-id-ref {
@@ -219,6 +206,7 @@
   font-size: 0.75rem;
   color: var(--muted);
   opacity: 0.5;
+  margin: 0;
 }
 
 /* Footer */
