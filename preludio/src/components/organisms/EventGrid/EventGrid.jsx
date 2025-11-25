@@ -1,4 +1,4 @@
-import { EventCard } from '../../molecules/EventCard/EventCard.jsx'
+import { EventCard } from '../../molecules/Cards/EventCard/EventCard.jsx'
 import './EventGrid.css';
 export function EventGrid({ items = [] }) {
   if (!items.length) return <div className="empty">No hay eventos disponibles</div>

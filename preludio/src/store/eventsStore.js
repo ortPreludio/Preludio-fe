@@ -29,7 +29,7 @@ export const useEventsStore = create(
                     precioBase: event.precioBase || event.precio,
                     estadoPublicacion: event.estadoPublicacion,
                     ubicacion: event.ubicacion,
-                    entradasDisponibles: event.entradasDisponibles ?? event.ticketsDisponibles ?? event.capacidadTotal ?? null,
+                    entradasDisponibles: event.entradasDisponibles,
                 }));
                 set({
                     events: minimalEvents,

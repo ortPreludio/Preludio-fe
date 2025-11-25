@@ -1,77 +1,10 @@
 import { Section } from '../../components/layout/Section/Section.jsx'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../store/authStore.js'; // Importación necesaria
-import { fetchMyTickets } from '../../lib/services/tickets.service.js'; // Función de API
+import { useAuth } from '../../store/authStore.js';
+import { fetchMyTickets } from '../../lib/services/tickets.service.js';
 import './MisTickets.css'
-// Componente individual para mostrar un ticket
-const TicketCard = ({ ticket, onViewTicket }) => {
-    // Convertir la fecha de compra y la fecha del evento para mostrar
-    const fechaCompra = new Date(ticket.fechaCompra).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-    // Asumimos que ticket.evento.fecha es una fecha válida.
-    const fechaEvento = new Date(ticket.evento.fecha).toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: 'short' });
-
-    // Status display - normalize to show properly
-    const getStatusDisplay = (estado) => {
-        if (!estado) return 'VALIDO';
-        const normalized = estado.toUpperCase();
-        if (normalized === 'VALIDO' || normalized === 'VÁLIDO') return 'Válido';
-        if (normalized === 'USADO') return 'Usado';
-        if (normalized === 'CANCELADO') return 'Cancelado';
-        return estado;
-    };
-
-    const getStatusClass = (estado) => {
-        if (!estado) return 'valid';
-        const normalized = estado.toUpperCase();
-        if (normalized === 'VALIDO' || normalized === 'VÁLIDO') return 'valid';
-        if (normalized === 'CANCELADO') return 'cancel';
-        return '';
-    };
-
-    // Check if ticket is valid - handle both 'VALIDO' and 'Válido'
-    const isValidTicket = (estado) => {
-        if (!estado) return true; // Default is valid
-        const normalized = estado.toUpperCase();
-        return normalized === 'VALIDO' || normalized === 'VÁLIDO';
-    };
-
-    const statusDisplay = getStatusDisplay(ticket.estado);
-    const statusClass = getStatusClass(ticket.estado);
-    const canViewTicket = isValidTicket(ticket.estado);
-
-    return (
-        <div className="ticket-card">
-            <div className="ticket-body">
-                <div className="ticket-header">
-                    <h3>{ticket.evento.titulo || ticket.evento.nombre}</h3>
-                    <span className={`ticket-status ${statusClass}`}>
-                        {statusDisplay}
-                    </span>
-                </div>
-
-                <p style={{ marginBottom: 6 }}><strong>Tipo de entrada:</strong> {ticket.tipoEntrada}</p>
-                <p style={{ marginBottom: 6 }}><strong>Fecha del evento:</strong> {fechaEvento}</p>
-                <p style={{ marginBottom: 12 }}><strong>Lugar:</strong> {ticket.evento.ubicacion?.lugar || ticket.evento.lugar || 'Ubicación no especificada'}</p>
-
-                <div className="ticket-meta">
-                    <p className="ticket-price">${ticket.precioPagado.toFixed(2)}</p>
-                    <p style={{ fontSize: 12, color: 'var(--muted)' }}>Comprado: {fechaCompra}</p>
-                </div>
-
-                {canViewTicket && (
-                    <button
-                        className="ticket-cta"
-                        onClick={() => onViewTicket(ticket._id)}
-                    >
-                        Ver Ticket y QR
-                    </button>
-                )}
-            </div>
-        </div>
-    );
-};
+import { TicketCard } from '../../components/molecules/Cards/TicketCard/TicketCard.jsx';
 
 export function MisTickets() {
     const { user } = useAuth();
@@ -79,10 +12,9 @@ export function MisTickets() {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [order, setOrder] = useState('desc'); // Para ordenar en el frontend o enviar al backend
+    const [order, setOrder] = useState('desc');
 
     useEffect(() => {
-        // Solo intenta cargar si el usuario está autenticado
         if (!user) {
             setLoading(false);
             return;
@@ -97,8 +29,33 @@ export function MisTickets() {
 
     }, [user, order])
 
-    const handleViewTicket = (ticketId) => {
-        navigate(`/ticket/${ticketId}`);
+    // Group tickets by event
+    const groupedTickets = useMemo(() => {
+        const groups = {};
+        tickets.forEach(ticket => {
+            if (ticket.evento) {
+                const eventId = ticket.evento._id;
+                if (!groups[eventId]) {
+                    groups[eventId] = {
+                        evento: ticket.evento,
+                        tickets: [],
+                        firstTicket: ticket // Keep reference to first ticket for display
+                    };
+                }
+                groups[eventId].tickets.push(ticket);
+            }
+        });
+        return Object.values(groups);
+    }, [tickets]);
+
+    const handleViewTicket = (eventId, ticketIds) => {
+        // If only one ticket, go directly to ticket detail
+        if (ticketIds.length === 1) {
+            navigate(`/ticket/${ticketIds[0]}`);
+        } else {
+            // Multiple tickets, go to event tickets carousel
+            navigate(`/event-tickets/${eventId}`);
+        }
     };
 
     if (!user) {
@@ -132,10 +89,18 @@ export function MisTickets() {
                     </div>
                 )}
 
-                {!loading && !error && tickets.length > 0 && (
+                {!loading && !error && groupedTickets.length > 0 && (
                     <div className="ticket-grid">
-                        {tickets.map(ticket => (
-                            ticket.evento && <TicketCard key={ticket._id} ticket={ticket} onViewTicket={handleViewTicket} />
+                        {groupedTickets.map(group => (
+                            <TicketCard
+                                key={group.evento._id}
+                                ticket={group.firstTicket}
+                                ticketCount={group.tickets.length}
+                                onViewTicket={() => handleViewTicket(
+                                    group.evento._id,
+                                    group.tickets.map(t => t._id)
+                                )}
+                            />
                         ))}
                     </div>
                 )}

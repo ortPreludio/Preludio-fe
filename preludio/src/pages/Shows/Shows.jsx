@@ -1,125 +1,118 @@
 import { Section } from '../../components/layout/Section/Section.jsx'
 import { EventGrid } from '../../components/organisms/EventGrid/EventGrid.jsx'
-import { useEffect, useMemo, useState } from 'react'
-import { useEventsStore } from '../../store/eventsStore.js'
-import ShowsFilters from './ShowsFilters.jsx'
-import './Shows.css'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import { fetchPublicEvents } from '../../lib/services/events.service.js'
 
 export function Shows() {
-  const { events, loading, error, fetchEvents } = useEventsStore();
-
-  // NOTE: initial fetch moved below so we can include filter-driven params
-
-  // Filter state
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [order, setOrder] = useState('asc');
   const [categoria, setCategoria] = useState('');
-  const [publicacion, setPublicacion] = useState('');
-  // Removed `lugar` filter (we keep the UI focused and simple)
-  const [price, setPrice] = useState('all'); // all | free | paid
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
-  const [availability, setAvailability] = useState('all'); // all | available | soldout | nodata
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);
+  const loadingRef = useRef(false);
 
-  // Fetch events when backend-supported filters change
+  // Reset to page 1 when filters change
   useEffect(() => {
-    // Build params the backend already supports to reduce transfer
-    const params = { sort: 'fecha', order, limit: 200 };
-    if (categoria) params.categoria = categoria;
-    if (publicacion) params.estadoPublicacion = publicacion;
-    if (dateFrom) params.from = dateFrom;
-    if (dateTo) params.to = dateTo;
+    setEvents([]);
+    setPage(1);
+    setHasMore(true);
+  }, [order, categoria]);
 
-    // Fetch from backend using the service; remaining filters (price/availability)
-    // will be applied client-side over the returned items.
-    fetchEvents(params);
-  }, [fetchEvents, order, categoria, publicacion, dateFrom, dateTo]);
+  // Fetch events based on current page and filters
+  useEffect(() => {
+    if (!hasMore || loadingRef.current) return;
 
-  // Derived filter options from available events (only valid options)
-  const options = useMemo(() => {
-    const cats = new Set();
-    const pubs = new Set();
-    // removed lugares collection - not needed for simplified filters
-    events.forEach(e => {
-      if (e.categoria) cats.add(e.categoria);
-      if (e.estadoPublicacion) pubs.add(e.estadoPublicacion);
-      // keep other derived options only
-    });
-    return {
-      categorias: Array.from(cats).sort(),
-      publicaciones: Array.from(pubs).sort(),
-      // no lugares
-    };
-  }, [events]);
+    loadingRef.current = true;
+    setLoading(true);
+    setError(null);
 
-  // Apply filters client-side for fast UI updates
-  const filtered = useMemo(() => {
-    let list = Array.isArray(events) ? [...events] : [];
+    fetchPublicEvents({
+      sort: 'fecha',
+      order,
+      categoria: categoria || undefined,
+      page,
+      limit: 6 // Load 6 events per page
+    })
+      .then(data => {
+        const newEvents = data.items || [];
+        const total = data.total || 0;
 
-    // Publication filter
-    if (publicacion) list = list.filter(e => e.estadoPublicacion === publicacion);
+        setEvents(prev => page === 1 ? newEvents : [...prev, ...newEvents]);
 
-    // Category filter
-    if (categoria) list = list.filter(e => e.categoria === categoria);
+        // Check if there are more events to load
+        const loadedCount = page === 1 ? newEvents.length : events.length + newEvents.length;
+        setHasMore(loadedCount < total);
 
-    // Price filter
-    if (price === 'free') list = list.filter(e => Number(e.precioBase || 0) === 0);
-    if (price === 'paid') list = list.filter(e => Number(e.precioBase || 0) > 0);
+        setLoading(false);
+        loadingRef.current = false;
+      })
+      .catch(e => {
+        setError(e.message || 'Error al cargar eventos');
+        setLoading(false);
+        loadingRef.current = false;
+      });
+  }, [page, order, categoria]);
 
-    // Date range
-    if (dateFrom) {
-      const from = new Date(dateFrom);
-      list = list.filter(e => new Date(e.fecha) >= from);
-    }
-    if (dateTo) {
-      const to = new Date(dateTo);
-      // include the whole day
-      to.setHours(23,59,59,999);
-      list = list.filter(e => new Date(e.fecha) <= to);
-    }
+  // Intersection Observer callback
+  const lastEventRef = useCallback((node) => {
+    if (loading) return;
+    if (observerRef.current) observerRef.current.disconnect();
 
-    // Availability filter (requires entradasDisponibles present)
-    if (availability === 'available') {
-      list = list.filter(e => typeof e.entradasDisponibles === 'number' ? e.entradasDisponibles > 0 : true);
-    }
-    if (availability === 'soldout') {
-      list = list.filter(e => typeof e.entradasDisponibles === 'number' ? e.entradasDisponibles === 0 : false);
-    }
-
-    // Order
-    list.sort((a, b) => {
-      const da = new Date(a.fecha).getTime() || 0;
-      const db = new Date(b.fecha).getTime() || 0;
-      return order === 'asc' ? da - db : db - da;
+    observerRef.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore && !loadingRef.current) {
+        setPage(prev => prev + 1);
+      }
     });
 
-    return list;
-  }, [events, publicacion, categoria, price, dateFrom, dateTo, availability, order]);
-
-  // If there's a field/state called `evento` used in other contexts: note that
-  // within this Shows page we do not use a local `evento` state. The word
-  // `evento` appears as a property inside ticket objects elsewhere (e.g. ticket.evento)
-  // which is data, not a UI state. Therefore there is no visible 'evento' state
-  // to show/clean here. If you have a specific `evento` state you want reviewed,
-  // tell me where it is and I'll adjust it (hide or move to internal logic).
+    if (node) observerRef.current.observe(node);
+  }, [loading, hasMore]);
 
   return (
-    <div className="page">
+    <div className="page shows-page">
       <Section title="Todos los eventos">
-        <ShowsFilters
-          order={order} setOrder={setOrder}
-          categoria={categoria} setCategoria={setCategoria}
-          publicacion={publicacion} setPublicacion={setPublicacion}
-          price={price} setPrice={setPrice}
-          availability={availability} setAvailability={setAvailability}
-          dateFrom={dateFrom} setDateFrom={setDateFrom}
-          dateTo={dateTo} setDateTo={setDateTo}
-          options={options}
-          onClear={() => { setCategoria(''); setPublicacion(''); setPrice('all'); setAvailability('all'); setDateFrom(''); setDateTo(''); }}
-        />
+        <div className="toolbar">
+          <label>Orden:
+            <select onChange={(e) => setOrder(e.target.value)} value={order}>
+              <option value="asc">Ascendente</option>
+              <option value="desc">Descendente</option>
+            </select>
+          </label>
+          <label>Categoría:
+            <select onChange={(e) => setCategoria(e.target.value)} value={categoria}>
+              <option value="">Todas</option>
+              <option value="Concierto">Concierto</option>
+              <option value="Teatro">Teatro</option>
+              <option value="Deporte">Deporte</option>
+              <option value="Festival">Festival</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </label>
+        </div>
 
-        {loading && <div className="loader">Cargando eventos…</div>}
         {error && <div className="error">Error: {error}</div>}
-        {!loading && !error && <EventGrid items={filtered} />}
+
+        {events.length > 0 && (
+          <>
+            <EventGrid items={events} />
+            {/* Invisible element to trigger loading more */}
+            {hasMore && <div ref={lastEventRef} style={{ height: '20px' }} />}
+          </>
+        )}
+
+        {loading && <div className="loader-inline">Cargando eventos...</div>}
+
+        {!loading && events.length === 0 && !error && (
+          <div className="empty">No se encontraron eventos</div>
+        )}
+
+        {!hasMore && events.length > 0 && (
+          <div className="loader-inline" style={{ opacity: 0.6 }}>
+            No hay más eventos
+          </div>
+        )}
       </Section>
     </div>
   )

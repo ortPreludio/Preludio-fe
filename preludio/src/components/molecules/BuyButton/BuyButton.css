@@ -1,0 +1,74 @@
+/* Buy Button Component */
+.buy-button {
+    position: relative;
+    display: inline-block;
+}
+
+.buy-button.full-width {
+    display: block;
+    width: 100%;
+}
+
+.buy-button button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.buy-button button:disabled:hover {
+    transform: none;
+}
+
+/* Tooltip for sold out */
+.buy-button__tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgba(255, 107, 107, 0.95);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+/* Arrow pointing down */
+.buy-button__tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(255, 107, 107, 0.95);
+}
+
+/* Show tooltip on hover */
+.buy-button.sold-out:hover .buy-button__tooltip {
+    opacity: 1;
+}
+
+/* Mobile: Show as static message */
+@media (max-width: 768px) {
+    .buy-button__tooltip {
+        position: static;
+        display: block;
+        transform: none;
+        opacity: 1;
+        margin-top: 8px;
+        width: 100%;
+        text-align: center;
+        background: rgba(255, 107, 107, 0.1);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 107, 107, 0.2);
+    }
+
+    .buy-button__tooltip::after {
+        display: none;
+    }
+}

@@ -1,0 +1,56 @@
+.mercadopago-processor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mp-logo-animated {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.mercadopago-processor p {
+    color: var(--text, #fff);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.mp-progress-bar {
+    width: 100%;
+    max-width: 300px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.mp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #009ee3, #00d4ff);
+    border-radius: 3px;
+    animation: progressFill 3s ease-in-out forwards;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 158, 227, 0.7);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(0, 158, 227, 0);
+    }
+}
+
+@keyframes progressFill {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
