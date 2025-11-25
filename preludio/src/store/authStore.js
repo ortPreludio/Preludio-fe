@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { apiLogin, apiLogout } from '../lib/services/auth.service.js';
+import { apiLogin, apiLogout, apiMe } from '../lib/services/auth.service.js';
 
 /**
  * Auth/Session Store with sessionStorage persistence
@@ -52,13 +52,8 @@ export const useAuthStore = create(
 
                 set({ loading: true });
                 try {
-                    const res = await fetch('https://preludioback.netlify.app/api/auth/me', { credentials: 'include' });
-                    if (res.ok) {
-                        const data = await res.json();
-                        set({ user: data.user || null, loading: false, isInitialized: true });
-                    } else {
-                        set({ user: null, loading: false, isInitialized: true });
-                    }
+                    const { user } = await apiMe();
+                    set({ user: user || null, loading: false, isInitialized: true });
                 } catch {
                     set({ user: null, loading: false, isInitialized: true });
                 }

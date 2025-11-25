@@ -14,3 +14,8 @@ export function apiUpdateProfile(body) { return request('/users/profile', { meth
 export function apiLogout() {
   return request("/auth/logout", { method: "POST" });
 }
+
+// Fetch current authenticated user
+export function apiMe() {
+  return request("/auth/me", { method: "GET", credentials: "include" });
+}
