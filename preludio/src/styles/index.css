@@ -88,10 +88,20 @@ select {
   background: rgba(255, 255, 255, 0.03);
 }
 
+.loader-inline {
+  padding: 12px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+
+
 .error {
   border-color: #ff6b6b66;
   background: #ff6b6b14;
 }
+
 
 /* --------- FORMULARIOS --------- */
 .auth-form {
