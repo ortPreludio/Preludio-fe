@@ -1,0 +1,82 @@
+/* --------- BOTONES --------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #001018;
+}
+
+.btn-primary:hover {
+    background: var(--primary-700);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-disabled,
+.btn[disabled],
+.btn[aria-disabled="true"] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Sizes */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+}
+
+.btn-xs {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+}
+
+/* Password field wrapper and input */
+.password-field-wrapper {
+    position: relative;
+}
+
+.password-field-input {
+    padding-right: 85px;
+}
+
+/* Show password button - positioned inside input field */
+.btn-show-password {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    padding: 6px 8px;
+    font-size: 0.813rem;
+    white-space: nowrap;
+    min-width: auto;
+}
+
+/* Make button much smaller on mobile to prevent overlap */
+@media (max-width: 640px) {
+    .password-field-input {
+        padding-right: 70px;
+    }
+
+    .btn-show-password {
+        padding: 3px 6px;
+        font-size: 0.688rem;
+        border-radius: 4px;
+    }
+}

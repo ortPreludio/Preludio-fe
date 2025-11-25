@@ -1,0 +1,18 @@
+.ticket-page {
+  padding-bottom: 40px;
+}
+
+/* Print Styles for Page */
+@media print {
+  .ticket-page {
+    padding: 0;
+    background: white;
+    color: black;
+  }
+
+  .navbar,
+  .footer,
+  .btn {
+    display: none !important;
+  }
+}

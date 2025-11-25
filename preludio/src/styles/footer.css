@@ -1,0 +1,76 @@
+.site-footer {
+    /* Fondo ligeramente más oscuro que el cuerpo para crear separación */
+    background-color: var(--bg-2);
+    color: var(--muted);
+    padding-top: 50px;
+    border-top: 1px solid var(--border-color);
+    /* Separador visual */
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .footer-section h3 {
+        display: inline-block;
+        /* Mantiene el subrayado ajustado al texto */
+    }
+}
+
+.footer-section h3 {
+    color: var(--text);
+    /* Títulos en color claro */
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary);
+    /* Línea de acento */
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section a,
+.footer-section p {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.footer-section a:hover {
+    color: var(--primary);
+    /* Resalta en el color principal al pasar el mouse */
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #081016;
+    /* Fondo más oscuro aún */
+    padding: 15px 0;
+    text-align: center;
+    border-top: 1px solid var(--border-light);
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
