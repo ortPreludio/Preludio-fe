@@ -2,6 +2,8 @@
 
 > **Plataforma web para la gestión y compra de entradas para eventos.**
 
+https://preludio.iangregorini.com.ar
+
 ## 💡 Descripción General
 
 **ORT Preludio** es una aplicación Full-Stack diseñada para simplificar la gestión y adquisición de tickets para diversos eventos.
