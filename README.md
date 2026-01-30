@@ -43,6 +43,42 @@ Este proyecto fue desarrollado utilizando:
 
 ---
 
+## 🧩 Arquitectura Frontend
+
+### Custom Hooks
+Se han implementado hooks personalizados para abstraer lógica compleja:
+
+- **`useFetch`** (`src/hooks/useFetch.js`): 
+  - Abstrae la lógica de petición de datos (loading, error, data).
+  - Permite ejecución inmediata o diferida.
+  - Ideal para componentes que no requieren estado global.
+
+- **`useDebounce`** (`src/hooks/useDebounce.js`):
+  - Optimiza el rendimiento en búsquedas, retrasando la ejecución de efectos hasta que el usuario termina de escribir.
+
+- **`usePagination`** (`src/hooks/usePagination.js`):
+  - Centraliza la lógica de cálculo de páginas, offsets y navegación para tablas y listas.
+
+### Gestión de Estado (Zustand)
+El estado global se gestiona con **Zustand**, reemplazando a Redux/Context por su simplicidad.
+
+- **Stores**: Ubicados en `src/store/`.
+- **Persistencia**: Se utiliza el middleware `persist` en `authStore` para mantener la sesión del usuario activa entre recargas (usando `sessionStorage`).
+- **Ejemplo (`authStore`)**:
+  - Centraliza `login`, `logout` y `validateSession`.
+  - Expone el estado `user` y métodos de acción a cualquier componente.
+
+### Cliente HTTP
+La capa de red se encuentra en `src/lib/infra/http-client.js`.
+
+- **Wrapper de Fetch**: Simplifica las llamadas a la API.
+- **Manejo de Errores Global**:
+  - Intercepta errores **401 Unauthorized** y redirige al login automáticamente.
+  - Normaliza los mensajes de error del backend.
+- **Configuración de Entorno**: Selecciona automáticamente la URL del backend (`/api` en dev proxy, URL completa en prod).
+
+---
+
 ## ✅ Requisitos previos
 
 - Node.js >= 18 (recomendado).
