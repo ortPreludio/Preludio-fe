@@ -17,5 +17,5 @@ export function apiLogout() {
 
 // Fetch current authenticated user
 export function apiMe() {
-  return request("/auth/me", { method: "GET", credentials: "include" });
+  return request("/auth/me", { method: "GET", suppress401Redirect: true, withCredentials: true });
 }
