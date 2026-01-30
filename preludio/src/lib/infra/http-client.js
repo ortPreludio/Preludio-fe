@@ -22,7 +22,7 @@ export function buildQuery(params = {}) {
 
 export async function request(
   path,
-  { method = "GET", body, headers, token, withCredentials = true } = {}
+  { method = "GET", body, headers, token, withCredentials = true, suppress401Redirect = false } = {}
 ) {
   const res = await fetch(`${API_BASE}${path}`, {
     method,
@@ -40,7 +40,7 @@ export async function request(
   try { data = text ? JSON.parse(text) : null; } catch { data = text; }
 
   if (!res.ok) {
-    if (res.status === 401 && typeof window !== "undefined") {
+    if (res.status === 401 && typeof window !== "undefined" && !suppress401Redirect) {
       const currentPath = window.location.pathname;
       const isAuthPage = currentPath === "/login" || currentPath === "/register";
 
