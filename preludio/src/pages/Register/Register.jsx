@@ -3,6 +3,8 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { apiRegister } from '../../lib/services/auth.service.js';
 import { useAuth } from '../../store/authStore.js';
 import { PasswordInput } from '../../components/atoms/PasswordInput/PasswordInput.jsx';
+import '../../components/atoms/Button/Button.css';
+
 
 export function Register() {
   const { setUser } = useAuth();
@@ -116,10 +118,12 @@ export function Register() {
           </button>
         </form>
 
-        <p className="text-muted" style={{ marginTop: 12 }}>
-          ¿Ya tenés cuenta?{" "}
-          <Link to={`/login?returnTo=${encodeURIComponent(returnTo)}`}>Iniciar sesión</Link>
-        </p>
+        <div style={{ marginTop: 24, display: 'grid', gap: 12, textAlign: 'center' }}>
+          <p className="text-muted" style={{ margin: 0 }}>¿Ya tenés cuenta?</p>
+          <Link to={`/login?returnTo=${encodeURIComponent(returnTo)}`} className="btn btn-secondary">
+            Iniciar sesión
+          </Link>
+        </div>
       </div>
     </div>
   );

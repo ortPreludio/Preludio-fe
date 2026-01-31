@@ -3,6 +3,8 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { apiLogin } from '../../lib/services/auth.service.js';
 import { useAuth } from '../../store/authStore.js';
 import { PasswordInput } from '../../components/atoms/PasswordInput/PasswordInput.jsx';
+import '../../components/atoms/Button/Button.css';
+
 
 export function Login() {
   const { setUser } = useAuth();
@@ -80,10 +82,12 @@ export function Login() {
           </button>
         </form>
 
-        <p className="text-muted" style={{ marginTop: 12 }}>
-          ¿No tenés cuenta?{" "}
-          <Link to={`/register?returnTo=${encodeURIComponent(returnTo)}`}>Crear cuenta</Link>
-        </p>
+        <div style={{ marginTop: 24, display: 'grid', gap: 12, textAlign: 'center' }}>
+          <p className="text-muted" style={{ margin: 0 }}>¿No tenés cuenta?</p>
+          <Link to={`/register?returnTo=${encodeURIComponent(returnTo)}`} className="btn btn-secondary">
+            Crear cuenta
+          </Link>
+        </div>
       </div>
     </div>
   );
