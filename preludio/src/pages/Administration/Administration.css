@@ -1,0 +1,75 @@
+/* src/pages/Administration/Administration.css */
+
+.admin-toolbar {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.admin-btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    background: var(--card);
+    /* Using card variable for consistent background */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    /* Optional glassmorphism if desired, matching header */
+    /* background: rgba(15, 38, 54, 0.6); backdrop-filter: blur(8px); */
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group.grow {
+    flex-grow: 1;
+}
+
+.filter-label {
+    font-size: 0.875rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+/* Control styling (Inputs & Selects) matching standard inputs but specific context if needed */
+.form-control {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    /* Darker background for contrast inside card */
+    color: var(--text);
+    border: 1px solid var(--border-light);
+    padding: 10px 12px;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+}
+
+.admin-stats {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--muted);
+    padding-bottom: 4px;
+}
+
+.admin-stats b {
+    color: var(--text);
+}
