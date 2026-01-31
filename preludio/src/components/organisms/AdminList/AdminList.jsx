@@ -118,13 +118,13 @@ export function AdminList({
                                         {/* Desktop Actions */}
                                         <div className="actions-desktop">
                                             <Link
-                                                className="btn-action primary"
+                                                className="btn btn-primary btn-sm"
                                                 to={view === 'users' ? `/users/edit/${id}` : `/events/edit/${id}`}
                                             >
                                                 Editar
                                             </Link>
                                             <Link
-                                                className="btn-action"
+                                                className="btn btn-ghost btn-sm"
                                                 to={view === 'users' ? `/users/${id}` : `/events/${id}`}
                                             >
                                                 Detalles
