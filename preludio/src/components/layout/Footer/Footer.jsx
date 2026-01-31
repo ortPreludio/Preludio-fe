@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../../styles/footer.css'; 
+import '../../../styles/footer.css';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        
+
         {/* Columna 1: Navegación Rápida y Legal */}
         <div className="footer-section">
           <h3>Información y Ayuda</h3>
@@ -19,7 +19,7 @@ export function Footer() {
             <li><Link to="/refund">Me arrepentí de mi compra</Link></li>
           </ul>
         </div>
-        
+
         {/* Columna 2: Redes Sociales */}
         <div className="footer-section social-links">
           <h3>Síguenos</h3>
@@ -35,11 +35,11 @@ export function Footer() {
         <div className="footer-section contact-info">
           <h3>Contacto</h3>
           <p>
-            **Dirección física:**<br />
-            Humboldt 450, CABA 
+            Dirección física:<br />
+            Humboldt 450, CABA
           </p>
           <p>
-            **Email:** info@preludio.com
+            Email:info@preludio.com
           </p>
         </div>
 
